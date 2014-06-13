@@ -9,7 +9,8 @@ $app = new \Slim\Slim();
 
 
 $app->get('/', function() use ($app) {
-    $app->render('views/htmlHeader.php', array('title'=>'Robojackets Inventory'));
+    $app->view();
+    $app->render('htmlHeader.php', array('title'=>'Robojackets Inventory'));
 });
 
 
