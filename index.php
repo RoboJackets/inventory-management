@@ -8,7 +8,7 @@ require 'php/render.php';
 $app = new \Slim\Slim();
 
 
-$app->get('/', function() {
+$app->get('/', function() use ($app) {
     $app->render('views/htmlHeader.php', array('title'=>'Robojackets Inventory'));
 });
 
