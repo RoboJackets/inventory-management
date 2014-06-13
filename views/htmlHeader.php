@@ -10,11 +10,3 @@
     <script src="../js/query.js"></script>
 
 </head>
-<body>
-    
-    <?php
-        echo $bodyContent;
-    ?>
-            
-</body>        
-</html>
