@@ -3,8 +3,10 @@
     <div class="search-mode-button">
         <h1><?php echo $queryType ?></h1>
     </div>
-    <form>
-        <input type="search" name="query"></input>
-        <input type="submit" name="submit-query"/>
-    </form>
+    <div class="input-group">
+        <input type="text" class="form-control">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Search</button>
+        </span>
+    </div>
 </nav>
