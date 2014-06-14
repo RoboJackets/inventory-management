@@ -11,6 +11,8 @@ $app = new \Slim\Slim();
 $app->get('/', function() use ($app) {
     $app->view();
     $app->render('htmlHeader.php', array('title'=>'Robojackets Inventory'));
+    $app->render('searchArea.php', array('queryType'=>'barcode'));
+    $app->render('htmlFooter.php');
 });
 
 

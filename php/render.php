@@ -1,7 +1,7 @@
 <?php
 
-function buildHome($app) {
-    $app->render('../views/htmlHeader.php', array('title'=>'Robojackets Inventory'));
+function buildHome() using $app {
+    $app->render('htmlHeader.php', array('title'=>'Robojackets Inventory'));
 }
 
 
