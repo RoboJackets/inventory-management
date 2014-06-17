@@ -1,0 +1,31 @@
+.nav-mode {
+    display: inline-block;
+    width: 8rem;
+    height: 8rem;
+    padding: 1.5rem;
+    margin: 2rem .75rem;
+    vertical-align: top;
+    background-color: transparent;
+    border-radius: 10px;
+    font-size: 4rem;
+    text-align: center;
+    
+    border: 2px solid #fff;
+    /*border: 2px solid #ccc;*/
+    
+}
+
+.nav-mode:hover {
+    /*background-color: #ccc;*/
+     border: 2px solid #ccc;
+    
+}
+
+.mode-selected {
+    background-color: #428bca;
+    border: 2px solid #428bca !important;
+}
+
+.mode-selected:hover {
+    background-color: #428bca;
+}

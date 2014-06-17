@@ -9,9 +9,7 @@ $app = new \Slim\Slim();
 
 $app->get('/', function() use ($app) {
     $app->view();
-    $app->render('htmlHeader.php', array('title'=>'Robojackets Inventory'));
-    $app->render('searchArea.php', array('queryType'=>'Barcode'));
-    $app->render('htmlFooter.php');
+    $app->render('html.php', array('title'=>'Robojackets Inventory'));
 });
 
 
