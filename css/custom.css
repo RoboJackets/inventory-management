@@ -1,13 +1,13 @@
 .nav-mode {
     display: inline-block;
-    width: 8rem;
-    height: 8rem;
-    padding: 1.5rem;
-    margin: 2rem .75rem;
+    width: 10rem;
+    height: 10rem;
+    padding: 1.75rem;
+    margin: 2rem 7px;
     vertical-align: top;
     background-color: transparent;
-    border-radius: 10px;
-    font-size: 4rem;
+    border-radius: 6px;
+    font-size: 5rem;
     text-align: center;
     
     border: 2px solid #fff;
@@ -23,9 +23,54 @@
 
 .mode-selected {
     background-color: #428bca;
+
     border: 2px solid #428bca !important;
 }
 
 .mode-selected:hover {
     background-color: #428bca;
 }
+
+.part-location {
+    display: inline-block;
+    padding-right: 0px;
+    width: 200px;
+    border-right: 2px solid white;
+    font-size: 6em;
+    text-align: center;animation-direction: 
+}
+
+.part {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0px 15px;
+}
+
+.part-name {
+    font-size: 4em;
+    line-height: 1.4em;
+}
+
+.part-num {
+    font-size: 2em;
+    line-height: 1.2em;
+}
+
+.left-border {
+    border-left: 2px solid black;
+}
+
+.space {
+    margin: 1em 0;
+}
+
+.txt-lg {
+    font-size: 28px;
+    padding-top: 4px;
+    height: 45px;
+}
+
+.margin-fix {
+    margin: -0px -5px;
+}
+
