@@ -5,7 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title><?php echo $title;if(isset($subtitle)){echo "' - '.$subtitle";}?></title>
+    <title>
+        <?php
+            if (isset($subtitle)) {
+                $title = $title . " - " . $subtitle;
+            }
+            echo $title;
+        ?>
+    </title>
     
     <!-- Bootstrap -->
     <link href="/css/bootstrap.css" rel="stylesheet">
