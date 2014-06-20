@@ -12,18 +12,11 @@ $app->get('/', function() use ($app) {
                                    'mode'=>'barcode'));
 });
 
-$app->get('/:mode', function($mode) use ($app) {
+$app->get('/:mode/:location', function($mode, $location) use ($app) {
     $app->view();
-    $app->render('html.php', array('title'=>'Robojackets Inventory',
-                                   'mode'=>$mode));
-});
-
-$app->get('/:mode/:location', function($location) use ($app) {
-    $app->view();
-    $app->render('html.php', array( 'title'     =>  'RoboJackets: DEVELOPMENT TEST',
-                                    'mode'      =>  'barcode',
-                                    'mode2'     =>  'test',
-                                    'location'  =>  $location
+    $app->render('html.php', array('title'      =>  'Robojackets Inventory',
+                                   'mode'       =>  $mode,
+                                   'location'   =>  $location
                                     ));
 });
 
