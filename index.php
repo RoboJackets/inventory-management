@@ -22,16 +22,16 @@ $app->get('/barcode/:barcode', function($barcode) use ($app) {
     $app->view();
     $app->render('html.php', array( 'title'     =>  'Robojackets Inventory',
                                     'subtitle'  =>  'Barcode',
-                                    'mode'      =>  $mode,
+                                    'mode'      =>  barcode,
                                     'barcode'   =>  $barcode
                                     ));
 });
 
-$app->get('/bin/:location', function($bin) use ($app) {
+$app->get('/bin/:location', function($location) use ($app) {
     $app->view();
     $app->render('html.php', array( 'title'     =>  'Robojackets Inventory',
                                     'subtitle'  =>  'Bin',
-                                    'mode'      =>  $mode,
+                                    'mode'      =>  bin,
                                     'bin'       =>  $location
                                     ));
 });
