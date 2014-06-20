@@ -18,13 +18,13 @@ $app->get('/:mode', function($mode) use ($app) {
                                    'mode'=>$mode));
 });
 
-$app->get('/test/:partnum', function($partnum) use ($app) {
+$app->get('/test/:location', function($location) use ($app) {
     $app->view();
     $app->render('html.php', array( 'title'     =>  'RoboJackets: DEVELOPMENT TEST',
-                                    'mode'      =>  'test',
-                                    'partnum'   =>  $partnum
+                                    'mode'      =>  'barcode',
+                                    'mode2'     =>  'test',
+                                    'location'  =>  $location
                                     ));
 });
-
 
 $app->run();

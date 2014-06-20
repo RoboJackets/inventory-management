@@ -32,10 +32,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 margin-fix">
-                <div id="barcode" class="nav-mode <?php if($mode == 'barcode') echo 'mode-selected' ?>">
+                <div id="barcode" class="nav-mode <?php if($mode == 'barcode'){echo 'mode-selected';}?>">
                     <span class="glyphicon glyphicon-barcode"></span>
                 </div>
-                <div id="bin" class="nav-mode <?php if($mode == 'bin') echo 'mode-selected' ?>">
+                <div id="bin" class="nav-mode <?php if($mode == 'bin'){echo 'mode-selected';}?>">
                     <span class="glyphicon glyphicon-inbox"></span>
                 </div>
             </div>
@@ -62,15 +62,13 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="part-location">
-                            <?php 
-                                if ($mode == 'test') {
-                                    echo $partnum;
+                            <?php
+                                if (isset($mode2) && $mode2=='test') {
+                                    echo $location;
+                                } else {
+                                    echo 'C14';
                                 }
-                                else {
-                                    echo "C14";
-                                }
-                                ?>
-                            // C14<!--populated by php-->
+                            ?>
                         </div>
                         <div class="part">
                             <div class="part-name">
