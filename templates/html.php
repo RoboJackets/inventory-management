@@ -63,7 +63,7 @@
                     <div class="panel-heading">
                         <div class="part-location">
                             <?php 
-                                if ($mode = 'test') {
+                                if ($mode == 'test') {
                                     echo $partnum;
                                 }
                                 else {
