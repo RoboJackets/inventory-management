@@ -63,7 +63,7 @@
                     <div class="panel-heading">
                         <div class="part-location">
                             <?php
-                                if (isset($mode2) && $mode2=='test') {
+                                if ($mode2=='test') {
                                     echo $location;
                                 } else {
                                     echo 'C14';
