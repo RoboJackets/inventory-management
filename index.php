@@ -18,11 +18,21 @@ $app->get('/:mode', function($mode) use ($app) {
                                     ));
 });
 
-$app->get('/:mode/:location', function($mode, $location) use ($app) {
+$app->get('/barcode/:location', function($location) use ($app) {
     $app->view();
-    $app->render('html.php', array('title'      =>  'Robojackets Inventory',
-                                   'mode'       =>  $mode,
-                                   'location'   =>  $location
+    $app->render('html.php', array( 'title'     =>  'Robojackets Inventory',
+                                    'subtitle'  =>  'Barcode',
+                                    'mode'      =>  $mode,
+                                    'location'  =>  $location
+                                    ));
+});
+
+$app->get('/bin/:bin', function($bin) use ($app) {
+    $app->view();
+    $app->render('html.php', array( 'title'     =>  'Robojackets Inventory',
+                                    'subtitle'  =>  'Bin',
+                                    'mode'      =>  $mode,
+                                    'bin'       =>  $bin
                                     ));
 });
 

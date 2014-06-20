@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title><?php echo $title; ?></title>
+    <title>
+        <?php echo $title; if(isset($subtitle)){echo "' - ' . $subtitle"; } ?>
+    </title>
     
     <!-- Bootstrap -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -32,10 +34,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 margin-fix">
-                <div id="barcode" class="nav-mode <?php if($mode == 'barcode'){echo 'mode-selected';}?>">
+                <div id="barcode" class="nav-mode<?php if($mode != 'bin'){echo ' mode-selected\"';}?>>
                     <span class="glyphicon glyphicon-barcode"></span>
                 </div>
-                <div id="bin" class="nav-mode <?php if($mode == 'bin'){echo 'mode-selected';}?>">
+                <div id="bin" class="nav-mode<?php if($mode == 'bin'){echo ' mode-selected\"';}?>>
                     <span class="glyphicon glyphicon-inbox"></span>
                 </div>
             </div>
@@ -62,20 +64,54 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="part-location">
+                            
                             <?php
-                                if ($mode=='barcode' && isset($location)) {
-                                    echo $location;
+                                if ($mode=='barcode') { // Search for part_location if barcode number is given as input
+                                    
+                                    //
+                                    // PHP script that searches database according to a single barcode number here
+                                    //
+                                    
+                                } elseif ($mode=='bin') {   // Search for part_number if bin number is given as input
+                                    
+                                    //
+                                    // PHP script that searches database for parts when given a bin number
+                                    //
+                                    
                                 } else {
-                                    echo 'C14';
+                                    // Default value - remove after development
+                                    echo 'U01';
                                 }
-                            ?>
+                                
+                                // Only state location if it is 1) a valid location OR 2) successfully matched to barcode in database
+                                if (isset($location)) {echo $location;}
+                            ?>  <!-- END PART LOCATION -->
+                            
                         </div>
                         <div class="part">
                             <div class="part-name">
-                                Part Name <!--populated by php-->
+                                
+                                <?php
+                                if(isset($part_name)) {  // check if part_name is set
+                                    echo $part_name;
+                                } else {
+                                    // Default value - remove after development
+                                    echo 'Analog to Digital Converter (ADC)';
+                                }
+                                ?> <!-- END PART NAME-->
+                                
                             </div>
                             <div class="part-num">
-                                1529bz9382 <!--populated by php-->
+                                
+                                <?php
+                                    if(isset($part_number)) {  // check if part_name is set
+                                        echo $part_number;
+                                    } else {
+                                        // Default value - remove after development
+                                        echo 'AD9656BCPZ-125';
+                                    }
+                                ?> <!-- END PART NUMBER -->
+                                
                             </div>
                         </div>
                     </div>
