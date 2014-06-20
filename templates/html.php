@@ -68,7 +68,6 @@
                                 } else {
                                     echo 'C14';
                                 }
-                                echo '\n';
                             ?>
                         </div>
                         <div class="part">
