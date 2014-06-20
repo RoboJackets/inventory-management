@@ -32,10 +32,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 margin-fix">
-                <div id="barcode" class="nav-mode<?php if($mode != 'bin'){echo ' mode-selected"';}?>>
+                <div id="barcode" class="nav-mode<?php if($mode != 'bin'){echo ' mode-selected"';}else{echo '"';}?>>
                     <span class="glyphicon glyphicon-barcode"></span>
                 </div>
-                <div id="bin" class="nav-mode<?php if($mode == 'bin'){echo ' mode-selected"';}?>>
+                <div id="bin" class="nav-mode<?php if($mode == 'bin'){echo ' mode-selected"';}else{echo '"';}?>>
                     <span class="glyphicon glyphicon-inbox"></span>
                 </div>
             </div>
