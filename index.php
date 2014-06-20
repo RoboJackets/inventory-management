@@ -6,7 +6,7 @@ require 'Slim/Slim.php';
 
 $app = new \Slim\Slim();
 
-$app->get('/'), function() use ($app) {
+$app->get('/', function() use ($app) {
     $app->view();
     $app->render('html.php', array('title'=>'Robojackets Inventory',
                                    'mode'=>'barcode'));
