@@ -5,9 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>
-        <?php echo $title; if(isset($subtitle)){echo "' - ' . $subtitle"; } ?>
-    </title>
+    <title><?php echo $title;if(isset($subtitle)){echo "' - '.$subtitle";}?></title>
     
     <!-- Bootstrap -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -34,10 +32,10 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 margin-fix">
-                <div id="barcode" class="nav-mode<?php if($mode != 'bin'){echo ' mode-selected\"';}?>>
+                <div id="barcode" class="nav-mode<?php if($mode != 'bin'){echo ' mode-selected"';}?>>
                     <span class="glyphicon glyphicon-barcode"></span>
                 </div>
-                <div id="bin" class="nav-mode<?php if($mode == 'bin'){echo ' mode-selected\"';}?>>
+                <div id="bin" class="nav-mode<?php if($mode == 'bin'){echo ' mode-selected"';}?>>
                     <span class="glyphicon glyphicon-inbox"></span>
                 </div>
             </div>
@@ -66,23 +64,18 @@
                         <div class="part-location">
                             
                             <?php
-                                if ($mode=='barcode') { // Search for part_location if barcode number is given as input
-                                    
+                                // always define location for dev purposes
+                                if(!isset($location)){$location='U01';}
+                            
+                                if ($mode=='barcode') {
                                     //
                                     // PHP script that searches database according to a single barcode number here
                                     //
-                                    
-                                } elseif ($mode=='bin') {   // Search for part_number if bin number is given as input
-                                    
+                                } elseif ($mode=='bin') {
                                     //
                                     // PHP script that searches database for parts when given a bin number
                                     //
-                                    
-                                } else {
-                                    // Default value - remove after development
-                                    echo 'U01';
-                                }
-                                
+                                } 
                                 // Only state location if it is 1) a valid location OR 2) successfully matched to barcode in database
                                 if (isset($location)) {echo $location;}
                             ?>  <!-- END PART LOCATION -->
@@ -96,7 +89,7 @@
                                     echo $part_name;
                                 } else {
                                     // Default value - remove after development
-                                    echo 'Analog to Digital Converter (ADC)';
+                                    echo 'AD Converter';
                                 }
                                 ?> <!-- END PART NAME-->
                                 
