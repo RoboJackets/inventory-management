@@ -18,7 +18,7 @@ $app->get('/:mode', function($mode) use ($app) {
                                    'mode'=>$mode));
 });
 
-$app->get('/test/:location', function($location) use ($app) {
+$app->get('/:mode/:location', function($location) use ($app) {
     $app->view();
     $app->render('html.php', array( 'title'     =>  'RoboJackets: DEVELOPMENT TEST',
                                     'mode'      =>  'barcode',
