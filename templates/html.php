@@ -62,7 +62,15 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="part-location">
-                            C14<!--populated by php-->
+                            <?php 
+                                if ($mode = 'test') {
+                                    echo $partnum;
+                                }
+                                else {
+                                    echo "C14";
+                                }
+                                ?>
+                            // C14<!--populated by php-->
                         </div>
                         <div class="part">
                             <div class="part-name">
