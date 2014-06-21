@@ -116,6 +116,11 @@
                                         // Default value - remove after development
                                         echo 'PART NUMBER';
                                     }
+                                    
+                                    //unset variables for future searches
+                                    unset($part_number);
+                                    unset($bin_number);
+                                    unset($part_name);
                                 ?> <!-- END PART NUMBER -->
                                 
                             </div>
