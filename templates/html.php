@@ -71,19 +71,15 @@
                         <div class="part-location">
                             
                             <?php
-                            
-                                // for dev
-                                
-                                
                                 // for dev
                                 // if(!isset($bin)){$bin='U01';}
                             
+                                if(!defined('__ROOT__')){
+                                    define('__ROOT__', dirname(dirname(__FILE__)));
+                                }
+                            
                                 if ($mode=='barcode') {
-                                    //
-                                    // PHP script that searches database according to a single barcode number here
-                                    //
-                                    Include '../php/search-part.php';
-                                    
+                                    Include(__ROOT__.'php/search-part.php');
                                     if(isset($bin_number)){
                                         echo $bin_number;
                                     } else {
