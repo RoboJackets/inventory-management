@@ -76,7 +76,7 @@
                             
                                 if(!defined('__ROOT__')){
                                     define('__ROOT__', dirname(dirname(__FILE__)));
-                                    include_path="__ROOT__./php";
+                                    ini_set('include_path','__ROOT__./php');
                                 } 
                            
                                 if ($mode=='barcode') {
