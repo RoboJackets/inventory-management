@@ -9,13 +9,21 @@ $app = new \Slim\Slim();
 $app->get('/', function() use ($app) {
     $app->view();
     $app->render('html.php', array('title'=>'Robojackets Inventory',
-                                   'mode'=>'barcode'));
+                                   'mode'=>'barcode',
+                                   'partLocation'=>null,
+                                   'partName'=>null,
+                                   'partNum'=>null
+                                  ));
 });
 
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
     $app->render('html.php', array('title'=>'Robojackets Inventory',
-                                   'mode'=>$mode));
+                                   'mode'=>$mode,
+                                   'partLocation'=>null,
+                                   'partName'=>null,
+                                   'partNum'=>null
+                                  ));
 });
 
 

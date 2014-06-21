@@ -27,7 +27,6 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/inventory.js"></script>
 </header>
-
 <nav>
     <div class="container">
         <div class="row">
@@ -43,6 +42,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="input-group">
+                    <input id="mode-storage"type="hidden" value="<?php echo $mode;?>">
                     <input type="text" id="txtSubmitQuery" class="form-control txt-lg">
                     <span class="input-group-btn">
                         <button id="BtnSubmitQuery" class="btn btn-primary btn-lg" type="button"><span class="glyphicon glyphicon-search"></span></button>
@@ -52,8 +52,8 @@
         </div>
     </div>
 </nav>
-<body id="results-pane">
-    <div class="container">
+<body >
+    <div id="results-pane" class="container">
         <div class="row">
             <div class="col-xs-12 space"></div>
         </div>
@@ -62,14 +62,14 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="part-location">
-                            C14<!--populated by php-->
+                            <?php echo $partLocation; ?>
                         </div>
                         <div class="part">
                             <div class="part-name">
-                                Part Name <!--populated by php-->
+                                <?php echo $partName; ?>
                             </div>
                             <div class="part-num">
-                                1529bz9382 <!--populated by php-->
+                                <?php echo $partNum; ?>
                             </div>
                         </div>
                     </div>
