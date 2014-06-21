@@ -48,8 +48,8 @@ if ($result) {  // If results are found...
         $i++;
     }
 
-$part_number = $json_response[0][0];
-$part_name = $json_response[0][1];
+$part_number = $json_response[0]['PART_NUM'];
+$part_name = $json_response[0]['name'];
 $bin_number = $json_response[0][5];
 }
 
