@@ -42,7 +42,7 @@ while($row = mysqli_fetch_array($result)) {
     $temp[$i]['updated'] = $row['updated'];
 
     // place the data into array of json data
-    array_push($json_response,$temp[$i]);
+    array_push($json_response[],$temp[$i]);
     
     $i++;
 }
