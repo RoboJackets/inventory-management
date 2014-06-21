@@ -28,22 +28,22 @@ $result = mysqli_query($conn, $by_part);
 
 // loop counter (also, number of found results)
 $i = 0;
-
+$json_response = array();
 // Structure returned data into json element
 if ($result) {  // If results are found...
     while($row = mysqli_fetch_array($result)) {
-        $temp[$i]['PART_NUM'] = $row['PART_NUM'];
-        $temp[$i]['name'] = $row['name'];
-        $temp[$i]['category'] = $row['category'];
-        $temp[$i]['description'] = $row['description'];
-        $temp[$i]['datasheet'] = $row['datasheet'];
-        $temp[$i]['location'] = $row['location'];
-        $temp[$i]['flag_error'] = $row['flag_error']; // what exactly is this?
-        $temp[$i]['status'] = $row['status'];
-        $temp[$i]['updated'] = $row['updated'];
+        $temp['PART_NUM'] = $row['PART_NUM'];
+        $temp['name'] = $row['name'];
+        $temp['category'] = $row['category'];
+        $temp['description'] = $row['description'];
+        $temp['datasheet'] = $row['datasheet'];
+        $temp['location'] = $row['location'];
+        $temp['flag_error'] = $row['flag_error']; // what exactly is this?
+        $temp['status'] = $row['status'];
+        $temp['updated'] = $row['updated'];
 
         // place the data into array of json data
-        array_push($json_response[],$temp[$i]);
+        array_push($json_response,$temp);
 
         $i++;
     }
