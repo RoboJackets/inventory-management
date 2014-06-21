@@ -50,7 +50,7 @@ if ($result) {  // If results are found...
 
 $part_number = $json_response[0]['PART_NUM'];
 $part_name = $json_response[0]['name'];
-$bin_number = $json_response[0][5];
+$bin_number = $json_response[0]['location'];
 }
 
 
