@@ -20,7 +20,7 @@ if (!$conn) {
 }
 
 // Define the statement that will be used to query the database
-$by_part = "SELECT * FROM parts WHERE PART_NUM = '".$part_number."'";
+$by_part = "SELECT * FROM parts WHERE PART_NUM = '".$barcode."'";
 
 // Process the query and return the result(s)
 $result = mysqli_query($conn, $by_part);
