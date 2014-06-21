@@ -74,13 +74,16 @@
                                 // for dev
                                 // if(!isset($bin)){$bin='U01';}
                             
-                                if(!defined('__ROOT__')){
-                                    define('__ROOT__', dirname(dirname(__FILE__)));
-                                    ini_set('include_path','__ROOT__./\'php\'');
-                                } 
-                           
+                                //if(!defined('__ROOT__')){
+                                //    define('__ROOT__', dirname(dirname(__FILE__)));
+                                //    ini_set('include_path','__ROOT__./\'php\'');
+                                //} 
+                                
+                                $path = $_SERVER['DOCUMENT_ROOT'];
+                                $path .= "/php";
+                            
                                 if ($mode=='barcode') {
-                                    include_once "__ROOT__.'/php/search-part.php'";
+                                    include_once($path.'/search-part.php');
                                     if(isset($bin_number)){
                                         echo $bin_number;
                                     } else {
