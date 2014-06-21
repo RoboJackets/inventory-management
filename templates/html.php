@@ -72,7 +72,7 @@
                             
                             <?php
                                 // always define location for dev purposes
-                                if(!isset($location)){$location='U01';}
+                                if(!isset($bin)){$bin='U01';}
                             
                                 if ($mode=='barcode') {
                                     //
@@ -84,7 +84,7 @@
                                     //
                                 } 
                                 // Only state location if it is 1) a valid location OR 2) successfully matched to barcode in database
-                                if (isset($location)) {echo $location;}
+                                if(isset($bin)){echo $bin;}
                             ?>  <!-- END PART LOCATION -->
                             
                         </div>
@@ -104,8 +104,10 @@
                             <div class="part-num">
                                 
                                 <?php
-                                    if(isset($part_number)) {  // check if part_name is set
+                                    if(isset($part_number)) {  // check if part_number is set
                                         echo $part_number;
+                                    } elseif (isset($barcode)) {   // otherwise, replace part_number with the barcode number (for dev purposes)
+                                        echo $barcode;
                                     } else {
                                         // Default value - remove after development
                                         echo 'AD9656BCPZ-125';

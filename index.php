@@ -27,12 +27,12 @@ $app->get('/barcode/:barcode', function($barcode) use ($app) {
                                     ));
 });
 
-$app->get('/bin/:location', function($location) use ($app) {
+$app->get('/bin/:bin', function($bin) use ($app) {
     $app->view();
     $app->render('html.php', array( 'title'     =>  'Robojackets Inventory',
                                     'subtitle'  =>  'Bin',
                                     'mode'      =>  'bin',
-                                    'bin'       =>  $location
+                                    'bin'       =>  $bin
                                     ));
 });
 
