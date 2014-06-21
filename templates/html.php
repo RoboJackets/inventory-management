@@ -110,7 +110,9 @@
                                         echo $barcode;
                                     } else {
                                         // Default value - remove after development
-                                        echo 'AD9656BCPZ-125';
+                                        // echo 'AD9656BCPZ-125';
+                                        $testing = dirname('/var/www/rj/php/config.php');
+                                        echo $testing;  
                                     }
                                 ?> <!-- END PART NUMBER -->
                                 
