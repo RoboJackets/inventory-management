@@ -71,13 +71,6 @@
                         <div class="part-location">
                             
                             <?php
-                                // for dev
-                                // if(!isset($bin)){$bin='U01';}
-                            
-                                //if(!defined('__ROOT__')){
-                                //    define('__ROOT__', dirname(dirname(__FILE__)));
-                                //    ini_set('include_path','__ROOT__./\'php\'');
-                                //} 
                                 
                                 // set the root path for filenames
                                 if(!isset($path)){
@@ -89,18 +82,14 @@
                                     if(isset($bin_number)){
                                         echo $bin_number;
                                     } else {
-                                        echo 'ERR';
+                                        echo 'N/A';
                                     }
                                     
                                 } elseif ($mode=='bin') {
                                     //
                                     // PHP script that searches database for parts when given a bin number
                                     //
-                                } 
-                                // Only state location if it is 1) a valid location OR 2) successfully matched to barcode in database
-                                if (isset($bin)) {
-                                    echo $bin;
-                                } elseif(!isset($bin_number)){
+                                } else {
                                     echo 'BIN';
                                 }
                             ?>  <!-- END PART LOCATION -->
