@@ -40,9 +40,11 @@ while($row = mysqli_fetch_array($result)) {
     $temp[$i]['flag_error'] = $row['flag_error']; // what exactly is this?
     $temp[$i]['status'] = $row['status'];
     $temp[$i]['updated'] = $row['updated'];
-    $i++;
+
     // place the data into array of json data
     array_push($json_response,$temp[$i]);
+    
+    $i++;
 }
 
 $part_number = $json_response[0][0];
