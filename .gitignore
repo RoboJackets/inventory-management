@@ -1,2 +1,5 @@
 .idea
-config.php
+*config.php
+# ignore prjoect files folder for netbeans
+nbproject*
+*.orig
