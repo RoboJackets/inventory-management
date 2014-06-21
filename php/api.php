@@ -5,12 +5,12 @@
  * and searching the database for information.
  */
 
-// Include connection file
-if(!defined('__ROOT__')){
-    define('__ROOT__', dirname(dirname(__FILE__)));
-    require_once(__ROOT__.'/php/db-conn.php');
+// Ensure root path is known
+if(!isset($path)){
+    $path = $_SERVER['DOCUMENT_ROOT'].'/php/';                                    
 }
- 
+// Include the database connection specifics
+include_once($path.'db-conn.php');
 
 function SearchByBarcode($part_barcode) {
     

@@ -6,8 +6,13 @@
  */
 
 // Include configuration file. Listing it without the full path names allows for server mobility.
-define('__ROOT__', dirname(dirname(__FILE__)));
-require_once(__ROOT__.'/php/config.php');
+// Ensure root path is known
+if(!isset($path)){
+    $path = $_SERVER['DOCUMENT_ROOT'].'/php/';                                
+}
+
+// Include the database configuration settings
+include_once($path.'config.php');
 
 // Create connection (object oriented way)
 $conn = new mysqli(HOST, USER, PASSWORD, DATABASE);

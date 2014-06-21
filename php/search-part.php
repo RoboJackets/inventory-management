@@ -5,11 +5,12 @@
  * database for any matches.
  */
 
-// Include api functions that includes the resulting connection specifics
-if(!defined('__ROOT__')){
-    define('__ROOT__', dirname(dirname(__FILE__)));
-    require_once(__ROOT__.'/php/api.php');
+// Ensure root path is known
+if(!isset($path)){
+    $path = $_SERVER['DOCUMENT_ROOT'].'/php/';                                    
 }
+// Include the api functions
+include_once($path.'api.php');
 
 // Start session for mySQL server access
 StartSession();
