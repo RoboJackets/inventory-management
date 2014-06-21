@@ -26,11 +26,9 @@ $by_part = "SELECT * FROM parts WHERE PART_NUM = '".$barcode."'";
 // Process the query and return the result(s)
 $result = mysqli_query($conn, $by_part);
 
-// loop counter (also, number of found results)
-$i = 0;
 $json_response = array();
 // Structure returned data into json element
-if ($result) {  // If results are found...
+if ($result->num_rows) {  // If results are found...
     while($row = mysqli_fetch_array($result)) {
         $temp['PART_NUM'] = $row['PART_NUM'];
         $temp['name'] = $row['name'];
@@ -44,8 +42,6 @@ if ($result) {  // If results are found...
 
         // place the data into array of json data
         array_push($json_response,$temp);
-
-        $i++;
     }
 
 $part_number = $json_response[0]['PART_NUM'];
