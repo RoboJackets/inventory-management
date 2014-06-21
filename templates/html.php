@@ -82,7 +82,7 @@
                                     //
                                     // PHP script that searches database according to a single barcode number here
                                     //
-                                    Include 'search-part.php';
+                                    Include 'php/search-part.php';
                                     
                                 } elseif ($mode=='bin') {
                                     //
