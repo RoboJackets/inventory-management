@@ -79,7 +79,7 @@
                                 }
                             
                                 if ($mode=='barcode') {
-                                    Include(__ROOT__.'php/search-part.php');
+                                    Include(__ROOT__.'/php/search-part.php');
                                     if(isset($bin_number)){
                                         echo $bin_number;
                                     } else {
