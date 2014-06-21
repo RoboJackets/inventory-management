@@ -78,13 +78,10 @@
                                 }
                             
                                 if ($mode=='barcode') {
-                                    include_once($path.'search-part.php');
-                                    if(isset($bin_number)){
-                                        echo $bin_number;
-                                    } else {
-                                        echo 'N/A';
-                                    }
-                                    
+                                    if (isset($barcode)) {
+                                        include_once($path.'search-part.php');
+                                        if(isset($bin_number)){echo $bin_number;}
+                                    } else {echo 'N/A';}
                                 } elseif ($mode=='bin') {
                                     //
                                     // PHP script that searches database for parts when given a bin number
