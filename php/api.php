@@ -5,7 +5,11 @@
  * and searching the database for information.
  */
 
-include_once 'config.php';       // defines database login info
+// Include connection file
+if(!defined('__ROOT__')){
+    define('__ROOT__', dirname(dirname(__FILE__)));
+    require_once(__ROOT__.'php/db-conn.php');
+}
  
 
 function SearchByBarcode($part_barcode) {

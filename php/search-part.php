@@ -5,17 +5,14 @@
  * database for any matches.
  */
 
-// Include the api functions and connection
-include_once 'rj-inv_api.php';
-include_once 'rj-inc_db-conn.php';
-        
-// Get request
-$app = new \Slim\Slim();
-$app->get('/search/:pn', function($pn) {
-    
+// Include api functions that includes the resulting connection specifics
+if(!defined('__ROOT__')){
+    define('__ROOT__', dirname(dirname(__FILE__)));
+    require_once(__ROOT__.'php/api.php');
+}
 
 // Start session for mySQL server access
-start_session();
+StartSession();
 
 // Return error if connection can not be made
 if (!$conn) {
@@ -23,10 +20,10 @@ if (!$conn) {
 }
 
 // Define the statement that will be used to query the database
-$by_part = "SELECT * FROM parts WHERE PART_NUM = '".$pn."'";
+$by_part = "SELECT * FROM parts WHERE PART_NUM = '".$part_number."'";
 
 // Process the query and return the result(s)
-$result = mysqli_query($conn,$by_part);
+$result = mysqli_query($conn, $by_part);
 
 // Structure returned data into json element
 while($row = mysqli_fetch_array($result)) {
@@ -47,10 +44,12 @@ while($row = mysqli_fetch_array($result)) {
     array_push($json_response,$temp);
 }
 
+$part_number = $json_response[0][0];
+$part_name = $json_response[0][1];
+$bin_number = $json_response[0][5];
+
 // use JSON function to encode data from query
-echo json_encode($json_response);
+// echo json_encode($json_response);
 
 // Close the connection to the database
 mysqli_close($conn);
-
-});

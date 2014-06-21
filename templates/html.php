@@ -71,20 +71,32 @@
                         <div class="part-location">
                             
                             <?php
-                                // always define location for dev purposes
-                                if(!isset($bin)){$bin='U01';}
+                            
+                                // for dev
+                                
+                                
+                                // for dev
+                                // if(!isset($bin)){$bin='U01';}
                             
                                 if ($mode=='barcode') {
                                     //
                                     // PHP script that searches database according to a single barcode number here
                                     //
+                                    Include 'search-part.php';
+                                    
                                 } elseif ($mode=='bin') {
                                     //
                                     // PHP script that searches database for parts when given a bin number
                                     //
                                 } 
                                 // Only state location if it is 1) a valid location OR 2) successfully matched to barcode in database
-                                if(isset($bin)){echo $bin;}
+                                if(isset($bin_number)){
+                                    echo $bin_number;
+                                } elseif (isset($bin)) {
+                                    echo $bin;
+                                } else {
+                                    echo 'BIN';
+                                }
                             ?>  <!-- END PART LOCATION -->
                             
                         </div>
@@ -96,7 +108,7 @@
                                     echo $part_name;
                                 } else {
                                     // Default value - remove after development
-                                    echo 'AD Converter';
+                                    echo 'PART_NAME';
                                 }
                                 ?> <!-- END PART NAME-->
                                 
@@ -110,7 +122,7 @@
                                         echo $barcode;
                                     } else {
                                         // Default value - remove after development
-                                        echo 'AD9656BCPZ-125';
+                                        echo 'PART_NUMBER';
                                     }
                                 ?> <!-- END PART NUMBER -->
                                 
