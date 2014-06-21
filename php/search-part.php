@@ -44,9 +44,12 @@ if ($result->num_rows) {  // If results are found...
         array_push($json_response,$temp);
     }
 
-$part_number = $json_response[0]['PART_NUM'];
-$part_name = $json_response[0]['name'];
-$bin_number = $json_response[0]['location'];
+    $part_number = $json_response[0]['PART_NUM'];
+    $part_name = $json_response[0]['name'];
+    $bin_number = $json_response[0]['location'];
+} else {
+    $part_name = 'Not Found';
+    $bin_number = '---';
 }
 
 

@@ -100,7 +100,7 @@
                                     echo $part_name;
                                 } else {
                                     // Default value - remove after development
-                                    echo 'PART_NAME';
+                                    echo 'PART NAME';
                                 }
                                 ?> <!-- END PART NAME-->
                                 
@@ -114,7 +114,7 @@
                                         echo $barcode;
                                     } else {
                                         // Default value - remove after development
-                                        echo 'PART_NUMBER';
+                                        echo 'PART NUMBER';
                                     }
                                 ?> <!-- END PART NUMBER -->
                                 
