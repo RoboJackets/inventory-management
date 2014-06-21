@@ -84,17 +84,21 @@
                                     //
                                     Include 'php/search-part.php';
                                     
+                                    if(isset($bin_number)){
+                                        echo $bin_number;
+                                    } else {
+                                        echo 'ERR';
+                                    }
+                                    
                                 } elseif ($mode=='bin') {
                                     //
                                     // PHP script that searches database for parts when given a bin number
                                     //
                                 } 
                                 // Only state location if it is 1) a valid location OR 2) successfully matched to barcode in database
-                                if(isset($bin_number)){
-                                    echo $bin_number;
-                                } elseif (isset($bin)) {
+                                if (isset($bin)) {
                                     echo $bin;
-                                } else {
+                                } elseif(!isset($bin_number)){
                                     echo 'BIN';
                                 }
                             ?>  <!-- END PART LOCATION -->
