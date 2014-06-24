@@ -16,6 +16,13 @@ $app->get('/', function() use ($app) {
                                   ));
 });
 
+
+$app->get('/add', function() use ($app) {
+    $app->view();
+    $app->render('add.html');
+});
+
+
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
     $app->render('html.php', array('title'=>'Robojackets Inventory',
@@ -26,9 +33,5 @@ $app->get('/:mode', function($mode) use ($app) {
                                   ));
 });
 
-$app->get('/add', function() use ($app) {
-    $app->view();
-    $app->render('add.html');
-});
 
 $app->run();
