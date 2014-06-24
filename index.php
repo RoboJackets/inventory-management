@@ -26,5 +26,9 @@ $app->get('/:mode', function($mode) use ($app) {
                                   ));
 });
 
+$app->get('/add', function() use ($app) {
+    $app->view();
+    $app->render('add.html');
+});
 
 $app->run();
