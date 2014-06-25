@@ -26,24 +26,59 @@
     <script src="js/bootstrap.min.js"></script>
 </header>
 <body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="col-sm-1 hidden-xs">
+                <img src="img/robobuzz-header.gif" height="65px" width="65px">
+            </div>
+            <div class="col-xs-12 col-sm-11">
+                <h2>Robojackets Inventory</h2>
+            </div>
+        </div>
+    </nav>
+    
     <div class="container">
+        <div class="row">
+            <h1 class="page-header">Add New Component</h1>
+        </div>
         <form class="form-horizontal" role="form" method="post" action="">
             <div class="form-group">
-                <label for="partNumberInput">Part Number</label>
-                <input type="text" class="form-control" id="partNumberInput" placeholder="Enter Location">
+                <label for="partNumberInput" class="col-sm-2 control-label">Part Number</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="partNumberInput" placeholder="Part Number">
+                </div>
             </div>
             <div class="form-group">
-                <label for="partNameInput">Part Name</label>
-                <input type="text" class="form-control" id="partNameInput" placeholder="Enter Location">
+                <label for="partNameInput" class="col-sm-2 control-label">Part Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="partNameInput" placeholder="Part Name">
+                </div>
             </div>
             <div class="form-group">
-                <label for="categorySelection">Category</label>
-                <input type="text" class="form-control" id="categorySelection" placeholder="Enter Location">
+                <label for="datasheetInput" class="col-sm-2 control-label">Datasheet URL</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="datasheetInput" placeholder="Datasheet URL">
+                </div>
             </div>
             <div class="form-group">
-                <label for="locationInput">Location</label>
-                <input type="text" class="form-control" id="locationInput" placeholder="Enter Location">
+                <label for="datasheetInput" class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="descriptionInput" rows="3" maxlength="65535" placeholder="Part Description"></textarea>
+                </div>
             </div>
+            <div class="form-group">
+                <label for="locationInput" class="col-sm-2 control-label">Location</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="locationInput" placeholder="Location">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="datasheetInput" class="col-sm-2 control-label">Barcode</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="datasheetInput" placeholder="Scan Barcode">
+                </div>
+            </div>
+            
         </form>
     </div>
 </body>
