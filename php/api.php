@@ -5,26 +5,94 @@
  * and searching the database for information.
  */
 
-// Ensure root path is known
-if(!isset($path)){
-    $path = $_SERVER['DOCUMENT_ROOT'].'/php/';                                    
-}
-// Include the database connection specifics
-include_once($path.'db-conn.php');
+    if(!isset($path)){              // set path for php files
+        $path = $_SERVER['DOCUMENT_ROOT'].'/php/';                                    
+    }
 
-function SearchByBarcode($part_barcode) {
+    if (file_exists($path . 'db-conn.php')) {
+        require_once $path . 'db-conn.php';       // include configuration file
+    } else {
+        // throw error
+    }
     
+// =========================================
+
+function SearchDB($search_input, $mode) {
+    
+    if ($mode == 'barcode') {
+        $sql_query = SearchByBarcode($search_input);
+    } elseif ($mode == 'bin') {
+        $sql_query = SearchByBin($search_input);
+    } else {
+        // something here
+    }
+    
+    $results = mysqli_query($CONN, $sql_query);
+    FilterResults($results);
+    
+    return;    
+}  
+    
+function FilterResults($result) {
+    
+    $json_response = array();
+
+    if ($result->num_rows) {  // If results are found...
+        while($row = mysqli_fetch_array($result)) {
+            $temp['PART_NUM'] = $row['PART_NUM'];
+            $temp['name'] = $row['name'];
+            $temp['category'] = $row['category'];
+            $temp['location'] = $row['location'];
+            $temp['attributes'] = $row['attributes'];
+            $temp['value'] = $row['value'];
+
+            // place the data into array of json data
+            array_push($json_response, $temp);
+        }
+    } else {
+        // part does not exist
+    }   
+    
+    echo json_encode(json_response);
+    return;
+}
+
+function SearchByBarcode($barcode) {
+    
+    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+    FROM barcode_lookup
+    RIGHT JOIN parts
+    ON barcode_lookup.PART_NUM=parts.PART_NUM
+    RIGHT JOIN attributes
+    ON barcode_lookup.PART_NUM=attributes.PART_NUM
+    WHERE barcode_lookup.barcode=" . $barcode;
+            
+    return $query;
 }
 
 function SearchByPartNum($part_number) {
-    
+   
+    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+    FROM parts
+    JOIN attributes
+    ON parts.PART_NUM=attributes.PART_NUM
+    WHERE parts.PART_NUM=" . $part_number;
+            
+    return $query;
 }
 
 function SearchByBin($bin) {
     
+    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+    FROM parts
+    JOIN attributes
+    ON parts.PART_NUM=attributes.PART_NUM
+    WHERE parts.location=" . $bin;
+            
+    return $query;
 }
 
-function StartSession() {
+function StartSession() {       // function used for making initial connections
     
     $session_name = 'sec_session_id';   // Set a custom session name
     $secure = SECURE;   // defined in rj-inv_config.php
@@ -32,7 +100,7 @@ function StartSession() {
     // Stop JavaScript from being able to access the session id.
     $httponly = true;
     
-    // Forces sessions to only use cookies.
+    // Forces sessions to only use cookies. [not really sure about the header here]
     if (ini_set('session.use_only_cookies', 1) === FALSE) {
         header('Location: ../error.php?err=Could not initiate a safe session (ini_set)');
         exit();
@@ -52,72 +120,6 @@ function StartSession() {
     
     session_name($session_name);    // Sets the session name to the one set above.
     session_start();                // Start the PHP session 
-    session_regenerate_id();        // Regenerated the session, delete the old one. 
-}
-
-
-// BELOW IS DIRECT COPY AND PASTE FROM ONLINE - NO CHANGES MADE
-
-
-/* 
- * This function will check the email and password against the database. 
- * It will return true if there is a match. 
- */
-function login($email, $password, $mysqli) {
-    // Using prepared statements means that SQL injection is not possible. 
-    if ($stmt = $mysqli->prepare("SELECT id, username, password, salt 
-        FROM members
-       WHERE email = ?
-        LIMIT 1")) {
-        $stmt->bind_param('s', $email);  // Bind "$email" to parameter.
-        $stmt->execute();    // Execute the prepared query.
-        $stmt->store_result();
- 
-        // get variables from result.
-        $stmt->bind_result($user_id, $username, $db_password, $salt);
-        $stmt->fetch();
- 
-        // hash the password with the unique salt.
-        $password = hash('sha512', $password . $salt);
-        if ($stmt->num_rows == 1) {
-            // If the user exists we check if the account is locked
-            // from too many login attempts 
- 
-            if (checkbrute($user_id, $mysqli) == true) {
-                // Account is locked 
-                // Send an email to user saying their account is locked
-                return false;
-            } else {
-                // Check if the password in the database matches
-                // the password the user submitted.
-                if ($db_password == $password) {
-                    // Password is correct!
-                    // Get the user-agent string of the user.
-                    $user_browser = $_SERVER['HTTP_USER_AGENT'];
-                    // XSS protection as we might print this value
-                    $user_id = preg_replace("/[^0-9]+/", "", $user_id);
-                    $_SESSION['user_id'] = $user_id;
-                    // XSS protection as we might print this value
-                    $username = preg_replace("/[^a-zA-Z0-9_\-]+/", 
-                                                                "", 
-                                                                $username);
-                    $_SESSION['username'] = $username;
-                    $_SESSION['login_string'] = hash('sha512', 
-                              $password . $user_browser);
-                    // Login successful.
-                    return true;
-                } else {
-                    // Password is not correct
-                    // We record this attempt in the database
-                    $now = time();
-                    $mysqli->query("INSERT INTO login_attempts(user_id, time)
-                                    VALUES ('$user_id', '$now')");
-                    return false;
-                }
-            }
-        } else {
-            // No user exists.
-            return false;
-        }
-    }
+    session_regenerate_id();        // Regenerated the session, delete the old one.
+    return;
 }
