@@ -74,3 +74,6 @@
     margin: -0px -5px;
 }
 
+#results-pane{
+    display: none;
+}
