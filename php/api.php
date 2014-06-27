@@ -63,7 +63,7 @@ function FilterResults($result) {
 
 function SearchByBarcode($barcode) {
     
-    $query = "SELECT barcode_lookup.PART_NUM AS PartBarcode, parts.name AS PartName, 
+    $query = "SELECT barcode_lookup.PART_NUM AS PartNum, parts.name AS PartName, 
         parts.category AS PartCat, parts.location AS PartLocation, 
         attributes.attribute AS PartAttrib, attributes.value AS PartVal
     FROM barcode_lookup
