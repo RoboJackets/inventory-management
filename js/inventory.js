@@ -16,7 +16,7 @@ $(document).ready(function(){
     
     
     $('#BtnSubmitQuery').click(function(){
-        // var query = $('#txtSubmitQuery').val();
+        var query = $('#txtSubmitQuery').val();
         console.log("query=" + query);
         //Post results here
         //$.post('../searchusers.php',{search: search},function(response){
