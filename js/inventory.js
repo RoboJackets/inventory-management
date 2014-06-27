@@ -22,6 +22,25 @@ $(document).ready(function(){
         //$.post('../searchusers.php',{search: search},function(response){
             //$('#userSearchResultsTable').html(response);
         //});
+        
+        // testing some things out here
+        $.ajax({
+            type: 'GET',
+            url: '/php/search.php',
+            data: {
+                mode:   $('#mode-storage').val(),
+                input:  $('#txtSubmitQuery').val()
+            },
+            success: function(result){
+                // data come back in json format
+                var json = $.parseJSON(result);
+                // parse and place the data in their respective places
+                $('#results-pane .part-location').html(json.partLocation);
+                $('#results-pane .part-name').html(json.partName);
+                $('#results-pane .part-num').html(json.partNum);
+            }
+        });
+        
     })
     $('#txtSubmitQuery').keypress(function(e){
         if(e.which === 13){//Enter key pressed

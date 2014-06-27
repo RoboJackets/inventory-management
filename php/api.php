@@ -5,56 +5,47 @@
  * and searching the database for information.
  */
 
-    if(!isset($path)){              // set path for php files
-        $path = $_SERVER['DOCUMENT_ROOT'].'/php/';                                    
-    }
-
-    if (file_exists($path . 'db-conn.php')) {
-        require_once $path . 'db-conn.php';       // include configuration file
-    } else {
-        // throw error
-    }
-    
+// make sure required file(s) are set
+if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
+if (file_exists($path . 'db-conn.php')) { require_once $path . 'db-conn.php'; }
 // =========================================
 
-function SearchDB($search_input, $mode) {
+function SearchDB($mode, $search_input) {
     
-    if ($mode == 'barcode') {
-        $sql_query = SearchByBarcode($search_input);
-    } elseif ($mode == 'bin') {
-        $sql_query = SearchByBin($search_input);
-    } else {
-        // something here
-    }
+    if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
+    else { $sql_query = SearchByBarcode($search_input); }  // default to barcode search
     
-    $results = mysqli_query($CONN, $sql_query);
-    FilterResults($results);
+    $json_results = FilterResults( mysqli_query($CONN, $sql_query) );   // main operations here
     
-    return;    
+    return $json_results;    
 }  
     
 function FilterResults($result) {
     
-    $json_response = array();
-
+    $response = array();
     if ($result->num_rows) {  // If results are found...
         while($row = mysqli_fetch_array($result)) {
-            $temp['PART_NUM'] = $row['PART_NUM'];
-            $temp['name'] = $row['name'];
-            $temp['category'] = $row['category'];
-            $temp['location'] = $row['location'];
-            $temp['attributes'] = $row['attributes'];
-            $temp['value'] = $row['value'];
+            $temp['PartNum'] = $row['PART_NUM'];
+            $temp['PartName'] = $row['name'];
+            $temp['PartCat'] = $row['category'];
+            $temp['PartLocation'] = $row['location'];
+            $temp['PartAttrib'] = $row['attributes'];
+            $temp['PartVal'] = $row['value'];
 
             // place the data into array of json data
-            array_push($json_response, $temp);
+            array_push($response, $temp);
         }
     } else {
-        // part does not exist
-    }   
+        $temp['PartNum'] = 0000000000;
+        $temp['PartName'] = "Not Found";
+        $temp['PartCat'] = "";
+        $temp['PartLocation'] = 000;
+        $temp['PartAttrib'] = "N/A";
+        $temp['PartVal'] = "N/A";
+        array_push($response, $temp);
+    }
     
-    echo json_encode(json_response);
-    return;
+    return json_encode($response);  // return JSON encoded data
 }
 
 function SearchByBarcode($barcode) {

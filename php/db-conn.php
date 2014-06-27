@@ -5,16 +5,9 @@
  * this file with every page that connects to the database.
  */
 
-// Include configuration file. Listing it without the full path names allows for server mobility.
-if(!isset($path)){
-    $path = $_SERVER['DOCUMENT_ROOT'].'/php/';                                
-}
-
-if (file_exists($path . 'config.php')) {
-    require_once $path . 'config.php';       // include initial login info
-} else {
-    // throw error
-}
+// Include configuration file
+if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }                               
+if (file_exists($path . 'config.php')) { require_once $path . 'config.php'; }   // include initial login info
 
 // Create connection (object oriented way)
 $CONN = new mysqli(HOST, USER, PASSWORD, DATABASE);
