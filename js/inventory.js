@@ -34,12 +34,15 @@ $(document).ready(function(){
             success: function(result){
                 // data come back in json format
                 var json = $.parseJSON(result);
+                console.log("success");
+                console.log(json);
                 // parse and place the data in their respective places
                 $('#results-pane .part-location').html(json.partLocation);
                 $('#results-pane .part-name').html(json.partName);
                 $('#results-pane .part-num').html(json.partNum);
             }
         });
+        
         
         $('#txtSubmitQuery').val('');
     });
