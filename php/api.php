@@ -23,12 +23,6 @@ function Connect() {
     return $conn;
 }
 
-function Disconnect($conn) {
-    mysqli_close($conn);
-    return;
-}
-
-
 function SearchDB($connection, $mode, $search_input) {
     
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
@@ -82,14 +76,13 @@ function SearchByBarcode($barcode) {
 
 function SearchByPartNum($part_number) {
    
-    /*
-    $query = "SELECT PART_NUM, name, category, location, attribute, value
+    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
     FROM parts
-    JOIN attributes
+    LEFT JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
     WHERE parts.PART_NUM=" . "'" . $part_number . "'";
-          */
-    $query = "SELECT * FROM parts WHERE PART_NUM=" . "'" . $part_number . "'";
+    
+    // $query = "SELECT * FROM parts WHERE PART_NUM=" . "'" . $part_number . "'";
     return $query;
 }
 
