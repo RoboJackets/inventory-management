@@ -63,11 +63,11 @@ function SearchByBarcode($barcode) {
 
 function SearchByPartNum($part_number) {
    
-    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+    $query = 'SELECT PART_NUM, name, category, location, attribute, value
     FROM parts
     JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
-    WHERE parts.PART_NUM=" . $part_number;
+    WHERE parts.PART_NUM=' . $part_number;
             
     return $query;
 }
