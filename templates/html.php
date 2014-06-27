@@ -43,7 +43,7 @@
             <div class="col-sm-12">
                 <div class="input-group">
                     <input id="mode-storage" type="hidden" value="<?php echo $mode;?>">
-                    <input type="text" id="txtSubmitQuery" class="form-control txt-lg">
+                    <input type="text" id="txtSubmitQuery" class="form-control txt-lg" autofocus>
                     <span class="input-group-btn">
                         <button id="BtnSubmitQuery" class="btn btn-primary btn-lg" type="button"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
