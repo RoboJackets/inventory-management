@@ -72,3 +72,12 @@ ol li.steps-highlighted:not(:first-child)::before {
 .off-left {
     margin-left: -120%;
 }
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.uppercase::-webkit-input-placeholder {text-transform: none !important;}
+.uppercase::-moz-placeholder {text-transform: none !important;}
+.uppercase:-ms-input-placeholder {text-transform: none !important;}
+

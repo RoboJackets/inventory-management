@@ -58,6 +58,8 @@
                 </li>
             </ol>
         </div>
+        
+        
         <div class="container card-container">
             <div class="card">
                 <div class="row">
@@ -74,12 +76,13 @@
                         <p id="part-number-status"></p>
                     </div>
                 </form>
-                <div id="btn-add-next" class="round-icon pull-right">
+                <div id="btn-add-next" class="round-icon pull-right next">
                     <span class="glyphicon glyphicon-chevron-right"></span>
                 </div>
             </div>
             
-            <div class="card off-right">
+            <!-- Card 2: Edit Details -->
+            <div class="card card-container off-right">
                 <div class="row">
                     <div class="col-sm-12">
                         <h3 class="page-header">Edit Details</h3>
@@ -87,13 +90,93 @@
                 </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label for="PartNameInput" class="col-sm-2 control-label">Part Name</label>
+                        <label for="partNameInput" class="col-sm-2 control-label">Part Name</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="partNameInput" placeholder="Part Name">
+                            <input type="text" class="form-control" id="partNameInput" maxLength="32">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryInput" class="col-sm-2 control-label">Category</label>
+                        <div class="col-sm-10">
+                            <select class="form-control">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="capacitor">Capacitor</option>
+                                <option value="connector">Connector</option>
+                                <option value="diode">Diode</option>
+                                <option value="ic">Integrated Circuit</option>
+                                <option value="inductor">Inductor</option>
+                                <option value="oscillator">Oscillator</option>
+                                <option value="resistor">Resistor</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="descriptionInput" class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="descriptionInput" maxLength="65535" style="resize:none;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="datasheetInput" class="col-sm-2 control-label">Datasheet URL</label>
+                        <div class="col-sm-10">
+                            <input type="url" class="form-control" id="datasheetInput" maxLength="65535">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="locationInput" class="col-sm-2 control-label">Storage Location</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control uppercase" id="locationInput" maxLength="4">
                         </div>
                     </div>
                 </form>
+                <div id="btn-add-next" class="round-icon pull-left back">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </div>
+                <div id="btn-add-next" class="round-icon pull-right next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </div>
             </div>
+            
+            <!-- Card 3: Add Attributes -->
+            <div class="card card-container off-right">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="page-header">Add Attributes</h3>
+                    </div>
+                </div>
+                <!--Form fields go here -->
+                <div id="btn-add-next" class="round-icon pull-left back">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </div>
+                <div id="btn-add-next" class="round-icon pull-right next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </div>
+            </div>
+            
+            <!-- Card 4: Confirm and Add -->
+            <div class="card card-container off-right">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="page-header">Confirm and Add</h3>
+                    </div>
+                </div>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="barcodeInput" class="col-sm-2 control-label">Barcode</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="barcodeInput" placeholder="Scan Barcode">
+                        </div>
+                    </div>
+                </form>
+                <div id="btn-add-next" class="round-icon pull-left back">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </div>
+                <div id="btn-add-next" class="round-icon pull-right submit">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </div>
+            </div>
+            
         </div>
     </section>
 </body>
