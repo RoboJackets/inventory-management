@@ -7,17 +7,36 @@
 
 // make sure required file(s) are set
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-if (file_exists($path . 'db-conn.php')) { require_once $path . 'db-conn.php'; }
+if (file_exists($path . 'config.php')) { require_once $path . 'config.php'; }
 // =========================================
 
-function SearchDB($mode, $search_input) {
+function Connect() {
+    
+    // Create connection (object oriented way)
+    $conn = new mysqli(HOST, USER, PASSWORD, DATABASE);
+    StartSession();
+    // Check for connection error
+    if ($conn->connect_error) {
+        trigger_error('Database connection failed: ' . $CONN->connect_error, E_USER_ERROR);
+    }
+    
+    return $conn;
+}
+
+function Disconnect($conn) {
+    mysqli_close($conn);
+    return;
+}
+
+
+function SearchDB($connection, $mode, $search_input) {
     
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
     else { $sql_query = SearchByPartNum($search_input); }  // default to barcode search - by partnum for test dev
     
-    $json_results = FilterResults($CONN->query('"' . $sql_query . '"'));   // main operations here
+    $json_results = FilterResults($connection->query('"' . $sql_query . '"'));   // main operations here
     
-    return $json_results;    
+    return $json_results;
 }  
     
 function FilterResults($result) {
