@@ -33,12 +33,12 @@ $(document).ready(function(){
             },
             success: function(result){
                 // data come back in json format
-                var json = JSON.parseJSON(result);
-                console.log(json);
+                var json = jQuery.parseJSON(result);
+                console.log(JSON.stringify(json[0]));
                 // parse and place the data in their respective places
-                $('#results-pane .part-location').html(json.partLocation);
-                $('#results-pane .part-name').html(json.partName);
-                $('#results-pane .part-num').html(json.partNum);
+                $('#results-pane .part-location').html(json[0].partLocation);
+                $('#results-pane .part-name').html(json[0].partName);
+                $('#results-pane .part-num').html(json[0].partNum);
             }
         });
         
