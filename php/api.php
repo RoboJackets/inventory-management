@@ -23,16 +23,10 @@ function Connect() {
     return $conn;
 }
 
-function Disconnect($conn) {
-    mysqli_close($conn);
-    return;
-}
-
-
 function SearchDB($connection, $mode, $search_input) {
     
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
-    else { $sql_query = SearchByPartNum($search_input); }  // default to barcode search - by partnum for test dev
+    else { $sql_query = SearchByBarcode($search_input); }  // default to barcode search - by partnum for test dev
     
     $json_results = FilterResults($connection->query($sql_query));   // main operations here
     
@@ -44,12 +38,12 @@ function FilterResults($result) {
     $response = array();
     if ($result->num_rows) {  // If results are found...
         while($row = mysqli_fetch_array($result)) {
-            $temp['PartNum'] = $row['PART_NUM'];
-            $temp['PartName'] = $row['name'];
-            $temp['PartCat'] = $row['category'];
-            $temp['PartLocation'] = $row['location'];
-            $temp['PartAttrib'] = $row['attributes'];
-            $temp['PartVal'] = $row['value'];
+            $temp['PartNum'] = $row['PartNum'];
+            $temp['PartName'] = $row['PartName'];
+            $temp['PartCat'] = $row['PartCat'];
+            $temp['PartLocation'] = $row['PartLocation'];
+            $temp['PartAttrib'] = $row['PartAttrib'];
+            $temp['PartVal'] = $row['PartVal'];
 
             // place the data into array of json data
             array_push($response, $temp);
@@ -69,27 +63,26 @@ function FilterResults($result) {
 
 function SearchByBarcode($barcode) {
     
-    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+    $query = "SELECT barcode_lookup.PART_NUM AS PartNum, parts.name AS PartName, 
+        parts.category AS PartCat, parts.location AS PartLocation, 
+        attributes.attribute AS PartAttrib, attributes.value AS PartVal
     FROM barcode_lookup
-    RIGHT JOIN parts
-    ON barcode_lookup.PART_NUM=parts.PART_NUM
-    RIGHT JOIN attributes
-    ON barcode_lookup.PART_NUM=attributes.PART_NUM
-    WHERE barcode_lookup.barcode=" . $barcode;
+    JOIN parts ON barcode_lookup.PART_NUM=parts.PART_NUM
+    LEFT JOIN attributes ON parts.PART_NUM=attributes.PART_NUM
+    WHERE barcode_lookup.barcode=" . "'" . $barcode . "'";
             
     return $query;
 }
 
 function SearchByPartNum($part_number) {
    
-    /*
-    $query = "SELECT PART_NUM, name, category, location, attribute, value
+    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
     FROM parts
-    JOIN attributes
+    LEFT JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
     WHERE parts.PART_NUM=" . "'" . $part_number . "'";
-          */
-    $query = "SELECT * FROM parts WHERE PART_NUM=" . "'" . $part_number . "'";
+    
+    // $query = "SELECT * FROM parts WHERE PART_NUM=" . "'" . $part_number . "'";
     return $query;
 }
 
@@ -99,7 +92,7 @@ function SearchByBin($bin) {
     FROM parts
     JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
-    WHERE parts.location=" . $bin;
+    WHERE parts.location=" . "'" . $bin . "'";
             
     return $query;
 }

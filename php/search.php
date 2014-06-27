@@ -14,5 +14,5 @@ if ($_GET['input']) {   // begin searching if user input is given
     $results = SearchDB($connection, $_GET['mode'], $_GET['input']);
     echo $results;
     
-    Disconnect($connection);
+    mysqli_close($connection);  // close connection
 }

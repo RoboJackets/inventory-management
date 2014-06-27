@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="input-group">
-                    <input id="mode-storage"type="hidden" value="<?php echo $mode;?>">
+                    <input id="mode-storage" type="hidden" value="<?php echo $mode;?>">
                     <input type="text" id="txtSubmitQuery" class="form-control txt-lg">
                     <span class="input-group-btn">
                         <button id="BtnSubmitQuery" class="btn btn-primary btn-lg" type="button"><span class="glyphicon glyphicon-search"></span></button>
@@ -52,7 +52,7 @@
         </div>
     </div>
 </nav>
-<body >
+<body>
     <div id="results-pane" class="container">
         <div class="row">
             <div class="col-xs-12 space"></div>
