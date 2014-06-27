@@ -61,14 +61,14 @@
             <div class="col-xs-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <div class="part-location">
+                        <div id="part-location-data" class="part-location">
                             <?php echo $partLocation; ?>
                         </div>
                         <div class="part">
-                            <div class="part-name">
+                            <div id="part-name-data" class="part-name">
                                 <?php echo $partName; ?>
                             </div>
-                            <div class="part-num">
+                            <div id="part-num-data" class="part-num">
                                 <?php echo $partNum; ?>
                             </div>
                         </div>

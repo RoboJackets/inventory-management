@@ -36,9 +36,9 @@ $(document).ready(function(){
                 var json = jQuery.parseJSON(result);
                 console.log(JSON.stringify(json[0]));
                 // parse and place the data in their respective places
-                $('#results-pane .part-location').html(json[0].partLocation);
-                $('#results-pane .part-name').html(json[0].partName);
-                $('#results-pane .part-num').html(json[0].partNum);
+                $('#part-location-data').html(json[0].partLocation);
+                $('#part-name-data').html(json[0].partName);
+                $('#part-num-data').html(json[0].partNum);
             }
         });
         
