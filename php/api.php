@@ -63,12 +63,12 @@ function FilterResults($result) {
 
 function SearchByBarcode($barcode) {
     
-    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+    $query = "SELECT barcode_lookup.PART_NUM AS PartBarcode, parts.name AS PartName, 
+        parts.category AS PartCat, parts.location AS PartLocation, 
+        attributes.attribute AS PartAttrib, attributes.value AS PartVal
     FROM barcode_lookup
-    JOIN parts
-    ON barcode_lookup.PART_NUM=parts.PART_NUM
-    RIGHT JOIN attributes
-    ON barcode_lookup.PART_NUM=attributes.PART_NUM
+    JOIN parts ON barcode_lookup.PART_NUM=parts.PART_NUM
+    LEFT JOIN attributes ON parts.PART_NUM=attributes.PART_NUM
     WHERE barcode_lookup.barcode=" . "'" . $barcode . "'";
             
     return $query;
