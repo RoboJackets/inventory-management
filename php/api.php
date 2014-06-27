@@ -34,7 +34,7 @@ function SearchDB($connection, $mode, $search_input) {
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
     else { $sql_query = SearchByPartNum($search_input); }  // default to barcode search - by partnum for test dev
     
-    $json_results = FilterResults($connection->query('"' . $sql_query . '"'));   // main operations here
+    $json_results = FilterResults($connection->query($sql_query));   // main operations here
     
     return $json_results;
 }  
