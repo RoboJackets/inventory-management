@@ -13,7 +13,7 @@ if (file_exists($path . 'db-conn.php')) { require_once $path . 'db-conn.php'; }
 function SearchDB($mode, $search_input) {
     
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
-    else { $sql_query = SearchByBarcode($search_input); }  // default to barcode search
+    else { $sql_query = SearchByPartNum($search_input); }  // default to barcode search - by partnum for test dev
     
     $json_results = FilterResults( mysqli_query($CONN, $sql_query) );   // main operations here
     
