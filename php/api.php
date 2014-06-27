@@ -38,12 +38,12 @@ function FilterResults($result) {
     $response = array();
     if ($result->num_rows) {  // If results are found...
         while($row = mysqli_fetch_array($result)) {
-            $temp['PartNum'] = $row['PART_NUM'];
-            $temp['PartName'] = $row['name'];
-            $temp['PartCat'] = $row['category'];
-            $temp['PartLocation'] = $row['location'];
-            $temp['PartAttrib'] = $row['attributes'];
-            $temp['PartVal'] = $row['value'];
+            $temp['PartNum'] = $row['PartNum'];
+            $temp['PartName'] = $row['PartName'];
+            $temp['PartCat'] = $row['PartCat'];
+            $temp['PartLocation'] = $row['PartLocation'];
+            $temp['PartAttrib'] = $row['PartAttrib'];
+            $temp['PartVal'] = $row['PartVal'];
 
             // place the data into array of json data
             array_push($response, $temp);
