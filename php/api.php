@@ -15,7 +15,7 @@ function SearchDB($mode, $search_input) {
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
     else { $sql_query = SearchByPartNum($search_input); }  // default to barcode search - by partnum for test dev
     
-    $json_results = FilterResults($CONN->query("" . $sql_query . ""));   // main operations here
+    $json_results = FilterResults($CONN->query('"' . $sql_query . '"'));   // main operations here
     
     return $json_results;    
 }  
@@ -63,11 +63,11 @@ function SearchByBarcode($barcode) {
 
 function SearchByPartNum($part_number) {
    
-    $query = 'SELECT PART_NUM, name, category, location, attribute, value
+    $query = "SELECT PART_NUM, name, category, location, attribute, value
     FROM parts
     JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
-    WHERE parts.PART_NUM=' . $part_number;
+    WHERE parts.PART_NUM=" . $part_number;
             
     return $query;
 }
