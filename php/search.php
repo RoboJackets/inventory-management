@@ -13,6 +13,6 @@ if ($_GET['input']) {   // begin searching if user input is given
     
     // function that searches the database and returns the results in an array
     $results = SearchDB($_GET['mode'], $_GET['input']);
-    
+    echo $results;
     mysqli_close($CONN);    // close the connection to the database
 }

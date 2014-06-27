@@ -16,7 +16,7 @@ $(document).ready(function(){
     
     
     $('#BtnSubmitQuery').click(function(){
-        var query = $('#txtSubmitQuery').val();
+        // var query = $('#txtSubmitQuery').val();
         console.log("query=" + query);
         //Post results here
         //$.post('../searchusers.php',{search: search},function(response){
@@ -41,7 +41,9 @@ $(document).ready(function(){
             }
         });
         
-    })
+        $('#txtSubmitQuery').val('');
+    });
+    
     $('#txtSubmitQuery').keypress(function(e){
         if(e.which === 13){//Enter key pressed
             $('#BtnSubmitQuery').click();//Trigger search button click event
