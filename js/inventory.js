@@ -33,8 +33,7 @@ $(document).ready(function(){
             },
             success: function(result){
                 // data come back in json format
-                var json = $.parseJSON(result);
-                console.log("success");
+                var json = $JSON.parse(result);
                 console.log(json);
                 // parse and place the data in their respective places
                 $('#results-pane .part-location').html(json.partLocation);
