@@ -26,7 +26,7 @@ function Connect() {
 function SearchDB($connection, $mode, $search_input) {
     
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
-    else { $sql_query = SearchByPartNum($search_input); }  // default to barcode search - by partnum for test dev
+    else { $sql_query = SearchByBarcode($search_input); }  // default to barcode search - by partnum for test dev
     
     $json_results = FilterResults($connection->query($sql_query));   // main operations here
     
@@ -69,7 +69,7 @@ function SearchByBarcode($barcode) {
     ON barcode_lookup.PART_NUM=parts.PART_NUM
     RIGHT JOIN attributes
     ON barcode_lookup.PART_NUM=attributes.PART_NUM
-    WHERE barcode_lookup.barcode=" . $barcode;
+    WHERE barcode_lookup.barcode=" . "'" . $barcode . "'";
             
     return $query;
 }
@@ -92,7 +92,7 @@ function SearchByBin($bin) {
     FROM parts
     JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
-    WHERE parts.location=" . $bin;
+    WHERE parts.location=" . "'" . $bin . "'";
             
     return $query;
 }
