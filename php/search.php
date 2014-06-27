@@ -6,7 +6,6 @@
 
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; } // make sure path is known
 if (file_exists($path . 'api.php')) { require_once $path . 'api.php'; } // include api functions
-if (file_exists($path . 'db-conn.php')) { require_once $path . 'db-conn.php'; } // include api functions
 
 if ($_GET['input']) {   // begin searching if user input is given
     $connection = Connect();

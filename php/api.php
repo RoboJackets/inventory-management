@@ -82,12 +82,14 @@ function SearchByBarcode($barcode) {
 
 function SearchByPartNum($part_number) {
    
+    /*
     $query = "SELECT PART_NUM, name, category, location, attribute, value
     FROM parts
     JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
     WHERE parts.PART_NUM=" . "'" . $part_number . "'";
-            
+          */
+    $query = "SELECT * FROM parts WHERE PART_NUM=" . "'" . $part_number . "'";
     return $query;
 }
 
