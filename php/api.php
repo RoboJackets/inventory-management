@@ -65,7 +65,7 @@ function SearchByBarcode($barcode) {
     
     $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
     FROM barcode_lookup
-    RIGHT JOIN parts
+    JOIN parts
     ON barcode_lookup.PART_NUM=parts.PART_NUM
     RIGHT JOIN attributes
     ON barcode_lookup.PART_NUM=attributes.PART_NUM
