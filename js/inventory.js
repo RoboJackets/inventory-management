@@ -4,6 +4,7 @@ $(document).ready(function(){
         if(!$('#barcode').hasClass('mode-selected')){
             $('.mode-selected').removeClass('mode-selected');
             $('#barcode').addClass('mode-selected');
+            $('#mode-storage').val('barcode');
         }
     });
     
@@ -11,6 +12,7 @@ $(document).ready(function(){
         if(!$('#bin').hasClass('mode-selected')){
             $('.mode-selected').removeClass('mode-selected');
             $('#bin').addClass('mode-selected');
+            $('#mode-storage').val('bin');
         }
     });
     
