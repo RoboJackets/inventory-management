@@ -75,5 +75,5 @@
 }
 
 #results-pane{
-    /* display: none; */
+    display: visible;
 }
