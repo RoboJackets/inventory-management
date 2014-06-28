@@ -2,16 +2,16 @@ function slideCard(card, direction, side) {
     if (direction === "in") {
         if (side === "right") {
             card.switchClass("off-left", "off-right", 0);
-            card.removeClass("off-right", 500);
+            card.removeClass("off-right", 300);
         } else {
             card.switchClass("off-right", "off-left", 0);
-            card.removeClass("off-left", 500);
+            card.removeClass("off-left", 300);
         }
     } else {
         if (side === "right") {
-            card.addClass("off-right", 500);
+            card.addClass("off-right", 300);
         } else {
-            card.addClass("off-left", 500);
+            card.addClass("off-left", 300);
         }
     }
 };
@@ -34,13 +34,19 @@ $(document).ready(function() {
     
     $(".to-card").click(function() {
         var target = $(this).attr("card");
-        console.log("target: " + target);
         if(!(("#" + target) === currentCardID)) {
             currentCardID = toCard("#" + target, currentCardID);
-        } else {
-            console.log("same card");
         }
     });
     
+    $('.card .next').click(function() {
+        var target = $(this).parent().next().attr("id");
+        currentCardID = toCard("#" + target, currentCardID);
+    });
+        
+    $('.card .back').click(function() {
+        var target = $(this).parent().prev().attr("id");
+        currentCardID = toCard("#" + target, currentCardID);
+    });    
     //TO DO: Add Coloring to Steps
 });
