@@ -1,40 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>Add Component</title>
-    
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="css/add.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Add Component</title>
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="css/add.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
-</head>
-<header>
-    <!-- Scripts are place here to improve page loading time -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/add.js"></script>
-</header>
-<body>
+    </head>
+    <header>
+        <!-- Scripts are place here to improve page loading time -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/add.js"></script>
+    </header>
     <nav class="navbar navbar-default" role="navigation">
         <div class="container">
             <div class="col-sm-1 col-xs-3">
-                <img src="img/robobuzz-header.svg" height="65px" width="65px">
+                <img src="img/robobuzz-header.svg" alt="RoboBuzz" height="65" width="65">
             </div>
             <div class="col-xs-9 col-sm-11">
                 <h2>Robojackets Inventory</h2>
@@ -44,16 +43,16 @@
     <section>
         <div class="container">
             <ol class="steps">
-                <li class="steps-highlighted">
+                <li class="to-card steps-highlighted" card="add-part">
                     <span class="glyphicon glyphicon-home"></span>
                 </li>
-                <li >
+                <li class="to-card" card="edit-details">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </li>
-                <li>
+                <li class="to-card" card="add-attributes">
                     <span class="glyphicon glyphicon-th-list"></span>
                 </li>
-                <li>
+                <li class="to-card" card="confirm">
                     <span class="glyphicon glyphicon-ok"></span>
                 </li>
             </ol>
@@ -61,16 +60,17 @@
         
         
         <div class="container card-container">
-            <div class="card">
+            <!-- Card 1: Add new component -->
+            <div class="card" id="add-part">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="page-header">Add New Component</h3>
+                        <h3 class="page-header">Add Part</h3>
                     </div>
                 </div>
                 <form class="form-inline" role="form">
                     <div class="form-group">
                         <label for="partNumberInput">Manufacturer Part Number</label>
-                        <input type="text" class="form-control" id="partNumberInput" maxlength="32" placeholder="Enter Part Number">
+                        <input type="text" class="form-control" id="partNumberInput" maxlength="32" placeholder="Enter Part Number" autofocus>
                     </div>
                     <div class="form-group">
                         <p id="part-number-status"></p>
@@ -82,7 +82,7 @@
             </div>
             
             <!-- Card 2: Edit Details -->
-            <div class="card card-container off-right">
+            <div class="card off-right" id="edit-details">
                 <div class="row">
                     <div class="col-sm-12">
                         <h3 class="page-header">Edit Details</h3>
@@ -139,7 +139,7 @@
             </div>
             
             <!-- Card 3: Add Attributes -->
-            <div class="card card-container off-right">
+            <div class="card off-right" id="add-attributes">
                 <div class="row">
                     <div class="col-sm-12">
                         <h3 class="page-header">Add Attributes</h3>
@@ -155,7 +155,7 @@
             </div>
             
             <!-- Card 4: Confirm and Add -->
-            <div class="card card-container off-right">
+            <div class="card off-right" id="confirm">
                 <div class="row">
                     <div class="col-sm-12">
                         <h3 class="page-header">Confirm and Add</h3>
@@ -179,5 +179,4 @@
             
         </div>
     </section>
-</body>
 </html>
