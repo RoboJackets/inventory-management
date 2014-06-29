@@ -58,8 +58,11 @@ ol.steps li:not(:first-child)::before {
 
 
 ol.steps li.btn-enabled:hover,
-.round-icon-enabled:hover {
-    box-shadow: 0px 0px 5px #333;
+.round-icon.btn-enabled:hover {
+    background-color: #428bca;
+    color: #fff;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
 }
 
 ol.steps li.btn-enabled:not(:first-child)::before {
@@ -67,10 +70,12 @@ ol.steps li.btn-enabled:not(:first-child)::before {
 }
 
 ol.steps li.btn-enabled,
-.round-button.btn-enabled{
+.round-icon.btn-enabled{
     color: #428bca;
     border-color: #428bca;
     cursor: pointer;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
 }
 
 ol.steps li.steps-active {

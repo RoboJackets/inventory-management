@@ -32,26 +32,50 @@ function toCard(targetCardID, currentCardID) {
     return targetCardID;
 };
 
+function enableCard(cardID) {
+    cardID = "#" + cardID;
+    var stepIndex = $(cardID).index() + 1;
+    $("ol.steps li:nth-child(" + stepIndex + ")").addClass("btn-enabled");
+}
 
 $(document).ready(function() {
     var currentCardID = "#add-part";
 
-    $(".to-card.btn-enabled").click(function() {
-        var target = $(this).attr("card");
-        if(!(("#" + target) === currentCardID)) {
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    $(".to-card").click(function() {
+        if ($(this).hasClass("btn-enabled")) {
+            var target = $(this).attr("card");
+            if(!(("#" + target) === currentCardID)) {
+                currentCardID = toCard("#" + target, currentCardID);
+            }
+        }
+    });
+
+    $(".card .next").click(function() {
+        if ($(this).hasClass("btn-enabled")) {
+            var target = $(this).parent().next().attr("id");
             currentCardID = toCard("#" + target, currentCardID);
         }
     });
 
-    $('.card .next.btn-enabled').click(function() {
-        var target = $(this).parent().next().attr("id");
-        currentCardID = toCard("#" + target, currentCardID);
-
+    $(".card .back").click(function() {
+        if ($(this).hasClass("btn-enabled")) {
+            var target = $(this).parent().prev().attr("id");
+            currentCardID = toCard("#" + target, currentCardID);
+        }
     });
 
-    $('.card .back.btn-enabled').click(function() {
-        var target = $(this).parent().prev().attr("id");
-        currentCardID = toCard("#" + target, currentCardID);
-    });    
+    $("#partNumberInput").on("change keyup paste", function(){
+        if ($(this).val !== "") {
+            $("#btn-add-part-next").addClass("btn-enabled");
+            enableCard("edit-details");
+        }
+    });
 
 });
