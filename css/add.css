@@ -56,23 +56,26 @@ ol.steps li:not(:first-child)::before {
     width: 28px;
 }
 
-ol li.steps-highlighted {
-    color: #428bca;
-    border-color: #428bca;
+
+ol.steps li.btn-enabled:hover,
+.round-icon-enabled:hover {
+    box-shadow: 0px 0px 5px #333;
 }
 
-ol li.steps-highlighted:not(:first-child)::before {
+ol.steps li.btn-enabled:not(:first-child)::before {
     background-color: #428bca;
 }
 
-ol.steps li a:link,
-ol.steps li a:visited {
-    text-decoration: none;
-    color: inherit;
+ol.steps li.btn-enabled,
+.round-button.btn-enabled{
+    color: #428bca;
+    border-color: #428bca;
+    cursor: pointer;
 }
 
-.form-group p {
-    margin-bottom: 0px;
+ol.steps li.steps-active {
+    background-color: #428bca;
+    color: #fff;
 }
 
 .off-right {

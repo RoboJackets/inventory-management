@@ -24,29 +24,34 @@ function toCard(targetCardID, currentCardID) {
         slideCard($(currentCardID), "out", "right");
         slideCard($(targetCardID), "in", "left");
     }
-    
+
+    $("ol.steps li.steps-active").removeClass("steps-active");
+    var stepIndex = $(targetCardID).index() + 1;
+    $("ol.steps li:nth-child(" + stepIndex + ")").addClass("steps-active");
+
     return targetCardID;
 };
 
 
 $(document).ready(function() {
     var currentCardID = "#add-part";
-    
-    $(".to-card").click(function() {
+
+    $(".to-card.btn-enabled").click(function() {
         var target = $(this).attr("card");
         if(!(("#" + target) === currentCardID)) {
             currentCardID = toCard("#" + target, currentCardID);
         }
     });
-    
-    $('.card .next').click(function() {
+
+    $('.card .next.btn-enabled').click(function() {
         var target = $(this).parent().next().attr("id");
         currentCardID = toCard("#" + target, currentCardID);
+
     });
-        
-    $('.card .back').click(function() {
+
+    $('.card .back.btn-enabled').click(function() {
         var target = $(this).parent().prev().attr("id");
         currentCardID = toCard("#" + target, currentCardID);
     });    
-    //TO DO: Add Coloring to Steps
+
 });
