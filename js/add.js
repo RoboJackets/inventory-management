@@ -38,7 +38,18 @@ function enableCard(cardID) {
     cardID = "#" + cardID;
     var stepIndex = $(cardID).index() + 1;
     $("ol.steps li:nth-child(" + stepIndex + ")").addClass("btn-enabled");
-}
+};
+
+function addAttributeInput() {
+    var attrNum = $(".card table tbody tr:last-child").index() + 2;
+    $tableRow = $("#add-attributes tbody tr:first-child").clone().find("input").val("").end();
+    $tableRow.children("td:first-child").text(attrNum);
+    $tableRow.one("keydown paste", function() {
+        addAttributeInput()
+    });
+
+    $(".card table tbody").append($tableRow);
+};
 
 $(document).ready(function() {
     var currentCardID = "#add-part";
@@ -73,11 +84,14 @@ $(document).ready(function() {
         }
     });
 
-    $("#partNumberInput").on("change keyup paste", function(){
+    $("#partNumberInput").on("change keyup paste", function() {
         if ($(this).val !== "") {
             $("#btn-add-part-next").addClass("btn-enabled");
             enableCard("edit-details");
         }
     });
 
+    $("table tr:last-child").one("keydown paste", function() {
+        addAttributeInput();
+    });
 });
