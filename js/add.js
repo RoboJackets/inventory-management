@@ -54,9 +54,11 @@ function addAttributeInput() {
         addAttributeInput();
     });
     $removeButton.click(function(){
-        $(this).parent().parent().remove();
-        $(".card table tbody tr").each(function(idx){
-            $(this).children().first().text(idx + 1);
+        $(this).closest('tr').children('td').animate({ padding: 0 }).wrapInner('<div />').children().slideUp(function() { 
+            $(this).closest('tr').remove(); 
+            $(".card table tbody tr").each(function(idx){
+                $(this).children().first().text(idx + 1);
+            });
         });
     });
 
