@@ -91,6 +91,22 @@ ol.steps li.steps-active {
     margin-left: -120%;
 }
 
+tr:last-child input[type="text"] {
+    background-color: #eee;
+}
+
+td span.glyphicon {
+    color: #aaa;
+    font-size: 1.2em;
+    line-height: 1.8;
+}
+
+td span.glyphicon:hover {
+    color: #428bca;
+    font-size: 1.2em;
+    line-height: 1.8;
+}
+
 .uppercase {
     text-transform: uppercase;
 }

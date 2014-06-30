@@ -42,13 +42,26 @@ function enableCard(cardID) {
 
 function addAttributeInput() {
     var attrNum = $(".card table tbody tr:last-child").index() + 2;
-    $tableRow = $("#add-attributes tbody tr:first-child").clone().find("input").val("").end();
-    $tableRow.children("td:first-child").text(attrNum);
-    $tableRow.one("keydown paste", function() {
-        addAttributeInput()
+    $newRow = $("#add-attributes tbody tr:last-child").clone().find("input").val("").end();
+    $newRow.children("td:first-child").text(attrNum);
+
+    var $removeButton = $($.parseHTML('<span class="glyphicon glyphicon-remove"></span>'));
+
+    $(".card table tbody tr:last-child td input").attr("placeholder","");
+    $(".card table tbody tr:last-child td input").off();
+
+    $newRow.find("input").one("focus", function() {
+        addAttributeInput();
+    });
+    $removeButton.click(function(){
+        $(this).parent().parent().remove();
+        $(".card table tbody tr").each(function(idx){
+            $(this).children().first().text(idx + 1);
+        });
     });
 
-    $(".card table tbody").append($tableRow);
+    $(".card table tbody tr:last-child td:last-child").append($removeButton);
+    $(".card table tbody").append($newRow);
 };
 
 $(document).ready(function() {
@@ -91,7 +104,8 @@ $(document).ready(function() {
         }
     });
 
-    $("table tr:last-child").one("keydown paste", function() {
+    $("table tbody tr:last-child input").one("focus", function() {
         addAttributeInput();
     });
+
 });
