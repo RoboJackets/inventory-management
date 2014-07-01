@@ -40,6 +40,12 @@ function enableCard(cardID) {
     $("ol.steps li:nth-child(" + stepIndex + ")").addClass("btn-enabled");
 };
 
+function disableCard(cardID) {
+    cardID = "#" + cardID;
+    var stepIndex = $(cardID).index() + 1;
+    $("ol.steps li:nth-child(" + stepIndex + ")").removeClass("btn-enabled");
+};
+
 function addAttributeInput() {
     var attrNum = $(".card table tbody tr:last-child").index() + 2;
     $newRow = $("#add-attributes tbody tr:last-child").clone().find("input").val("").end();
@@ -100,9 +106,17 @@ $(document).ready(function() {
     });
 
     $("#partNumberInput").on("change keyup paste", function() {
-        if ($(this).val !== "") {
+        if ($(this).val() !== "") {
             $("#btn-add-part-next").addClass("btn-enabled");
             enableCard("edit-details");
+
+            var query = {"partNumber":$(this).val()};
+            $.post("add/validate-pn", query, function(result) {
+                console.log(result);
+            });
+        } else {
+            $("#btn-add-part-next").removeClass("btn-enabled");
+            disableCard("edit-details");
         }
     });
 
