@@ -22,6 +22,11 @@ $app->get('/add', function() use ($app) {
     $app->render('add.html');
 });
 
+$app->get('/add/validate-pn', function() use ($app) {
+    require 'php/validate-pn.php';
+});
+
+
 
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
