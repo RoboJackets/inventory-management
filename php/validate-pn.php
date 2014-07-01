@@ -6,9 +6,13 @@ if (file_exists($path . 'db-conn.php')) { require_once $path . 'db-conn.php'; }
 
 $partNum = $_POST['partNumber'];
 
-$sql = 'SELECT COUNT(*) FROM `parts` WHERE PART_NUM=\'' + $partNum + '\'';
+$sql = "SELECT COUNT(*) FROM `parts` WHERE PART_NUM='" . $partNum . "'";
+
 $result = $CONN->query($sql);
 
-$row = mysqli_fetch_array($result);
+if (!$result) {
+    printf("Error: %s\n", mysqli_error($CONN));
+    exit();
+}
 
-echo json_encode($row['COUNT(*)'] != 0)
+$row = mysqli_fetch_array($result);
