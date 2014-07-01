@@ -112,10 +112,10 @@ $(document).ready(function() {
 
             var query = {"partNumber":$(this).val()};
             $.post("add/validate-pn", query, function(result) {
-                if (result) {
-                    $(this).addClass("has-success");
+                if (result === "true") {
+                    $("#partNumberInput").parent().addClass("has-success");
                 } else {
-                    $(this).removeClass("has-success");
+                    $("#partNumberInput").parent().removeClass("has-success");
                 }
             });
         } else {
