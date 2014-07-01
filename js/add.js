@@ -123,6 +123,7 @@ $(document).ready(function() {
                     $("#btn-add-part-next").addClass("fast-track");
                 } else {
                     $("#partNumberInput").parent().removeClass("has-success");
+                    $("#btn-add-part-next").removeClass("fast-track");
                 }
             });
         } else {

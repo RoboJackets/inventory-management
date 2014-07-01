@@ -43,6 +43,8 @@ ol.steps li,
     line-height: 42px;
     border-radius: 24px;
     border: 4px solid #aaa;
+    webkit-transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+    transition: background-color 0.1s, color 0.1s, border-color 0.1s;
 }
 
 ol.steps li:not(:first-child)::before {
@@ -54,6 +56,8 @@ ol.steps li:not(:first-child)::before {
     margin-left: -40px;
     height: 8px;
     width: 28px;
+    webkit-transition: background-color 0.1s;
+    transition: background-color 0.1s;
 }
 
 
@@ -67,6 +71,8 @@ ol.steps li.btn-enabled:hover,
 
 ol.steps li.btn-enabled:not(:first-child)::before {
     background-color: #428bca;
+    webkit-transition: background-color 0.1s;
+    transition: background-color 0.1s;
 }
 
 ol.steps li.btn-enabled,
@@ -74,24 +80,44 @@ ol.steps li.btn-enabled,
     color: #428bca;
     border-color: #428bca;
     cursor: pointer;
-    webkit-transition: background-color 0.1s, color 0.1s;
-    transition: background-color 0.1s, color 0.1s;
+    webkit-transition: color 0.1s, border-color 0.1s;
+    transition: color 0.1s, border-color 0.1s;
 }
 
 ol.steps li.steps-active {
     background-color: #428bca;
     color: #fff;
-}
-
-.round-icon.btn-enabled.fast-track {
-    color: #3C763D;
-    border-color: #3C763D;
     webkit-transition: background-color 0.1s, color 0.1s;
     transition: background-color 0.1s, color 0.1s;
 }
 
+ol.steps li.btn-enabled.fast-track,
+.round-icon.btn-enabled.fast-track {
+    color: #3C763D;
+    border-color: #3C763D;
+    webkit-transition: color 0.1s, border-color 0.1s;
+    transition: color 0.1s, border-color 0.1s;
+}
+
+ol.steps li.btn-enabled.fast-track:hover,
 .round-icon.btn-enabled.fast-track:hover {
     background-color: #3C763D;
+    color: #fff;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+ol.steps li.error,
+.round-icon.error {
+    color: #A94442;
+    border-color: #A94442;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+ol.steps li.error:hover,
+.round-icon.error:hover {
+    background-color: #A94442;
     color: #fff;
     webkit-transition: background-color 0.1s, color 0.1s;
     transition: background-color 0.1s, color 0.1s;
