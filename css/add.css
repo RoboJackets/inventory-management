@@ -70,7 +70,7 @@ ol.steps li.btn-enabled:not(:first-child)::before {
 }
 
 ol.steps li.btn-enabled,
-.round-icon.btn-enabled{
+.round-icon.btn-enabled {
     color: #428bca;
     border-color: #428bca;
     cursor: pointer;
@@ -83,6 +83,20 @@ ol.steps li.steps-active {
     color: #fff;
 }
 
+.round-icon.btn-enabled.fast-track {
+    color: #3C763D;
+    border-color: #3C763D;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.round-icon.btn-enabled.fast-track:hover {
+    background-color: #3C763D;
+    color: #fff;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
+}
+
 .off-right {
     margin-left: 120%;
 }
@@ -93,6 +107,11 @@ ol.steps li.steps-active {
 
 tr:last-child input[type="text"] {
     background-color: #eee;
+}
+
+.form-control[readonly] {
+    background-color: #eee;
+    cursor: default;
 }
 
 td span.glyphicon {

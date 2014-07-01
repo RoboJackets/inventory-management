@@ -74,6 +74,7 @@ function addAttributeInput() {
 
 $(document).ready(function() {
     var currentCardID = "#add-part";
+    debug = "http://rj.str.at/";
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
@@ -92,8 +93,13 @@ $(document).ready(function() {
     });
 
     $(".card .next").click(function() {
-        if ($(this).hasClass("btn-enabled")) {
+        if ($(this).hasClass("fast-track")) {
+            var target = "confirm";
+            $(".card .next, ol.steps li").addClass("btn-enabled")
+        } else {
             var target = $(this).parent().next().attr("id");
+        }
+        if ($(this).hasClass("btn-enabled")) {
             currentCardID = toCard("#" + target, currentCardID);
         }
     });
@@ -111,9 +117,10 @@ $(document).ready(function() {
             enableCard("edit-details");
 
             var query = {"partNumber":$(this).val()};
-            $.post("add/validate-pn", query, function(result) {
+            $.post(debug + "add/validate-pn", query, function(result) {
                 if (result === "true") {
                     $("#partNumberInput").parent().addClass("has-success");
+                    $("#btn-add-part-next").addClass("fast-track");
                 } else {
                     $("#partNumberInput").parent().removeClass("has-success");
                 }
