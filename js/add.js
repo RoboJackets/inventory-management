@@ -1,19 +1,19 @@
-function slideCard(card, direction, side) {
+function slideCard($card, direction, side) {
     if (direction === "in") {
         if (side === "right") {
-            card.switchClass("off-left", "off-right", 0);
-            card.removeClass("hidden");
-            card.removeClass("off-right", 300);
+            $card.switchClass("off-left", "off-right", 0);
+            $card.removeClass("hidden");
+            $card.removeClass("off-right", 300, "swing", function(){$card.find("input.focus").focus();});
         } else {
-            card.switchClass("off-right", "off-left", 0);
-            card.removeClass("hidden");
-            card.removeClass("off-left", 300);
+            $card.switchClass("off-right", "off-left", 0);
+            $card.removeClass("hidden");
+            $card.removeClass("off-left", 300, "swing", function(){$card.find("input.focus").focus();});
         }
     } else {
         if (side === "right") {
-            card.addClass("off-right", 300, "swing", function(){card.addClass("hidden");});
+            $card.addClass("off-right", 300, "swing", function(){$card.addClass("hidden");});
         } else {
-            card.addClass("off-left", 300, "swing", function(){card.addClass("hidden");});
+            $card.addClass("off-left", 300, "swing", function(){$card.addClass("hidden");});
         }
     }
 };
