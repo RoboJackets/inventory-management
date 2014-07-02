@@ -35,15 +35,21 @@ function toCard(targetCardID, currentCardID) {
 };
 
 function enableCard(cardID) {
-    cardID = "#" + cardID;
-    var stepIndex = $(cardID).index() + 1;
+    $card = $("#" + cardID);
+    var stepIndex = $card.index() + 1;
     $("ol.steps li:nth-child(" + stepIndex + ")").addClass("btn-enabled");
+
+    $card.prev(".card").children(".next").addClass("btn-enabled");
+    $card.next(".card").children(".back").addClass("btn-enabled");
 };
 
 function disableCard(cardID) {
     cardID = "#" + cardID;
     var stepIndex = $(cardID).index() + 1;
     $("ol.steps li:nth-child(" + stepIndex + ")").removeClass("btn-enabled");
+
+    $card.prev(".card").children(".next").removeClass("btn-enabled");
+    $card.next(".card").children(".back").removeClass("btn-enabled");
 };
 
 function addAttributeInput() {
@@ -113,7 +119,6 @@ $(document).ready(function() {
 
     $("#partNumberInput").on("change keyup paste", function() {
         if ($(this).val() !== "") {
-            $("#btn-add-part-next").addClass("btn-enabled");
             enableCard("edit-details");
 
             var query = {"partNumber":$(this).val()};
@@ -127,7 +132,6 @@ $(document).ready(function() {
                 }
             });
         } else {
-            $("#btn-add-part-next").removeClass("btn-enabled");
             disableCard("edit-details");
         }
     });
