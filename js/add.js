@@ -1,6 +1,5 @@
 var allowedChars = /^[\w-+=& ]+$/;
 
-
 function slideCard($card, direction, side) {
     if (direction === "in") {
         if (side === "right") {
@@ -182,5 +181,12 @@ $(document).ready(function() {
         }
     });
 
-
+    $(".card form").find("input:last").keydown(function(event){
+        console.log("input keydown");
+        if(event.keyCode == 13 || event.keyCode == 9) {
+            $(this).parents(".card").find(".next").click();
+            event.preventDefault();
+            return false;
+        }
+    });
 });
