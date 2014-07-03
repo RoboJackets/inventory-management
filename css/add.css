@@ -162,7 +162,7 @@ td span.glyphicon {
 }
 
 td span.glyphicon:hover {
-    color: #428bca;
+    color: #777;
     font-size: 1.2em;
     line-height: 1.8;
 }

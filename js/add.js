@@ -94,6 +94,7 @@ function addAttributeInput() {
 
 $(document).ready(function() {
     var currentCardID = "#add-part";
+    var allowedChars = /^[\w-+=&]+$/;
     debug = "http://rj.str.at/";
 
     $(window).keydown(function(event){
@@ -132,7 +133,7 @@ $(document).ready(function() {
     });
 
     $("#partNumberInput").on("change keyup paste", function() {
-        if ($(this).val() !== "") {
+        if (allowedChars.test($(this).val())) {
             enableCard($("#edit-details"));
 
             var query = {"partNumber":$(this).val()};
@@ -154,6 +155,10 @@ $(document).ready(function() {
 
     $("table tbody tr:last-child input").one("focus", function() {
         addAttributeInput();
+    });
+
+    $("#edit-details input, #edit-details select").on("change keyup paste", function() {
+
     });
 
 });
