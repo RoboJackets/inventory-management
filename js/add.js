@@ -1,3 +1,6 @@
+var allowedChars = /^[\w-+=& ]+$/;
+
+
 function slideCard($card, direction, side) {
     if (direction === "in") {
         if (side === "right") {
@@ -92,9 +95,23 @@ function addAttributeInput() {
     $(".card table tbody").append($newRow);
 };
 
+function validateEditDetails() {
+    var partName = allowedChars.test($("#partNameInput").val());
+    var category = $("#categoryInput").val() !== null;
+    var description = /^[^'"\\]*$/.test($("#descriptionInput").val());
+    var datasheet = /^[^'"\\\s]+$/.test($("#datasheetInput").val());
+    var location = allowedChars.test($("#locationInput").val());
+
+    if (partName && category && description && datasheet && location) {
+        enableCard($("#add-attributes"));
+    } else {
+        disableCard($("#add-attributes"));
+    }
+}
+
 $(document).ready(function() {
     var currentCardID = "#add-part";
-    var allowedChars = /^[\w-+=&]+$/;
+
     debug = "http://rj.str.at/";
 
     $(window).keydown(function(event){
@@ -158,7 +175,12 @@ $(document).ready(function() {
     });
 
     $("#edit-details input, #edit-details select").on("change keyup paste", function() {
-
+        if (validateEditDetails()) {
+            enableCard($("#add-attributes"));
+        } else {
+            disableCard($(".card").slice(3));
+        }
     });
+
 
 });
