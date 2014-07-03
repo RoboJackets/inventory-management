@@ -35,9 +35,7 @@ function toCard(targetCardID, currentCardID) {
 };
 
 function enableCard($cards) {
-
     $cards.each(function(index){
-        //console.log("enable:" + $(this).index());
         var stepIndex = $(this).index() + 1;
         $("ol.steps li:nth-child(" + stepIndex + ")").addClass("btn-enabled");
     });
@@ -46,10 +44,8 @@ function enableCard($cards) {
     $cards.next(".card").children(".back").addClass("btn-enabled");
 };
 
-function disableCard($cards) {
-
+function disableCard($cards) {  
     $cards.each(function(index){
-        //console.log("disable:" + $(this).index());
         var stepIndex = $(this).index() + 1;
         $("ol.steps li:nth-child(" + stepIndex + ")").removeClass("btn-enabled");
     });
@@ -84,7 +80,7 @@ function addAttributeInput() {
         addAttributeInput();
     });
     $removeButton.click(function(){
-        $(this).closest('tr').children('td').animate({ padding: 0 }).wrapInner('<div />').children().slideUp(function() { 
+        $(this).closest('tr').children('td').animate({ padding: 0 }).wrapInner('<div />').children().slideUp(200, function() { 
             $(this).closest('tr').remove(); 
             $(".card table tbody tr").each(function(idx){
                 $(this).children().first().text(idx + 1);
@@ -144,9 +140,11 @@ $(document).ready(function() {
                 if (result === "true") {
                     $("#partNumberInput").parent().addClass("has-success");
                     enableFastTrack();
+                    $("#partNumberInput").tooltip();
                 } else {
                     $("#partNumberInput").parent().removeClass("has-success");
                     disableFastTrack();
+                    $("#partNumberInput").tooltip('destroy');
                 }
             });
         } else {
