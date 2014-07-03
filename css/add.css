@@ -60,7 +60,6 @@ ol.steps li:not(:first-child)::before {
     transition: background-color 0.1s;
 }
 
-
 ol.steps li.btn-enabled:hover,
 .round-icon.btn-enabled:hover {
     background-color: #428bca;
@@ -84,13 +83,6 @@ ol.steps li.btn-enabled,
     transition: color 0.1s, border-color 0.1s;
 }
 
-ol.steps li.steps-active {
-    background-color: #428bca;
-    color: #fff;
-    webkit-transition: background-color 0.1s, color 0.1s;
-    transition: background-color 0.1s, color 0.1s;
-}
-
 ol.steps li.btn-enabled.fast-track,
 .round-icon.btn-enabled.fast-track {
     color: #3C763D;
@@ -101,6 +93,21 @@ ol.steps li.btn-enabled.fast-track,
 
 ol.steps li.btn-enabled.fast-track:hover,
 .round-icon.btn-enabled.fast-track:hover {
+    background-color: #3C763D;
+    color: #fff;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+
+ol.steps li.steps-active {
+    background-color: #428bca;
+    color: #fff;
+    webkit-transition: background-color 0.1s, color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+ol.steps li.steps-active.fast-track {
     background-color: #3C763D;
     color: #fff;
     webkit-transition: background-color 0.1s, color 0.1s;

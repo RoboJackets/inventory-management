@@ -34,22 +34,40 @@ function toCard(targetCardID, currentCardID) {
     return targetCardID;
 };
 
-function enableCard(cardID) {
-    $card = $("#" + cardID);
-    var stepIndex = $card.index() + 1;
-    $("ol.steps li:nth-child(" + stepIndex + ")").addClass("btn-enabled");
+function enableCard($cards) {
 
-    $card.prev(".card").children(".next").addClass("btn-enabled");
-    $card.next(".card").children(".back").addClass("btn-enabled");
+    $cards.each(function(index){
+        //console.log("enable:" + $(this).index());
+        var stepIndex = $(this).index() + 1;
+        $("ol.steps li:nth-child(" + stepIndex + ")").addClass("btn-enabled");
+    });
+
+    $cards.prev(".card").children(".next").addClass("btn-enabled");
+    $cards.next(".card").children(".back").addClass("btn-enabled");
 };
 
-function disableCard(cardID) {
-    cardID = "#" + cardID;
-    var stepIndex = $(cardID).index() + 1;
-    $("ol.steps li:nth-child(" + stepIndex + ")").removeClass("btn-enabled");
+function disableCard($cards) {
 
-    $card.prev(".card").children(".next").removeClass("btn-enabled");
-    $card.next(".card").children(".back").removeClass("btn-enabled");
+    $cards.each(function(index){
+        //console.log("disable:" + $(this).index());
+        var stepIndex = $(this).index() + 1;
+        $("ol.steps li:nth-child(" + stepIndex + ")").removeClass("btn-enabled");
+    });
+
+    $cards.prev(".card").children(".next").removeClass("btn-enabled");
+    $cards.next(".card").children(".back").removeClass("btn-enabled");
+};
+
+function enableFastTrack() {
+    $(".card:first-child .next").addClass("fast-track");
+    $("ol.steps li:last-child").addClass("fast-track");
+    enableCard($(".card"));
+};
+
+function disableFastTrack() {
+    $(".card:first-child .next").removeClass("fast-track");
+    $("ol.steps li:last-child").removeClass("fast-track");
+    disableCard($(".card").slice(2));
 };
 
 function addAttributeInput() {
@@ -119,20 +137,20 @@ $(document).ready(function() {
 
     $("#partNumberInput").on("change keyup paste", function() {
         if ($(this).val() !== "") {
-            enableCard("edit-details");
+            enableCard($("#edit-details"));
 
             var query = {"partNumber":$(this).val()};
             $.post(debug + "add/validate-pn", query, function(result) {
                 if (result === "true") {
                     $("#partNumberInput").parent().addClass("has-success");
-                    $("#btn-add-part-next").addClass("fast-track");
+                    enableFastTrack();
                 } else {
                     $("#partNumberInput").parent().removeClass("has-success");
-                    $("#btn-add-part-next").removeClass("fast-track");
+                    disableFastTrack();
                 }
             });
         } else {
-            disableCard("edit-details");
+            disableCard($("#edit-details"));
         }
     });
 
