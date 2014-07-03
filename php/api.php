@@ -7,7 +7,7 @@
 
 // make sure required file(s) are set
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-if (file_exists($path . 'config.php')) { require_once $path . 'config.php'; }
+if (file_exists($path . 'config.php')) { require $path . 'config.php'; }
 // =========================================
 
 function Connect() {
