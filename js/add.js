@@ -102,11 +102,35 @@ function addAttributeInput(readOnly, key, value) {
 };
 
 function validateEditDetails() {
-    var partName = allowedChars.test($("#partNameInput").val());
+    var partName = allowedChars.test($("#partNameInput").val())
     var category = $("#categoryInput").val() !== null;
     var description = /^[^'"\\]*$/.test($("#descriptionInput").val());
     var datasheet = /^[^'"\\\s]+$/.test($("#datasheetInput").val());
     var location = allowedChars.test($("#locationInput").val());
+
+    if (partName || !$("#partNameInput").val()) {
+        $("#partNameInput").parent().removeClass("has-error");
+    } else {
+        $("#partNameInput").parent().addClass("has-error");
+    }
+
+    if (description || !$("#descriptionInput").val()) {
+        $("#descriptionInput").parent().removeClass("has-error");
+    } else {
+        $("#descriptionInput").parent().addClass("has-error");
+    }
+
+    if (datasheet || !$("#datasheetInput").val()) {
+        $("#datasheetInput").parent().removeClass("has-error");
+    } else {
+        $("#datasheetInput").parent().addClass("has-error");
+    }
+
+    if (location || !$("#locationInput").val()) {
+        $("#locationInput").parent().removeClass("has-error");
+    } else {
+        $("#locationInput").parent().addClass("has-error");
+    }
 
     if (partName && category && description && datasheet && location) {
         enableCard($("#add-attributes"));
@@ -173,6 +197,11 @@ $(document).ready(function() {
             });
         } else {
             disableCard($("#edit-details"));
+            if (!$(this).val()) {
+                $("#partNumberInput").parent().removeClass("has-error");
+            } else {
+                $("#partNumberInput").parent().addClass("has-error");
+            }
         }
     });
 
