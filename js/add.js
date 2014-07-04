@@ -68,7 +68,11 @@ function disableFastTrack() {
     disableCard($(".card").slice(2));
 };
 
-function addAttributeInput() {
+function addAttributeInput(readOnly, key, value) {
+    if (readOnly === undefined) readOnly = false;
+    if (key === undefined) key = "";
+    if (value === undefined) value = "";
+
     var attrNum = $(".card table tbody tr:last-child").index() + 2;
     $newRow = $("#add-attributes tbody tr:last-child").clone().find("input").val("").end();
     $newRow.children("td:first-child").text(attrNum);
@@ -77,6 +81,9 @@ function addAttributeInput() {
 
     $(".card table tbody tr:last-child td input").attr("placeholder","");
     $(".card table tbody tr:last-child td input").off();
+    $(".card table tbody tr:last-child td:nth-child(2) input").val(key);
+    $(".card table tbody tr:last-child td:nth-child(3) input").val(value);
+    if (readOnly) $(".card table tbody tr:last-child td:nth-child(2) input").attr("readonly", true);
 
     $newRow.find("input").one("focus", function() {
         addAttributeInput();
@@ -182,7 +189,6 @@ $(document).ready(function() {
     });
 
     $(".card form").find("input:last").keydown(function(event){
-        console.log("input keydown");
         if(event.keyCode == 13 || event.keyCode == 9) {
             $(this).parents(".card").find(".next").click();
             event.preventDefault();
