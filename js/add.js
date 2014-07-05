@@ -73,21 +73,11 @@ function addAttributeInput(readOnly, key, value) {
     if (key === undefined) key = "";
     if (value === undefined) value = "";
 
-    var attrNum = $(".card table tbody tr:last-child").index() + 2;
     $newRow = $("#add-attributes tbody tr:last-child").clone().find("input").val("").end();
-    $newRow.children("td:first-child").text(attrNum);
+    $newRow.find("input").attr("placeholder","");
 
     var $removeButton = $($.parseHTML('<span class="glyphicon glyphicon-remove"></span>'));
 
-    $(".card table tbody tr:last-child td input").attr("placeholder","");
-    $(".card table tbody tr:last-child td input").off();
-    $(".card table tbody tr:last-child td:nth-child(2) input").val(key);
-    $(".card table tbody tr:last-child td:nth-child(3) input").val(value);
-    if (readOnly) $(".card table tbody tr:last-child td:nth-child(2) input").attr("readonly", true);
-
-    $newRow.find("input").one("focus", function() {
-        addAttributeInput();
-    });
     $removeButton.click(function(){
         $(this).closest('tr').children('td').animate({ padding: 0 }).wrapInner('<div />').children().slideUp(200, function() { 
             $(this).closest('tr').remove(); 
@@ -97,9 +87,29 @@ function addAttributeInput(readOnly, key, value) {
         });
     });
 
-    $(".card table tbody tr:last-child td:last-child").append($removeButton);
-    $(".card table tbody").append($newRow);
+    $newRow.find("td:last-child").append($removeButton);
+
+    $newRow.find("td:nth-child(2) input").val(key);
+    $newRow.find("td:nth-child(3) input").val(value);
+    if (readOnly) $newRow.find("td:nth-child(2) input").attr("readonly", true);
+
+    if (readOnly) {
+        $("#add-attributes tbody tr td input:not([readonly])").first().parents("tr").before($newRow);
+    } else {
+        $("#add-attributes tbody tr:last-child").before($newRow);
+    }
+
+    $(".card table tbody tr").each(function(idx){
+        $(this).children().first().text(idx + 1);
+    });
 };
+
+function addAttributes(fields) {
+    $("#add-attributes table tbody tr td:nth-child(2) input[readonly]").parents("tr").find("span.glyphicon-remove").click();
+    $.each(fields, function(index, value) {
+        addAttributeInput(true, value);
+    })
+}
 
 function validateEditDetails() {
     var partName = allowedChars.test($("#partNameInput").val())
@@ -185,7 +195,8 @@ $(document).ready(function() {
 
             var query = {"partNumber":$(this).val()};
             $.post(debug + "add/validate-pn", query, function(result) {
-                if (result === "true") {
+                result = $.parseJSON(result);
+                if (result) {
                     $("#partNumberInput").parent().addClass("has-success");
                     enableFastTrack();
                     $("#partNumberInput").tooltip();
@@ -205,8 +216,10 @@ $(document).ready(function() {
         }
     });
 
-    $("table tbody tr:last-child input").one("focus", function() {
+    $("#add-attributes tbody tr:last-child input").on("focus", function() {
         addAttributeInput();
+        var index = $(this).parent().index() + 1;
+        $(this).parents("tr").prev().find("td:nth-child(" + index + ") input").focus();
     });
 
     $("#edit-details input, #edit-details select").on("change keyup paste", function() {
@@ -215,6 +228,27 @@ $(document).ready(function() {
         } else {
             disableCard($(".card").slice(3));
         }
+    });
+
+    $("#edit-details select").change(function() {
+        var attributes = {
+            capacitor: [
+                "Capacitance",
+                "Tolerance",
+                "Voltage",
+                "Package"],
+            connector: [],
+            diode: [],
+            ic: [],
+            inductor: [],
+            oscillator: [],
+            resistor: [
+                "Resistance",
+                "Tolerance",
+                "Package"],
+            other: []
+        };
+        addAttributes(attributes[$(this).val()]);
     });
 
     $(".card form").find("input:last").keydown(function(event){
