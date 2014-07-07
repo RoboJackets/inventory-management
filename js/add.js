@@ -94,7 +94,7 @@ function addAttributeInput(readOnly, key, value) {
     if (readOnly) $newRow.find("td:nth-child(2) input").attr("readonly", true);
 
     if (readOnly) {
-        $("#add-attributes tbody tr td input:not([readonly])").first().parents("tr").before($newRow);
+        $("#add-attributes tbody tr td:nth-child(2) input:not([readonly])").first().parents("tr").before($newRow);
     } else {
         $("#add-attributes tbody tr:last-child").before($newRow);
     }
@@ -200,6 +200,7 @@ $(document).ready(function() {
                     $("#partNumberInput").parent().addClass("has-success");
                     enableFastTrack();
                     $("#partNumberInput").tooltip();
+
                 } else {
                     $("#partNumberInput").parent().removeClass("has-success");
                     disableFastTrack();
@@ -238,15 +239,23 @@ $(document).ready(function() {
                 "Voltage",
                 "Package"],
             connector: [],
-            diode: [],
-            ic: [],
-            inductor: [],
-            oscillator: [],
+            diode: [
+                "Type",
+                "Package"],
+            ic: [
+                "Package"],
+            inductor: [
+                "Inductance",
+                "Package"],
+            oscillator: [
+                "Frequency",
+                "Package"],
             resistor: [
                 "Resistance",
                 "Tolerance",
                 "Package"],
-            other: []
+            other: [
+                "Package"]
         };
         addAttributes(attributes[$(this).val()]);
     });
