@@ -57,13 +57,13 @@ function disableCard($cards) {
 };
 
 function enableFastTrack() {
-    $(".card:first-child .next").addClass("fast-track");
+    $(".card:first-child .next, .submit").addClass("fast-track");
     $("ol.steps li:last-child").addClass("fast-track");
     enableCard($(".card"));
 };
 
 function disableFastTrack() {
-    $(".card:first-child .next").removeClass("fast-track");
+    $(".card:first-child .next, .submit").removeClass("fast-track");
     $("ol.steps li:last-child").removeClass("fast-track");
     disableCard($(".card").slice(2));
 };
@@ -265,6 +265,14 @@ $(document).ready(function() {
             $(this).parents(".card").find(".next").click();
             event.preventDefault();
             return false;
+        }
+    });
+
+    $("#barcodeInput").on("change keyup paste", function() {
+        if (allowedChars.test($(this).val())) {
+            $(".submit").addClass("btn-enabled");
+        } else {
+            $(".submit").removeClass("btn-enabled");
         }
     });
 });
