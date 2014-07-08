@@ -87,11 +87,19 @@ function addAttributeInput(readOnly, key, value) {
         });
     });
 
+    $newRow.find("input").on("change keyup paste", function() {
+        if (validateAddAttributes()) {
+            enableCard($("#confirm"));
+        } else {
+            disableCard($("#confirm"));
+        }
+    });
+
     $newRow.find("td:last-child").append($removeButton);
 
     $newRow.find("td:nth-child(2) input").val(key);
     $newRow.find("td:nth-child(3) input").val(value);
-    if (readOnly) $newRow.find("td:nth-child(2) input").attr("readonly", true);
+    if (readOnly) $newRow.find("td:nth-child(2) input").attr({readonly: true, tabindex:-1});
 
     if (readOnly) {
         $("#add-attributes tbody tr td:nth-child(2) input:not([readonly])").first().parents("tr").before($newRow);
@@ -147,6 +155,26 @@ function validateEditDetails() {
     } else {
         disableCard($("#add-attributes"));
     }
+}
+
+function validateAddAttributes() {
+    var flag = true;
+    $("#add-attributes table tbody tr input").parent().removeClass("has-error");
+    $("#add-attributes table tbody tr").each(function(index, value) {
+        $key = $(this).find("td:nth-child(2) input");
+        $val = $(this).find("td:nth-child(3) input");
+        if(($key.val() == "")?!($val.val() == ""):($val.val() == "")) { //XNOR
+            flag = false;
+        }
+    });
+
+    $("#add-attributes table tbody tr input").each(function(index, value) {
+        if(!/^[^'"\\]*$/.test($(this).val())) {
+            $(this).parent().addClass("has-error");
+            flag = false;
+        }
+    });
+    return flag;
 }
 
 $(document).ready(function() {
