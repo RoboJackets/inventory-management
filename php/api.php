@@ -11,7 +11,6 @@ if (file_exists($path . 'config.php')) { require $path . 'config.php'; }
 // =========================================
 
 function Connect() {
-    
     // Create connection (object oriented way)
     $conn = new mysqli(HOST, USER, PASSWORD, DATABASE);
     StartSession();
@@ -19,22 +18,41 @@ function Connect() {
     if ($conn->connect_error) {
         trigger_error('Database connection failed: ' . $CONN->connect_error, E_USER_ERROR);
     }
-    
     return $conn;
 }
 
 function SearchDB($connection, $mode, $search_input) {
-    
+    $search_input = $mysqli->real_escape_string($search_input); // escape the input
     if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
     else { $sql_query = SearchByBarcode($search_input); }  // default to barcode search - by partnum for test dev
-    
-    $json_results = FilterResults($connection->query($sql_query));   // main operations here
-    
-    return $json_results;
+    return FilterResults($connection->query($sql_query));   // main operations here
 }  
+
+function QueryWithPrepare() {
     
+    /* Prepared statement, stage 1: prepare */
+    if (!($stmt = $mysqli->prepare("INSERT INTO test(id) VALUES (?)"))) {
+    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
+     
+     /* Prepared statement, stage 2: bind and execute */
+    $id = 1;
+    if (!$stmt->bind_param("i", $id)) {
+    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+    }
+
+    if (!$stmt->execute()) {
+    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+    }
+  } 
+}
+
+function ValidateInput($input){
+    $input = trim($input);
+    $input = stripslashes ($input);
+    $input = htmlspecialchars($input);
+}
+
 function FilterResults($result) {
-    
     $response = array();
     if ($result->num_rows) {  // If results are found...
         while($row = mysqli_fetch_array($result)) {
@@ -44,25 +62,22 @@ function FilterResults($result) {
             $temp['PartLocation'] = $row['PartLocation'];
             $temp['PartAttrib'] = $row['PartAttrib'];
             $temp['PartVal'] = $row['PartVal'];
-
             // place the data into array of json data
             array_push($response, $temp);
         }
     } else {
-        $temp['PartNum'] = 0000000000;
+        $temp['PartNum'] = 0;
         $temp['PartName'] = "Not Found";
-        $temp['PartCat'] = "";
-        $temp['PartLocation'] = 000;
+        $temp['PartCat'] = "N/A";
+        $temp['PartLocation'] = 0;
         $temp['PartAttrib'] = "N/A";
         $temp['PartVal'] = "N/A";
         array_push($response, $temp);
     }
-    
     return json_encode($response);  // return JSON encoded data
 }
 
 function SearchByBarcode($barcode) {
-    
     $query = "SELECT barcode_lookup.PART_NUM AS PartNum, parts.name AS PartName, 
         parts.category AS PartCat, parts.location AS PartLocation, 
         attributes.attribute AS PartAttrib, attributes.value AS PartVal
@@ -70,35 +85,28 @@ function SearchByBarcode($barcode) {
     LEFT JOIN parts ON barcode_lookup.PART_NUM=parts.PART_NUM
     LEFT JOIN attributes ON parts.PART_NUM=attributes.PART_NUM
     WHERE barcode_lookup.barcode=" . "'" . $barcode . "'";
-            
     return $query;
 }
 
 function SearchByPartNum($part_number) {
-   
     $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
     FROM parts
     LEFT JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
     WHERE parts.PART_NUM=" . "'" . $part_number . "'";
-    
-    // $query = "SELECT * FROM parts WHERE PART_NUM=" . "'" . $part_number . "'";
     return $query;
 }
 
 function SearchByBin($bin) {
-    
     $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
     FROM parts
     JOIN attributes
     ON parts.PART_NUM=attributes.PART_NUM
     WHERE parts.location=" . "'" . $bin . "'";
-            
     return $query;
 }
 
 function StartSession() {       // function used for making initial connections
-    
     $session_name = 'sec_session_id';   // Set a custom session name
     $secure = SECURE;   // defined in rj-inv_config.php
     
@@ -127,4 +135,20 @@ function StartSession() {       // function used for making initial connections
     session_start();                // Start the PHP session 
     session_regenerate_id();        // Regenerated the session, delete the old one.
     return;
+}
+
+function AddAttribs() {
+    
+}
+
+function LinkBarcode() {
+    
+}
+
+function AddPart() {
+    
+}
+
+function UpdateStock() {
+    
 }
