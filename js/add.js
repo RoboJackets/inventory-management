@@ -262,27 +262,66 @@ $(document).ready(function() {
     $("#edit-details select").change(function() {
         var attributes = {
             capacitor: [
+                "Type",
                 "Capacitance",
                 "Tolerance",
-                "Voltage",
+                "Voltage Rating",
+                "Series",
+                "Package",
+                "Mounting Type"],
+            connector: [
+                "Pitch",
+                "Series",
+                "Number of Positions",
+                "Number of Rows",
+                "Connector Type",
+                "Contact Type",
+                "Mounting Type",
                 "Package"],
-            connector: [],
             diode: [
                 "Type",
+                "Series",
+                "Direction",
+                "Channels",
+                "Voltage Forward",
+                "Voltage Reverse",
+                "Mounting Type",
                 "Package"],
             ic: [
-                "Package"],
+                "Type",
+                "Series",
+                "Package",
+                "Mounting Type"],
             inductor: [
+                "Type",
+                "Series",
                 "Inductance",
+                "Tolerance",
+                "Shielding",
+                "Current Rating",
+                "Mounting Type",
                 "Package"],
             oscillator: [
                 "Frequency",
+                "Type",
+                "Series",
+                "Function",
+                "VS",
+                "Current Supply",
+                "Mounting Type",
                 "Package"],
             resistor: [
                 "Resistance",
                 "Tolerance",
+                "Series",
+                "Power",
+                "Channels",
+                "Mounting Type",
                 "Package"],
             other: [
+                "Part Type",
+                "Mounting Type",
+                "Series",
                 "Package"]
         };
         addAttributes(attributes[$(this).val()]);
