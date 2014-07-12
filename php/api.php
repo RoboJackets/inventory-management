@@ -1,124 +1,176 @@
 <?php
-
 /* 
- * This file contains the functions for making a connection to the database
- * and searching the database for information.
+ * Contains all functions and subroutines used for accessing the db.
  */
 
-// make sure required file(s) are set
-if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-if (file_exists($path . 'config.php')) { require $path . 'config.php'; }
-// =========================================
-
-function Connect() {
-    // Create connection (object oriented way)
-    $conn = new mysqli(HOST, USER, PASSWORD, DATABASE);
-    StartSession();
-    // Check for connection error
-    if ($conn->connect_error) {
-        trigger_error('Database connection failed: ' . $CONN->connect_error, E_USER_ERROR);
-    }
-    return $conn;
-}
-
-function SearchDB($connection, $mode, $search_input) {
-    $search_input = $mysqli->real_escape_string($search_input); // escape the input
-    if ($mode == 'bin') { $sql_query = SearchByBin($search_input); } 
-    else { $sql_query = SearchByBarcode($search_input); }  // default to barcode search - by partnum for test dev
-    return FilterResults($connection->query($sql_query));   // main operations here
-}  
-
-function QueryWithPrepare() {
+// Pass the search mode and input to search for into this subroutine and it does the rest
+function SearchDB($mode, $search_input) {
     
-    /* Prepared statement, stage 1: prepare */
-    if (!($stmt = $mysqli->prepare("INSERT INTO test(id) VALUES (?)"))) {
-    echo "Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error;
-     
-     /* Prepared statement, stage 2: bind and execute */
-    $id = 1;
-    if (!$stmt->bind_param("i", $id)) {
-    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-    }
+    $search_input = $CONN->real_escape_string( function ($search_input) {
+            return htmlspecialchars(stripslashes(trim($search_input))); // cleanup the input a bit
+        }); // escape the input
+        
+    if($query = $CONN->prepare( function($mode) {
+            switch ($mode) {
+            case "bin":
+                return sqlBin();
+                break;
+            case "barcode":
+                return sqlBarcode();
+                break;
+            default:
+                return sqlPart();
+            }   // end of switch case
+    })) {   // begin when 'if' statement is valid
+        
+        if (!$query->bind_param('s', $search_input))
+            echo "Binding Parameters Failed" . $query->errno . ") " . $query->error;
 
-    if (!$stmt->execute()) {
-    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-    }
-  } 
+        if (!$query->execute())
+            echo "Execute Failed: (" . $query->errno . ") " . $query->error;
+        
+        //if (!$query->bind_result($results))
+        //    echo "Binding Results Failed: (" . $query->errno . ") " . $query->error;
+    
+    }   // end of 'if' statement
+    
+    return FilterResults($query);   // return the json encoded data after being filtered
 }
 
-function ValidateInput($input){
-    $input = trim($input);
-    $input = stripslashes ($input);
-    $input = htmlspecialchars($input);
-}
-
+// This function filters the results for searched data
 function FilterResults($result) {
     $response = array();
     if ($result->num_rows) {  // If results are found...
-        while($row = mysqli_fetch_array($result)) {
+        while($row = $result->fetch_assoc()) {
+            $temp['PackageIDs'] = $row['PackageIDs'];
             $temp['PartNum'] = $row['PartNum'];
             $temp['PartName'] = $row['PartName'];
             $temp['PartCat'] = $row['PartCat'];
+            $temp['PartDesc'] = $row['PartDesc'];
+            $temp['PartSheet'] = $row['PartSheet'];
             $temp['PartLocation'] = $row['PartLocation'];
-            $temp['PartAttrib'] = $row['PartAttrib'];
-            $temp['PartVal'] = $row['PartVal'];
+            $temp['PartErr'] = $row['PartErr'];
+            $temp['PartStatus'] = $row['PartStatus'];
+            $temp['PartAtrbs'] = $row['PartAtrbs'];
+            $temp['PartVals'] = $row['PartVals'];
+            $temp['PartPrty'] = $row['PartPrty'];
             // place the data into array of json data
             array_push($response, $temp);
         }
-    } else {
-        $temp['PartNum'] = 0;
-        $temp['PartName'] = "Not Found";
-        $temp['PartCat'] = "N/A";
-        $temp['PartLocation'] = 0;
-        $temp['PartAttrib'] = "N/A";
-        $temp['PartVal'] = "N/A";
-        array_push($response, $temp);
     }
     return json_encode($response);  // return JSON encoded data
 }
 
-function SearchByBarcode($barcode) {
-    $query = "SELECT barcode_lookup.PART_NUM AS PartNum, parts.name AS PartName, 
-        parts.category AS PartCat, parts.location AS PartLocation, 
-        attributes.attribute AS PartAttrib, attributes.value AS PartVal
+// sql queries - needs 
+function sqlBarcode() {
+    return "SELECT
+        barcode AS PackageIDs,
+        parts.PART_NUM AS PartNum,
+        barcode_lookup.added AS BarAdd,
+        name AS PartName,
+        category AS PartCat,
+        description AS PartDesc,
+        datasheet AS PartSheet,
+        location AS PartLocation,
+        flag_error AS PartErr,
+        status AS PartStatus,
+        parts.updated AS PartUpdated,
+        attributes.attribute AS PartAtrbs, 
+        attributes.value AS PartVals,
+        attributes.priority AS PartPrty
     FROM barcode_lookup
-    LEFT JOIN parts ON barcode_lookup.PART_NUM=parts.PART_NUM
-    LEFT JOIN attributes ON parts.PART_NUM=attributes.PART_NUM
-    WHERE barcode_lookup.barcode=" . "'" . $barcode . "'";
-    return $query;
+        LEFT JOIN parts 
+            ON parts.PART_NUM=barcode_lookup.PART_NUM
+            LEFT JOIN attributes 
+                ON barcode_lookup.PART_NUM=attributes.PART_NUM
+    WHERE barcode_lookup.barcode=(?)";
 }
 
-function SearchByPartNum($part_number) {
-    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+function sqlPart() {
+    return "SELECT
+        barcode AS PackageIDs,
+        parts.PART_NUM AS PartNum,
+        barcode_lookup.added AS BarAdd,
+        name AS PartName,
+        category AS PartCat,
+        description AS PartDesc,
+        datasheet AS PartSheet,
+        location AS PartLocation,
+        flag_error AS PartErr,
+        status AS PartStatus,
+        parts.updated AS PartUpdated,
+        attributes.attribute AS PartAtrbs, 
+        attributes.value AS PartVals,
+        attributes.priority AS PartPrty
     FROM parts
-    LEFT JOIN attributes
-    ON parts.PART_NUM=attributes.PART_NUM
-    WHERE parts.PART_NUM=" . "'" . $part_number . "'";
-    return $query;
+        LEFT JOIN attributes
+            ON parts.PART_NUM=attributes.PART_NUM
+        LEFT JOIN barcode_lookup
+            ON parts.PART_NUM=barcode_lookup.PART_NUM
+    WHERE parts.PART_NUM=(?)";
 }
 
-function SearchByBin($bin) {
-    $query = "SELECT parts.PART_NUM, parts.name, parts.category, parts.location, attributes.attribute, attributes.value
+function sqlBin() {
+    return "SELECT
+        barcode AS PackageIDs,
+        parts.PART_NUM AS PartNum,
+        barcode_lookup.added AS BarAdd,
+        name AS PartName,
+        category AS PartCat,
+        description AS PartDesc,
+        datasheet AS PartSheet,
+        location AS PartLocation,
+        flag_error AS PartErr,
+        status AS PartStatus,
+        parts.updated AS PartUpdated,
+        attributes.attribute AS PartAtrbs, 
+        attributes.value AS PartVals,
+        attributes.priority AS PartPrty
     FROM parts
-    JOIN attributes
-    ON parts.PART_NUM=attributes.PART_NUM
-    WHERE parts.location=" . "'" . $bin . "'";
-    return $query;
+        LEFT JOIN attributes
+            ON parts.PART_NUM=attributes.PART_NUM
+        LEFT JOIN barcode_lookup
+            ON parts.PART_NUM=barcode_lookup.PART_NUM
+    WHERE parts.location=(?)";
 }
 
+function sqlCountAllBar(){
+    return "SELECT COUNT(*) FROM barcode_lookup";
+}
+
+function sqlCountAllParts(){
+    return "SELECT COUNT(*) FROM parts";
+}
+
+function sqlGetSimilarBarcodes(){
+    return "SELECT COUNT(*) FROM parts WHERE barcode_lookup.PART_NUM=(?)";
+}
+function AddAttribs() {
+    return "INSERT INTO attributes (PART_NUM, attribute, value, priority)
+        VALUES ($PartNum, ?, ?, ?)";
+}
+
+function LinkBarcode() {
+    return "INSERT INTO barcode_lookup (PART_NUM, barcode)
+        VALUES ($PartNum, ?)";
+}
+
+function sqlReorders() {
+    return "SELECT * FROM parts WHERE statue='out_of_stock'";
+}
+
+function sqlEmpty() {
+    return "SELECT * FROM parts WHERE statue='no_reorder'";
+}
+
+/*  might come of use later...but not now.
 function StartSession() {       // function used for making initial connections
     $session_name = 'sec_session_id';   // Set a custom session name
     $secure = SECURE;   // defined in rj-inv_config.php
     
     // Stop JavaScript from being able to access the session id.
     $httponly = true;
-    
-    // Forces sessions to only use cookies. [not really sure about the header here]
-    if (ini_set('session.use_only_cookies', 1) === FALSE) {
-        header('Location: ../error.php?err=Could not initiate a safe session (ini_set)');
-        exit();
-    }
-    
+ * 
     // Get current cookies params.
     $cookieParams = session_get_cookie_params();
     
@@ -135,20 +187,4 @@ function StartSession() {       // function used for making initial connections
     session_start();                // Start the PHP session 
     session_regenerate_id();        // Regenerated the session, delete the old one.
     return;
-}
-
-function AddAttribs() {
-    
-}
-
-function LinkBarcode() {
-    
-}
-
-function AddPart() {
-    
-}
-
-function UpdateStock() {
-    
-}
+} */
