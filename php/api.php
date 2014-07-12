@@ -11,7 +11,8 @@ function SearchDB($mode, $search_input) {
         }; // cleanup input
         
         echo "\n\nbegin\n";
-        echo "input: " . $search_input."\n";
+        echo "input: " . $search_input . "\n";
+        echo '\n';
         
     if($query = $CONN->prepare( function($mode) use ($mode) {
             switch ($mode) {
