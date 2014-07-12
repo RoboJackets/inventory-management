@@ -17,11 +17,7 @@ function SearchDB($mode, $search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
         } // cleanup input */
     
-    $query = $CONN->prepare("SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, "
-            . "name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, "
-            . "status AS PartStatus, parts.updated AS PartUpdated, attributes.attribute AS PartAtrbs,  attributes.value AS PartVals, "
-            . "attributes.priority AS PartPrty FROM barcode_lookup LEFT JOIN parts ON parts.PART_NUM=barcode_lookup.PART_NUM LEFT JOIN "
-            . "attributes ON barcode_lookup.PART_NUM=attributes.PART_NUM WHERE barcode_lookup.barcode=?");
+    $query = $CONN->prepare(QUERY);
     
     if(!$query){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
@@ -81,7 +77,7 @@ function getStatement($mode) {
 
 // sql queries - needs 
 function sqlBarcode(){
-    return '"SELECT barcode AS PackageIDs,
+    define("QUERY", "\"SELECT barcode AS PackageIDs,
         parts.PART_NUM AS PartNum,
         barcode_lookup.added AS BarAdd,
         name AS PartName,
@@ -92,15 +88,12 @@ function sqlBarcode(){
         flag_error AS PartErr,
         status AS PartStatus,
         parts.updated AS PartUpdated,
-        attributes.attribute AS PartAtrbs, 
-        attributes.value AS PartVals,
-        attributes.priority AS PartPrty
     FROM barcode_lookup
         LEFT JOIN parts 
             ON parts.PART_NUM=barcode_lookup.PART_NUM
             LEFT JOIN attributes 
                 ON barcode_lookup.PART_NUM=attributes.PART_NUM
-    WHERE barcode_lookup.barcode=?"';
+    WHERE barcode_lookup.barcode=?\"");
 }
 
 function sqlPart() {
