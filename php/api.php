@@ -34,7 +34,7 @@ function SearchDB($mode, $search_input) {
 
     // This function filters the results for searched data
     function FilterPartData($result) {
-    if (!$result->bind_result($one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven, $twelve, $thirteen, $fourteen)) {
+    if (!$result->bind_result($one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven)) {
         echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error . "\n";
     }
     $temp;
