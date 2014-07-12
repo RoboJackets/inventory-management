@@ -54,9 +54,6 @@ function SearchDB($mode, $search_input) {
         $temp['PartErr'] = $nine;
         $temp['PartStatus'] =  $ten;
         $temp['PartUpdated'] = $eleven;
-        $temp['PartAtrbs'] =  $twelve;
-        $temp['PartVals'] =  $thirteen;
-        $temp['PartPrty'] =  $fourteen;
         array_push($response, $temp);
     }
     return json_encode($response);
