@@ -37,12 +37,17 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    if (!$query->bind_result($one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven, $twelve, $thirteen, $fourteen)) {
+    return json_encode(FilterResults($query));   // return the json encoded data after being filtered
+}
+
+// This function filters the results for searched data
+function FilterPartData($result) {
+    if (!$result->bind_result($one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven, $twelve, $thirteen, $fourteen)) {
         echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error . "\n";
     }
-    
+    $temp;
     $response = array();
-    while ($query->fetch()){
+    while ($result->fetch()){
         $temp['PackageIDs'] = $one;
         $temp['PartNum'] = $two;
         $temp['BarAdd'] = $three;
@@ -56,31 +61,12 @@ function SearchDB($mode, $search_input) {
         $temp['PartUpdated'] = $eleven;
         array_push($response, $temp);
     }
-    return json_encode($response);
-    // return FilterResults($query);   // return the json encoded data after being filtered
+    return response;
 }
 
-// This function filters the results for searched data
-function FilterResults($result) {
-    $response = array();
-    while($row = $result->fetch()) {
-      /*  $temp['PackageIDs'] = $row['PackageIDs'];
-        $temp['PartNum'] = $row['PartNum'];
-        $temp['PartName'] = $row['PartName'];
-        $temp['PartCat'] = $row['PartCat'];
-        $temp['PartDesc'] = $row['PartDesc'];
-        $temp['PartSheet'] = $row['PartSheet'];
-        $temp['PartLocation'] = $row['PartLocation'];
-        $temp['PartErr'] = $row['PartErr'];
-        $temp['PartStatus'] = $row['PartStatus'];
-        $temp['PartAtrbs'] = $row['PartAtrbs'];
-        $temp['PartVals'] = $row['PartVals'];
-        $temp['PartPrty'] = $row['PartPrty']; */
-      print_r($row);
-        // place the data into array of json data
-        array_push($response, $temp);
-    }
-    return json_encode($response);  // return JSON encoded data
+function FilterAtrbs($result){
+    
+    
 }
 
 
