@@ -59,8 +59,8 @@ function SearchDB($mode, $search_input) {
         $temp['PartPrty'] =  $fourteen;
         array_push($response, $temp);
     }
-
-    return FilterResults($query);   // return the json encoded data after being filtered
+    return json_encode($response);
+    // return FilterResults($query);   // return the json encoded data after being filtered
 }
 
 // This function filters the results for searched data
