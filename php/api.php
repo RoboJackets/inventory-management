@@ -35,6 +35,10 @@ function SearchDB($mode, $search_input) {
     }
     
     // echo "Results: " . $query->num_rows . "\n\n";
+    
+    $array = $query->get_result();
+    
+    echo $array[1];
 
     return FilterResults($query);   // return the json encoded data after being filtered
 }
