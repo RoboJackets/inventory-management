@@ -34,9 +34,7 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    $query->store_results();
-    
-    echo "Results: " . $query->num_rows . "\n\n";
+    // echo "Results: " . $query->num_rows . "\n\n";
 
     return FilterResults($query);   // return the json encoded data after being filtered
 }
@@ -44,8 +42,8 @@ function SearchDB($mode, $search_input) {
 // This function filters the results for searched data
 function FilterResults($result) {
     $response = array();
-    while($row = $result->fetch_assoc()) {
-        $temp['PackageIDs'] = $row['PackageIDs'];
+    while($row = $result->fetch()) {
+      /*  $temp['PackageIDs'] = $row['PackageIDs'];
         $temp['PartNum'] = $row['PartNum'];
         $temp['PartName'] = $row['PartName'];
         $temp['PartCat'] = $row['PartCat'];
@@ -56,7 +54,8 @@ function FilterResults($result) {
         $temp['PartStatus'] = $row['PartStatus'];
         $temp['PartAtrbs'] = $row['PartAtrbs'];
         $temp['PartVals'] = $row['PartVals'];
-        $temp['PartPrty'] = $row['PartPrty'];
+        $temp['PartPrty'] = $row['PartPrty']; */
+      print_r($row);
         // place the data into array of json data
         array_push($response, $temp);
     }
