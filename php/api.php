@@ -22,6 +22,8 @@ function SearchDB($mode, $search_input) {
     echo "mode: " . $mode . "\n";
     echo "input: " . $search_input . "\n\n";
     $query = NULL;
+    echo getStatement($mode);
+    echo "\n\n";
     if(!$query = $CONN->prepare(getStatement($mode)));
         echo "Variable not set\n";
         
@@ -64,8 +66,6 @@ function getStatement($mode) {
     case 'bin':
         return sqlBin();
     case 'barcode':
-        echo sqlBarcode();
-        echo "\n";
         return sqlBarcode();
     default:
         exit(12);    // do not perform db operations without bin or barcode mode specified
