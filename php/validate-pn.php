@@ -3,7 +3,7 @@
 $app->post('/add/validate-pn', function() use ($app) {
     // Set Database credentials
     if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-    if (file_exists($path . 'db-conn.php')) { require_once $path . 'db-conn.php'; }
+    require $path . 'db-conn.php';
 
     $partNum = $_POST['partNumber'];
 
