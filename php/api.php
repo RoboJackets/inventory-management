@@ -29,9 +29,9 @@ function SearchDB($mode, $search_input) {
             return sqlBin();
         case 'barcode':
             echo "success for switch statement\n\n";
-            return sqlBarcode();
+            return (sqlBarcode());
         default:
-            exit(0);    // do not perform db operations without bin or barcode mode specified
+            exit(1);    // do not perform db operations without bin or barcode mode specified
         }   // end of switch case
     });
     
