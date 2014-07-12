@@ -37,7 +37,8 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    return json_encode(FilterResults($query));   // return the json encoded data after being filtered
+    $returnData = FilterPartData($query);
+    return json_encode($returnData);   // return the json encoded data after being filtered
 }
 
 // This function filters the results for searched data
