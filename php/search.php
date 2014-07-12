@@ -7,16 +7,16 @@ require $path.'api.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is given
 
-    echo 'mode:' . $_GET['mode'] . '\n';
-    echo 'search input:' . $_GET['input'] . '\n';
-    echo '-------------------------\n\n';
+    echo 'mode:' . $_GET['mode'] . '\r\n';
+    echo 'search input:' . $_GET['input'] . '\r\n';
+    echo '-------------------------\r\n\r\n';
     
     // function that searches the database and returns json array
     echo SearchDB($_GET['mode'], $_GET['input']);
     
-    echo "before close\n";
+    echo "before close\r\n";
     
     mysqli_close($CONN);  // close connection
     
-    echo "end - closed connection\n";
+    echo "end - closed connection\r\n";
 }
