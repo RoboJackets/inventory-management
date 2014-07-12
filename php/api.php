@@ -25,9 +25,10 @@ function SearchDB($mode, $search_input) {
                 break;
             default:
                 exit(1);    // do not perform db operations without bin or barcode mode specified
-            }   // end of switch case
+            };   // end of switch case
             echo "break inside 1\n";
-    })) {   // begin when 'if' statement is valid
+    };
+    )) {   // begin when 'if' statement is valid
         
         if (!$query->bind_param('s', $search_input))
             echo "Binding Parameters Failed" . $query->errno . ") " . $query->error;
