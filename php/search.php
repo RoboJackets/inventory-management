@@ -7,6 +7,7 @@ require $path.'api.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is given
 // 
+    echo "break1";
     // function that searches the database and returns json array
     echo SearchDB($_GET['mode'], $_GET['input']);
     
