@@ -3,6 +3,9 @@
  * Contains all functions and subroutines used for accessing the db.
  */
 
+if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; } // make sure path is known
+require $path.'db-conn.php';
+
 // Pass the search mode and input to search for into this subroutine and it does the rest
 function SearchDB($mode, $search_input) {
     /*
@@ -12,9 +15,7 @@ function SearchDB($mode, $search_input) {
     echo "\n\n--------- Inside Function ---------\n";
     echo "mode: " . $mode . "\n";
     echo "input: " . $search_input . "\n\n";
-    
-    echo isset($query) . "\n";
-    
+        
     echo $GLOBALS['CONN'] . "\n";
         
     $query = $GLOBALS['CONN']->prepare( function($mode) use ($mode) {
