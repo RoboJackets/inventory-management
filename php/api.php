@@ -26,7 +26,7 @@ function SearchDB($mode, $search_input) {
     if(!$query){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
     }
-    if (!$query->bind_param('i', 6)) {
+    if (!$query->bind_param('s', "6")) {
         echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
     }
     if (!$query->execute()) {
