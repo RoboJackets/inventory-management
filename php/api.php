@@ -24,7 +24,8 @@ function SearchDB($mode, $search_input) {
     $query = NULL;
     echo getStatement($mode);
     echo "\n\n";
-    if(!$query = $CONN->prepare(getStatement($mode)));
+    
+    if($query = $CONN->prepare(getStatement($mode)));
         echo "Variable not set\n";
         
     if (!$query->bind_param('s', $search_input))
@@ -33,29 +34,27 @@ function SearchDB($mode, $search_input) {
     if (!$query->execute())
         echo "Execute Failed: (" . $query->errno . ") " . $query->error . "\n";
 
-    return FilterResults($query);   // return the json encoded data after being filtered
+    return FilterResults($query->get_result());   // return the json encoded data after being filtered
 }
 
 // This function filters the results for searched data
 function FilterResults($result) {
     $response = array();
-    if ($result->num_rows) {  // If results are found...
-        while($row = $result->fetch_assoc()) {
-            $temp['PackageIDs'] = $row['PackageIDs'];
-            $temp['PartNum'] = $row['PartNum'];
-            $temp['PartName'] = $row['PartName'];
-            $temp['PartCat'] = $row['PartCat'];
-            $temp['PartDesc'] = $row['PartDesc'];
-            $temp['PartSheet'] = $row['PartSheet'];
-            $temp['PartLocation'] = $row['PartLocation'];
-            $temp['PartErr'] = $row['PartErr'];
-            $temp['PartStatus'] = $row['PartStatus'];
-            $temp['PartAtrbs'] = $row['PartAtrbs'];
-            $temp['PartVals'] = $row['PartVals'];
-            $temp['PartPrty'] = $row['PartPrty'];
-            // place the data into array of json data
-            array_push($response, $temp);
-        }
+    while($row = $result->fetch_assoc()) {
+        $temp['PackageIDs'] = $row['PackageIDs'];
+        $temp['PartNum'] = $row['PartNum'];
+        $temp['PartName'] = $row['PartName'];
+        $temp['PartCat'] = $row['PartCat'];
+        $temp['PartDesc'] = $row['PartDesc'];
+        $temp['PartSheet'] = $row['PartSheet'];
+        $temp['PartLocation'] = $row['PartLocation'];
+        $temp['PartErr'] = $row['PartErr'];
+        $temp['PartStatus'] = $row['PartStatus'];
+        $temp['PartAtrbs'] = $row['PartAtrbs'];
+        $temp['PartVals'] = $row['PartVals'];
+        $temp['PartPrty'] = $row['PartPrty'];
+        // place the data into array of json data
+        array_push($response, $temp);
     }
     return json_encode($response);  // return JSON encoded data
 }
