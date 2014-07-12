@@ -10,32 +10,33 @@ function SearchDB($mode, $search_input) {
     $search_input = function($search_input) use ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
         } // cleanup input */
-        echo "\n\n--------- Inside Function ---------\n";
-        echo "mode: " . $mode . "\n";
-        echo "input: " . $search_input . "\n\n";
-        
-    if($query = $CONN->prepare( function($mode) use ($mode) {
-            switch ($mode) {
-            case "bin":
-                return '"' . sqlBin() . '"';
-            case "barcode":
-                echo "success for switch statement\n\n";
-                return '"' . sqlBarcode() . "'";
-            default:
-                exit(1);    // do not perform db operations without bin or barcode mode specified
-            }   // end of switch case
-    })) {   // begin when 'if' statement is valid
-        
-        if (!$query->bind_param('s', $search_input))
-            echo "Binding Parameters Failed" . $query->errno . ") " . $query->error . "\n";
-
-        if (!$query->execute())
-            echo "Execute Failed: (" . $query->errno . ") " . $query->error . "\n";
+    echo "\n\n--------- Inside Function ---------\n";
+    echo "mode: " . $mode . "\n";
+    echo "input: " . $search_input . "\n\n";
     
-    }   // end of 'if' statement
-    else {
-        echo "Prepare failed: (" . $query->errno . ") " . $query->error . "\n";
-    }
+    echo isset($query) . "\n";
+        
+    $query = $CONN->prepare( function($mode) use ($mode) {
+        switch ($mode) {
+        case "bin":
+            return '"' . sqlBin() . '"';
+        case "barcode":
+            echo "success for switch statement\n\n";
+            return '"' . sqlBarcode() . "'";
+        default:
+            exit(0);    // do not perform db operations without bin or barcode mode specified
+        }   // end of switch case
+    });
+    
+    if (!isset($query))
+        echo "Variable not set\n";
+        
+    if (!$query->bind_param('s', $search_input))
+        echo "Binding Parameters Failed" . $query->errno . ") " . $query->error . "\n";
+
+    if (!$query->execute())
+        echo "Execute Failed: (" . $query->errno . ") " . $query->error . "\n";
+
     return FilterResults($query);   // return the json encoded data after being filtered
 }
 
