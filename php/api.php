@@ -10,13 +10,7 @@ require $path.'db-conn.php';
 // http://stackoverflow.com/questions/4675932/passing-a-variable-from-one-php-include-file-to-another-global-vs-not
 //
 function SearchDB($mode, $search_input) {
-    
-if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }                 
-if (file_exists($path . 'config.php')) { require $path . 'config.php'; }   // include initial login info
-else { exit(); };
-    
     // global $CONN;
-    $CONN = new mysqli(HOST, USER, PASSWORD, DATABASE);
     
     /*
     $search_input = function($search_input) use ($search_input) {
