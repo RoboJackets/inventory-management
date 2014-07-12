@@ -17,7 +17,7 @@ function SearchDB($mode, $search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
         } // cleanup input */
     
-    $query = $CONN->prepare('"' . sqlBarcode() . '"');
+    $query = $CONN->prepare(sqlBarcode());
     
     if(!$query){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
