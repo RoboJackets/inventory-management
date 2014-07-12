@@ -38,7 +38,7 @@ function SearchDB($mode, $search_input) {
     
     $array = $query->get_result();
     
-    echo $array[1];
+    //echo $array[1];
 
     return FilterResults($query);   // return the json encoded data after being filtered
 }
