@@ -6,9 +6,10 @@
 // Pass the search mode and input to search for into this subroutine and it does the rest
 function SearchDB($mode, $search_input) {
     global $CONN;
+    /*
     $search_input = function($search_input) use ($search_input) {
-            return htmlspecialchars(stripslashes(trim($search_input))); // cleanup the input a bit
-        }; // cleanup input
+            return htmlspecialchars(stripslashes(trim($search_input)));
+        } // cleanup input */
         echo "\n\nbegin\n";
         echo "-------------\n";
         echo "input: " . $search_input . "\n";
