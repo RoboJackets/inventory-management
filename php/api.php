@@ -11,7 +11,12 @@ require $path.'db-conn.php';
 //
 function SearchDB($mode, $search_input) {
     
-    global $CONN;
+if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }                 
+if (file_exists($path . 'config.php')) { require $path . 'config.php'; }   // include initial login info
+else { exit(); };
+    
+    // global $CONN;
+    $CONN = new mysqli(HOST, USER, PASSWORD, DATABASE);
     
     /*
     $search_input = function($search_input) use ($search_input) {
