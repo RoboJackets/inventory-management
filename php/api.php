@@ -41,7 +41,7 @@ function SearchDB($mode, $search_input) {
     }
     
     while ($query->fetch()){
-        printf("Barcode = %s\n Part Number = %s\n", $PackagesID, $PartNum);
+        printf("Barcode = %s\n Part Number = %s\n", $PackagesID, gettype($PackagesID), $PartNum, gettype($PartNum));
     }
 
     return FilterResults($query);   // return the json encoded data after being filtered
