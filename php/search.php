@@ -11,5 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     // function that searches the database and returns json array
     echo SearchDB($_GET['mode'], $_GET['input']);
     
+    echo "break last";
+    
     mysqli_close($CONN);  // close connection
+    
+    echo "break end";
 }
