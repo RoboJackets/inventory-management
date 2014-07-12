@@ -17,28 +17,24 @@ function SearchDB($mode, $search_input) {
     if($query = $CONN->prepare( function($mode) use ($mode) {
             switch ($mode) {
             case "bin":
-                return sqlBin();
-                break;
+                return '"' . sqlBin() . '"';
             case "barcode":
                 echo "success for switch statement\n\n";
-                return sqlBarcode();
-                break;
+                return '"' . sqlBarcode() . "'";
             default:
                 exit(1);    // do not perform db operations without bin or barcode mode specified
-            };   // end of switch case
-            echo "break inside 1\n";
-    };
-    )) {   // begin when 'if' statement is valid
+            }   // end of switch case
+    })) {   // begin when 'if' statement is valid
         
         if (!$query->bind_param('s', $search_input))
-            echo "Binding Parameters Failed" . $query->errno . ") " . $query->error;
+            echo "Binding Parameters Failed" . $query->errno . ") " . $query->error . "\n";
 
         if (!$query->execute())
-            echo "Execute Failed: (" . $query->errno . ") " . $query->error;
+            echo "Execute Failed: (" . $query->errno . ") " . $query->error . "\n";
     
     }   // end of 'if' statement
     else {
-        echo "Prepare failed\n";
+        echo "Prepare failed: (" . $query->errno . ") " . $query->error . "\n";
     }
     return FilterResults($query);   // return the json encoded data after being filtered
 }
