@@ -6,9 +6,9 @@
 // Pass the search mode and input to search for into this subroutine and it does the rest
 function SearchDB($mode, $search_input) {
     
-    $search_input = $CONN->real_escape_string( function ($search_input) {
+    $search_input = function ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input))); // cleanup the input a bit
-        }); // escape the input
+        }; // cleanup input
         
         return "break2";
         
@@ -21,7 +21,7 @@ function SearchDB($mode, $search_input) {
                 return sqlBarcode();
                 break;
             default:
-                return sqlPart();
+                exit(1);    // do not perform db operations without bin or barcode mode specified
             }   // end of switch case
     })) {   // begin when 'if' statement is valid
         
