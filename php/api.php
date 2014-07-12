@@ -62,7 +62,7 @@ function FilterPartData($result) {
         $temp['PartUpdated'] = $eleven;
         array_push($response, $temp);
     }
-    return response;
+    return $response;
 }
 
 function FilterAtrbs($result){
