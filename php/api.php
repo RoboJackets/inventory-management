@@ -33,8 +33,8 @@ function SearchDB($mode, $search_input) {
         //    echo "Binding Results Failed: (" . $query->errno . ") " . $query->error;
     
     }   // end of 'if' statement
-    
-    return FilterResults($query);   // return the json encoded data after being filtered
+    return "break inside\n";
+    //return FilterResults($query);   // return the json encoded data after being filtered
 }
 
 // This function filters the results for searched data
