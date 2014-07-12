@@ -21,7 +21,11 @@ function SearchDB($mode, $search_input) {
     //echo "mode: " . $mode . "\n";
     //echo "input: " . $search_input . "\n\n";
     
-    $query = $CONN->prepare("SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, status AS PartStatus, parts.updated AS PartUpdated, attributes.attribute AS PartAtrbs,  attributes.value AS PartVals, attributes.priority AS PartPrty FROM barcode_lookup LEFT JOIN parts ON parts.PART_NUM=barcode_lookup.PART_NUM LEFT JOIN attributes ON barcode_lookup.PART_NUM=attributes.PART_NUM WHERE barcode_lookup.barcode=?");
+    $query = $CONN->prepare("SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, "
+            . "name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, "
+            . "status AS PartStatus, parts.updated AS PartUpdated, attributes.attribute AS PartAtrbs,  attributes.value AS PartVals, "
+            . "attributes.priority AS PartPrty FROM barcode_lookup LEFT JOIN parts ON parts.PART_NUM=barcode_lookup.PART_NUM LEFT JOIN "
+            . "attributes ON barcode_lookup.PART_NUM=attributes.PART_NUM WHERE barcode_lookup.barcode=?");
     
     if(!$query){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
@@ -37,21 +41,23 @@ function SearchDB($mode, $search_input) {
         echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error . "\n";
     }
     
+    $response = array();
     while ($query->fetch()){
-        printf("%s\n", $one);
-        printf("%s\n", $two);
-        printf("%s\n", $three);
-        printf("%s\n", $four);
-        printf("%s\n", $five);
-        printf("%s\n", $six);
-        printf("%s\n", $seven);
-        printf("%s\n", $eight);
-        printf("%s\n", $nine);
-        printf("%s\n", $ten);
-        printf("%s\n", $eleven);
-        printf("%s\n", $twelve);
-        printf("%s\n", $thirteen);
-        printf("%s\n", $fourteen);
+        $temp['PackageIDs'] = $one;
+        $temp['PartNum'] = $two;
+        $temp['BarAdd'] = $three;
+        $temp['PartName'] =  $four;
+        $temp['PartCat'] = $five;
+        $temp['PartDesc'] = $six;
+        $temp['PartSheet'] = $seven;
+        $temp['PartLocation'] = $eight;
+        $temp['PartErr'] = $nine;
+        $temp['PartStatus'] =  $ten;
+        $temp['PartUpdated'] = $eleven;
+        $temp['PartAtrbs'] =  $twelve;
+        $temp['PartVals'] =  $thirteen;
+        $temp['PartPrty'] =  $fourteen;
+        array_push($response, $temp);
     }
 
     return FilterResults($query);   // return the json encoded data after being filtered
