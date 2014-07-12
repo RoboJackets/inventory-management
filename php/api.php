@@ -36,9 +36,9 @@ function SearchDB($mode, $search_input) {
     if (!$query->execute()) {
         echo "Execute Failed: (" . $query->errno . ") " . $query->error . "\n";
     }
-        echo "working?\n";
+        echo $query->num_rows;
 
-    return FilterResults($query->get_result());   // return the json encoded data after being filtered
+    return FilterResults($query);   // return the json encoded data after being filtered
 }
 
 // This function filters the results for searched data
