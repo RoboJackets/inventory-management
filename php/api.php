@@ -27,14 +27,16 @@ function SearchDB($mode, $search_input) {
     if(!$query){
         echo "Variable not set\n";
     }
-        
+        echo "working?\n";
     if (!$query->bind_param('s', $search_input)) {
         echo "Binding Parameters Failed" . $query->errno . ") " . $query->error . "\n";
     }
+        echo "working?\n";
 
     if (!$query->execute()) {
         echo "Execute Failed: (" . $query->errno . ") " . $query->error . "\n";
     }
+        echo "working?\n";
 
     return FilterResults($query->get_result());   // return the json encoded data after being filtered
 }
