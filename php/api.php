@@ -21,19 +21,20 @@ function SearchDB($mode, $search_input) {
             default:
                 exit(1);    // do not perform db operations without bin or barcode mode specified
             }   // end of switch case
+            echo "break inside 1\n";
     })) {   // begin when 'if' statement is valid
         
         if (!$query->bind_param('s', $search_input))
-            return "Binding Parameters Failed" . $query->errno . ") " . $query->error;
+            echo "Binding Parameters Failed" . $query->errno . ") " . $query->error;
 
         if (!$query->execute())
-            return "Execute Failed: (" . $query->errno . ") " . $query->error;
+            echo "Execute Failed: (" . $query->errno . ") " . $query->error;
         
         //if (!$query->bind_result($results))
         //    echo "Binding Results Failed: (" . $query->errno . ") " . $query->error;
     
     }   // end of 'if' statement
-    return "break inside\n";
+    return "break inside 2";
     //return FilterResults($query);   // return the json encoded data after being filtered
 }
 
