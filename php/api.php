@@ -35,12 +35,25 @@ function SearchDB($mode, $search_input) {
     
     $PackagesID = NULL;
     $PartNum = NULL;
-    if (!$query->bind_result($PackagesID, $PartNum)) {
+    if (!$query->bind_result($one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven, $twelve, $thirteen, $fourteen)) {
         echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error . "\n";
     }
     
     while ($query->fetch()){
-        printf("Barcode = %s (%s)\nPart Number = %s (%s)\n", $PackagesID, gettype($PackagesID), $PartNum, gettype($PartNum));
+        printf("%s\n", $one);
+        printf("%s\n", $two);
+        printf("%s\n", $three);
+        printf("%s\n", $four);
+        printf("%s\n", $five);
+        printf("%s\n", $six);
+        printf("%s\n", $seven);
+        printf("%s\n", $eight);
+        printf("%s\n", $nine);
+        printf("%s\n", $ten);
+        printf("%s\n", $eleven);
+        printf("%s\n", $twelve);
+        printf("%s\n", $thirteen);
+        printf("%s\n", $fourteen);
     }
 
     return FilterResults($query);   // return the json encoded data after being filtered
