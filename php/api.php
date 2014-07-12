@@ -2,29 +2,33 @@
 /* 
  * Contains all functions and subroutines used for accessing the db.
  */
-
-if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; } // make sure path is known
-require $path.'db-conn.php';
+//require $path.'db-conn.php';
 
 // Pass the search mode and input to search for into this subroutine and it does the rest
+//
+// this would have saved me so much time if i knew this earlier...
+// http://stackoverflow.com/questions/4675932/passing-a-variable-from-one-php-include-file-to-another-global-vs-not
+//
 function SearchDB($mode, $search_input) {
+    
+    global $CONN;
+    
     /*
     $search_input = function($search_input) use ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
         } // cleanup input */
+    
     echo "\n\n--------- Inside Function ---------\n";
     echo "mode: " . $mode . "\n";
     echo "input: " . $search_input . "\n\n";
         
-    echo $GLOBALS['CONN'] . "\n";
-        
-    $query = $GLOBALS['CONN']->prepare( function($mode) use ($mode) {
+    $query = $CONN->prepare( function($mode) use ($mode) {
         switch ($mode) {
         case "bin":
-            return '"' . sqlBin() . '"';
+            return sqlBin();
         case "barcode":
             echo "success for switch statement\n\n";
-            return '"' . sqlBarcode() . "'";
+            return sqlBarcode();
         default:
             exit(0);    // do not perform db operations without bin or barcode mode specified
         }   // end of switch case
