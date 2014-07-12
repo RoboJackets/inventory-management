@@ -22,7 +22,7 @@ function SearchDB($mode, $search_input) {
     echo "mode: " . $mode . "\n";
     echo "input: " . $search_input . "\n\n";
      
-    /*
+    
     $query = $CONN->prepare( function($mode) use ($mode) {
         switch ($mode) {
         case "bin":
@@ -33,7 +33,7 @@ function SearchDB($mode, $search_input) {
         default:
             exit(0);    // do not perform db operations without bin or barcode mode specified
         }   // end of switch case
-    }); */
+    });
     
     
     
