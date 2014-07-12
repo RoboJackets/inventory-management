@@ -5,7 +5,6 @@
 
 // Pass the search mode and input to search for into this subroutine and it does the rest
 function SearchDB($mode, $search_input) {
-    global $CONN;
     /*
     $search_input = function($search_input) use ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
@@ -15,8 +14,10 @@ function SearchDB($mode, $search_input) {
     echo "input: " . $search_input . "\n\n";
     
     echo isset($query) . "\n";
+    
+    echo $GLOBALS['CONN'] . "\n";
         
-    $query = $CONN->prepare( function($mode) use ($mode) {
+    $query = $GLOBALS['CONN']->prepare( function($mode) use ($mode) {
         switch ($mode) {
         case "bin":
             return '"' . sqlBin() . '"';

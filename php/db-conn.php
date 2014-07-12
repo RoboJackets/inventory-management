@@ -7,7 +7,7 @@ if (file_exists($path . 'config.php')) { require $path . 'config.php'; }   // in
 else { exit(); };
 
 // Create connection (object oriented way)
-$CONN = new mysqli(HOST, USER, PASSWORD, DATABASE);
+$GLOBALS['CONN'] = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
-if ( $CONN->connect_error)
-    trigger_error('Database connection failed: ' . $CONN->connect_error, E_USER_ERROR);
+if ( $GLOBALS['CONN']->connect_error)
+    trigger_error('Database connection failed: ' . $GLOBALS['CONN']->connect_error, E_USER_ERROR);
