@@ -24,10 +24,10 @@ function SearchDB($mode, $search_input) {
     })) {   // begin when 'if' statement is valid
         
         if (!$query->bind_param('s', $search_input))
-            echo "Binding Parameters Failed" . $query->errno . ") " . $query->error;
+            return "Binding Parameters Failed" . $query->errno . ") " . $query->error;
 
         if (!$query->execute())
-            echo "Execute Failed: (" . $query->errno . ") " . $query->error;
+            return "Execute Failed: (" . $query->errno . ") " . $query->error;
         
         //if (!$query->bind_result($results))
         //    echo "Binding Results Failed: (" . $query->errno . ") " . $query->error;
@@ -134,6 +134,8 @@ function sqlBin() {
     WHERE parts.location=(?)";
 }
 
+
+/*
 function sqlCountAllBar(){
     return "SELECT COUNT(*) FROM barcode_lookup";
 }
@@ -145,6 +147,7 @@ function sqlCountAllParts(){
 function sqlGetSimilarBarcodes(){
     return "SELECT COUNT(*) FROM parts WHERE barcode_lookup.PART_NUM=(?)";
 }
+
 function AddAttribs() {
     return "INSERT INTO attributes (PART_NUM, attribute, value, priority)
         VALUES ($PartNum, ?, ?, ?)";
@@ -162,6 +165,10 @@ function sqlReorders() {
 function sqlEmpty() {
     return "SELECT * FROM parts WHERE statue='no_reorder'";
 }
+*/
+ 
+
+
 
 /*  might come of use later...but not now.
 function StartSession() {       // function used for making initial connections
