@@ -34,11 +34,15 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    // echo "Results: " . $query->num_rows . "\n\n";
+    $PackagesID = NULL;
+    $PartNum = NULL;
+    if (!$query->bind_result($PackagesID, $PartNum)) {
+        echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error;
+    }
     
-    //$array = $query->get_result();
-    
-    //echo $array[1];
+    while ($query->fetch()){
+        printf("Barcode = %s\n Part Number = %s\n", $PackagesID, $PartNum);
+    }
 
     return FilterResults($query);   // return the json encoded data after being filtered
 }
