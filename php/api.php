@@ -2,7 +2,7 @@
 /* 
  * Contains all functions and subroutines used for accessing the db.
  */
-//require $path.'db-conn.php';
+require $path.'db-conn.php';
 
 // Pass the search mode and input to search for into this subroutine and it does the rest
 //
@@ -21,11 +21,10 @@ function SearchDB($mode, $search_input) {
     echo "\n\n--------- Inside Function ---------\n";
     echo "mode: " . $mode . "\n";
     echo "input: " . $search_input . "\n\n";
-    $query = NULL;
-    echo getStatement($mode);
-    echo "\n\n";
     
-    if($query = $CONN->prepare(getStatement($mode))){
+    $query = $CONN->prepare(getStatement($mode));
+    
+    if(!$query){
         echo "Variable not set\n";
     }
         
