@@ -6,10 +6,6 @@ require $path.'db-conn.php';
 require $path.'api.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is given
-
-    echo 'mode: ' . $_GET['mode'] . '        ';
-    
-    echo 'search input: ' . $_GET['input'];
     
     // function that searches the database and returns json array
     echo SearchDB($_GET['mode'], $_GET['input']);

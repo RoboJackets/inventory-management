@@ -10,9 +10,10 @@ function SearchDB($mode, $search_input) {
     $search_input = function($search_input) use ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
         } // cleanup input */
-        echo "\n\nbegin\n";
-        echo "-------------\n";
-        echo "input: " . $search_input . "\n";
+        echo "\n\n--------- Inside Function ---------\n";
+        echo "mode: " . $mode . "\n";
+        echo "input: " . $search_input . "\n\n";
+        
     if($query = $CONN->prepare( function($mode) use ($mode) {
             switch ($mode) {
             case "bin":
@@ -34,7 +35,9 @@ function SearchDB($mode, $search_input) {
             echo "Execute Failed: (" . $query->errno . ") " . $query->error;
     
     }   // end of 'if' statement
-    echo "break inside 2";
+    else {
+        echo "Prepare failed\n";
+    }
     return FilterResults($query);   // return the json encoded data after being filtered
 }
 
