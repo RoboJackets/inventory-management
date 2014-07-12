@@ -37,7 +37,7 @@ function SearchDB($mode, $search_input) {
     $PackagesID = NULL;
     $PartNum = NULL;
     if (!$query->bind_result($PackagesID, $PartNum)) {
-        echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error;
+        echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error . "\n";
     }
     
     while ($query->fetch()){
