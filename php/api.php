@@ -21,7 +21,8 @@ function SearchDB($mode, $search_input) {
     echo "\n\n--------- Inside Function ---------\n";
     echo "mode: " . $mode . "\n";
     echo "input: " . $search_input . "\n\n";
-        
+     
+    /*
     $query = $CONN->prepare( function($mode) use ($mode) {
         switch ($mode) {
         case "bin":
@@ -32,7 +33,9 @@ function SearchDB($mode, $search_input) {
         default:
             exit(0);    // do not perform db operations without bin or barcode mode specified
         }   // end of switch case
-    });
+    }); */
+    
+    
     
     if (!isset($query))
         echo "Variable not set\n";
@@ -72,7 +75,7 @@ function FilterResults($result) {
 
 // sql queries - needs 
 function sqlBarcode() {
-    return "SELECT
+    return "\"SELECT
         barcode AS PackageIDs,
         parts.PART_NUM AS PartNum,
         barcode_lookup.added AS BarAdd,
@@ -92,11 +95,11 @@ function sqlBarcode() {
             ON parts.PART_NUM=barcode_lookup.PART_NUM
             LEFT JOIN attributes 
                 ON barcode_lookup.PART_NUM=attributes.PART_NUM
-    WHERE barcode_lookup.barcode=(?)";
+    WHERE barcode_lookup.barcode=(?)\"";
 }
 
 function sqlPart() {
-    return "SELECT
+    return "\"SELECT
         barcode AS PackageIDs,
         parts.PART_NUM AS PartNum,
         barcode_lookup.added AS BarAdd,
@@ -116,11 +119,11 @@ function sqlPart() {
             ON parts.PART_NUM=attributes.PART_NUM
         LEFT JOIN barcode_lookup
             ON parts.PART_NUM=barcode_lookup.PART_NUM
-    WHERE parts.PART_NUM=(?)";
+    WHERE parts.PART_NUM=(?)\"";
 }
 
 function sqlBin() {
-    return "SELECT
+    return "\"SELECT
         barcode AS PackageIDs,
         parts.PART_NUM AS PartNum,
         barcode_lookup.added AS BarAdd,
@@ -140,7 +143,7 @@ function sqlBin() {
             ON parts.PART_NUM=attributes.PART_NUM
         LEFT JOIN barcode_lookup
             ON parts.PART_NUM=barcode_lookup.PART_NUM
-    WHERE parts.location=(?)";
+    WHERE parts.location=(?)\"";
 }
 
 
