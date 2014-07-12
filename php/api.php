@@ -25,9 +25,9 @@ function SearchDB($mode, $search_input) {
     
     $query = $CONN->prepare( function($mode) use ($mode) {
         switch ($mode) {
-        case "bin":
+        case bin:
             return sqlBin();
-        case "barcode":
+        case barcode:
             echo "success for switch statement\n\n";
             return sqlBarcode();
         default:
