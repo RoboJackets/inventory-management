@@ -25,18 +25,16 @@ function SearchDB($mode, $search_input) {
     $query = $CONN->prepare("SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, status AS PartStatus, parts.updated AS PartUpdated, attributes.attribute AS PartAtrbs,  attributes.value AS PartVals, attributes.priority AS PartPrty FROM barcode_lookup LEFT JOIN parts ON parts.PART_NUM=barcode_lookup.PART_NUM LEFT JOIN attributes ON barcode_lookup.PART_NUM=attributes.PART_NUM WHERE barcode_lookup.barcode=?");
     
     if(!$query){
-        echo "Variable not set\n";
+        echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
     }
-        echo "working?\n";
-    if (!$query->bind_param('s', $search_input)) {
-        echo "Binding Parameters Failed" . $query->errno . ") " . $query->error . "\n";
+    if (!$query->bind_param('i', $search_input)) {
+        echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
     }
-        echo "working?\n";
-
     if (!$query->execute()) {
-        echo "Execute Failed: (" . $query->errno . ") " . $query->error . "\n";
+        echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
-        echo $query->num_rows;
+    
+    echo "Results: " . $query->num_rows . "\n\n";
 
     return FilterResults($query);   // return the json encoded data after being filtered
 }
