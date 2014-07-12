@@ -9,7 +9,7 @@ function SearchDB($mode, $search_input) {
     $search_input = function ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input))); // cleanup the input a bit
         }; // cleanup input
-        
+        echo "\n\nbegin\n";
     if($query = $CONN->prepare( function($mode) use ($mode) {
             switch ($mode) {
             case "bin":
