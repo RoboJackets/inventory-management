@@ -10,7 +10,7 @@ require $path.'db-conn.php';
 // http://stackoverflow.com/questions/4675932/passing-a-variable-from-one-php-include-file-to-another-global-vs-not
 //
 function SearchDB($mode, $search_input) {
-    // global $CONN;
+    global $CONN;
     
     /*
     $search_input = function($search_input) use ($search_input) {
