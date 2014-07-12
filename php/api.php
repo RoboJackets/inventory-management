@@ -16,7 +16,7 @@ function SearchDB($mode, $search_input) {
     $search_input = function($search_input) use ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
         } // cleanup input */
-    $qq = "SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, status AS PartStatus, parts.updated AS PartUpdated, FROM barcode_lookup LEFT JOIN parts  ON parts.PART_NUM=barcode_lookup.PART_NUM LEFT JOIN attributes  ON barcode_lookup.PART_NUM=attributes.PART_NUM WHERE barcode_lookup.barcode=?";
+    $qq = "SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, status AS PartStatus, parts.updated AS PartUpdated, FROM barcode_lookup LEFT JOIN parts  ON parts.PART_NUM=barcode_lookup.PART_NUM WHERE barcode_lookup.barcode=?";
     $query = $CONN->prepare($qq);
     
     if(!$query){
