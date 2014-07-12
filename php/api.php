@@ -20,6 +20,7 @@ function SearchDB($mode, $search_input) {
                 return sqlBin();
                 break;
             case "barcode":
+                echo "success for switch statement\n\n";
                 return sqlBarcode();
                 break;
             default:
