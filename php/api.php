@@ -5,15 +5,13 @@
 
 // Pass the search mode and input to search for into this subroutine and it does the rest
 function SearchDB($mode, $search_input) {
-    
+    global $CONN;
     $search_input = function($search_input) use ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input))); // cleanup the input a bit
         }; // cleanup input
-        
         echo "\n\nbegin\n";
+        echo "-------------\n";
         echo "input: " . $search_input . "\n";
-        echo '\n';
-        
     if($query = $CONN->prepare( function($mode) use ($mode) {
             switch ($mode) {
             case "bin":
@@ -33,13 +31,10 @@ function SearchDB($mode, $search_input) {
 
         if (!$query->execute())
             echo "Execute Failed: (" . $query->errno . ") " . $query->error;
-        
-        //if (!$query->bind_result($results))
-        //    echo "Binding Results Failed: (" . $query->errno . ") " . $query->error;
     
     }   // end of 'if' statement
-    return "break inside 2";
-    //return FilterResults($query);   // return the json encoded data after being filtered
+    echo "break inside 2";
+    return FilterResults($query);   // return the json encoded data after being filtered
 }
 
 // This function filters the results for searched data
