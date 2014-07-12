@@ -57,13 +57,13 @@ function disableCard($cards) {
 };
 
 function enableFastTrack() {
-    $(".card:first-child .next").addClass("fast-track");
+    $(".card:first-child .next, .submit").addClass("fast-track");
     $("ol.steps li:last-child").addClass("fast-track");
     enableCard($(".card"));
 };
 
 function disableFastTrack() {
-    $(".card:first-child .next").removeClass("fast-track");
+    $(".card:first-child .next, .submit").removeClass("fast-track");
     $("ol.steps li:last-child").removeClass("fast-track");
     disableCard($(".card").slice(2));
 };
@@ -87,14 +87,22 @@ function addAttributeInput(readOnly, key, value) {
         });
     });
 
+    $newRow.find("input").on("change keyup paste", function() {
+        if (validateAddAttributes()) {
+            enableCard($("#confirm"));
+        } else {
+            disableCard($("#confirm"));
+        }
+    });
+
     $newRow.find("td:last-child").append($removeButton);
 
     $newRow.find("td:nth-child(2) input").val(key);
     $newRow.find("td:nth-child(3) input").val(value);
-    if (readOnly) $newRow.find("td:nth-child(2) input").attr("readonly", true);
+    if (readOnly) $newRow.find("td:nth-child(2) input").attr({readonly: true, tabindex:-1});
 
     if (readOnly) {
-        $("#add-attributes tbody tr td input:not([readonly])").first().parents("tr").before($newRow);
+        $("#add-attributes tbody tr td:nth-child(2) input:not([readonly])").first().parents("tr").before($newRow);
     } else {
         $("#add-attributes tbody tr:last-child").before($newRow);
     }
@@ -149,6 +157,26 @@ function validateEditDetails() {
     }
 }
 
+function validateAddAttributes() {
+    var flag = true;
+    $("#add-attributes table tbody tr input").parent().removeClass("has-error");
+    $("#add-attributes table tbody tr").each(function(index, value) {
+        $key = $(this).find("td:nth-child(2) input");
+        $val = $(this).find("td:nth-child(3) input");
+        if(($key.val() == "")?!($val.val() == ""):($val.val() == "")) { //XNOR
+            flag = false;
+        }
+    });
+
+    $("#add-attributes table tbody tr input").each(function(index, value) {
+        if(!/^[^'"\\]*$/.test($(this).val())) {
+            $(this).parent().addClass("has-error");
+            flag = false;
+        }
+    });
+    return flag;
+}
+
 $(document).ready(function() {
     var currentCardID = "#add-part";
 
@@ -200,6 +228,7 @@ $(document).ready(function() {
                     $("#partNumberInput").parent().addClass("has-success");
                     enableFastTrack();
                     $("#partNumberInput").tooltip();
+
                 } else {
                     $("#partNumberInput").parent().removeClass("has-success");
                     disableFastTrack();
@@ -233,20 +262,67 @@ $(document).ready(function() {
     $("#edit-details select").change(function() {
         var attributes = {
             capacitor: [
+                "Type",
                 "Capacitance",
                 "Tolerance",
-                "Voltage",
+                "Voltage Rating",
+                "Series",
+                "Package",
+                "Mounting Type"],
+            connector: [
+                "Pitch",
+                "Series",
+                "Number of Positions",
+                "Number of Rows",
+                "Connector Type",
+                "Contact Type",
+                "Mounting Type",
                 "Package"],
-            connector: [],
-            diode: [],
-            ic: [],
-            inductor: [],
-            oscillator: [],
+            diode: [
+                "Type",
+                "Series",
+                "Direction",
+                "Channels",
+                "Voltage Forward",
+                "Voltage Reverse",
+                "Mounting Type",
+                "Package"],
+            ic: [
+                "Type",
+                "Series",
+                "Package",
+                "Mounting Type"],
+            inductor: [
+                "Type",
+                "Series",
+                "Inductance",
+                "Tolerance",
+                "Shielding",
+                "Current Rating",
+                "Mounting Type",
+                "Package"],
+            oscillator: [
+                "Frequency",
+                "Type",
+                "Series",
+                "Function",
+                "VS",
+                "Current Supply",
+                "Mounting Type",
+                "Package"],
             resistor: [
                 "Resistance",
                 "Tolerance",
+                "Series",
+                "Power",
+                "Channels",
+                "Mounting Type",
                 "Package"],
-            other: []
+            other: [
+                "Part Type",
+                "Mounting Type",
+                "Series",
+                "Package"]
         };
         addAttributes(attributes[$(this).val()]);
     });
@@ -256,6 +332,14 @@ $(document).ready(function() {
             $(this).parents(".card").find(".next").click();
             event.preventDefault();
             return false;
+        }
+    });
+
+    $("#barcodeInput").on("change keyup paste", function() {
+        if (allowedChars.test($(this).val())) {
+            $(".submit").addClass("btn-enabled");
+        } else {
+            $(".submit").removeClass("btn-enabled");
         }
     });
 });
