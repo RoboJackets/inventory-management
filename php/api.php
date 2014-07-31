@@ -67,7 +67,7 @@ function getStatement($mode) {
     case 'barcode':
         return sqlBarcode();
     default:
-        exit(12);    // do not perform db operations without bin or barcode mode specified
+        exit(1);    // do not perform db operations without bin or barcode mode specified
     }   // end of switch case
 }
 
