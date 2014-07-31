@@ -176,7 +176,6 @@ function sqlBin() {
     WHERE parts.location=(?)\"";
 }*/
 
-
 /*
 function sqlCountAllBar(){  // the total number of unique barcodes
     return "SELECT COUNT(*) FROM barcode_lookup";
@@ -210,9 +209,6 @@ function sqlEmpty() {
     return "SELECT * FROM parts WHERE statue='no_reorder'";
 }
 */
- 
-
-
 
 /*  might come of use later...but not now.
 function StartSession() {       // function used for making initial connections
