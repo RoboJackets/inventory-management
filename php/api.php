@@ -29,8 +29,7 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    $returnData = FilterPartData($query);
-    return json_encode($returnData);   // return the json encoded data after being filtered
+    return FilterPartData($query);   // return the json encoded data after being filtered
 }
 
     // This function filters the results for searched data
@@ -38,7 +37,6 @@ function FilterPartData($result) {
     if (!$result->bind_result($one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven)) {
         echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error . "\n";
     }
-    $temp;
     $response = array();
     while ($result->fetch()){
         $temp['PackageIDs'] = $one;
@@ -54,14 +52,13 @@ function FilterPartData($result) {
         $temp['PartUpdated'] = $eleven;
         array_push($response, $temp);
     }
-    return $response;
+    return json_encode($response);
 }
 
 function FilterAtrbs($result){
     
     
 }
-
 
 function getStatement($mode) {
     switch ($mode) {
@@ -74,14 +71,43 @@ function getStatement($mode) {
     }   // end of switch case
 }
 
-
 // sql queries - needs 
-function sqlBarcode(){
-    $query = "SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, status AS PartStatus, parts.updated AS PartUpdated, FROM barcode_lookup LEFT JOIN parts  ON parts.PART_NUM=barcode_lookup.PART_NUM LEFT JOIN attributes  ON barcode_lookup.PART_NUM=attributes.PART_NUM WHERE barcode_lookup.barcode=?";
-
+function sqlBarcode(){  // query part information from a barcde
+    $query = "SELECT barcode AS PackageIDs, "
+            . "parts.PART_NUM AS PartNum, "
+            . "barcode_lookup.added AS BarAdd, "
+            . "name AS PartName, category AS PartCat, "
+            . "description AS PartDesc, "
+            . "datasheet AS PartSheet, "
+            . "location AS PartLocation, "
+            . "flag_error AS PartErr, "
+            . "status AS PartStatus, "
+            . "parts.updated AS PartUpdated, "
+            . "FROM barcode_lookup "
+                . "LEFT JOIN parts "
+                . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
+            . "WHERE barcode_lookup.barcode=(?)";
     return $query;
 }
 
+function sqlPart() {    // query part information from a part number
+    return "SELECT barcode AS PackageIDs, "
+            . "parts.PART_NUM AS PartNum, "
+            . "barcode_lookup.added AS BarAdd, "
+            . "name AS PartName, category AS PartCat, "
+            . "description AS PartDesc, "
+            . "datasheet AS PartSheet, "
+            . "location AS PartLocation, "
+            . "flag_error AS PartErr, "
+            . "status AS PartStatus, "
+            . "parts.updated AS PartUpdated, "
+            . "FROM parts "
+                . "LEFT JOIN barcode_lookup "
+                . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
+            . "WHERE parts.PART_NUM=(?)";
+}
+
+/*
 function sqlPart() {
     return "\"SELECT
         barcode AS PackageIDs,
@@ -104,8 +130,28 @@ function sqlPart() {
         LEFT JOIN barcode_lookup
             ON parts.PART_NUM=barcode_lookup.PART_NUM
     WHERE parts.PART_NUM=(?)\"";
+} */
+
+function sqlBin() { // query part information from a bin number
+    return "\"SELECT
+        barcode AS PackageIDs,
+        parts.PART_NUM AS PartNum,
+        barcode_lookup.added AS BarAdd,
+        name AS PartName,
+        category AS PartCat,
+        description AS PartDesc,
+        datasheet AS PartSheet,
+        location AS PartLocation,
+        flag_error AS PartErr,
+        status AS PartStatus,
+        parts.updated AS PartUpdated,
+    FROM parts
+        LEFT JOIN barcode_lookup
+            ON parts.PART_NUM=barcode_lookup.PART_NUM
+    WHERE parts.location=(?)\"";
 }
 
+/*
 function sqlBin() {
     return "\"SELECT
         barcode AS PackageIDs,
@@ -128,20 +174,22 @@ function sqlBin() {
         LEFT JOIN barcode_lookup
             ON parts.PART_NUM=barcode_lookup.PART_NUM
     WHERE parts.location=(?)\"";
-}
+}*/
 
 
 /*
-function sqlCountAllBar(){
+function sqlCountAllBar(){  // the total number of unique barcodes
     return "SELECT COUNT(*) FROM barcode_lookup";
 }
 
-function sqlCountAllParts(){
+function sqlCountAllParts(){    // the total number of unique parts(components)
     return "SELECT COUNT(*) FROM parts";
 }
 
-function sqlGetSimilarBarcodes(){
-    return "SELECT COUNT(*) FROM parts WHERE barcode_lookup.PART_NUM=(?)";
+function sqlGetSimilarBarcodes(){   // find how many packages of a given barcode exist
+    return "SELECT COUNT(*) FROM barcode_lookup 
+    LEFT JOIN barcode_lookup ON barcode_lookup.PART_NUM=parts.PART_NUM
+    WHERE barcode_lookup.barcode=(?)";
 }
 
 function AddAttribs() {
