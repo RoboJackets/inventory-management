@@ -37,7 +37,8 @@
     width: 200px;
     border-right: 2px solid white;
     font-size: 6em;
-    text-align: center;animation-direction: 
+    text-align: center;
+    /* animation-direction: ; */
 }
 
 .part {
