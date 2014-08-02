@@ -2,24 +2,25 @@
 /* 
  * Contains all functions and subroutines used for accessing the db.
  */
+
+// ensure that an open connection can be used to access the database
 require $path.'db-conn.php';
 
-// Pass the search mode and input to search for into this subroutine and it does the rest
-//
-// this would have saved me so much time if i knew this earlier...
-// http://stackoverflow.com/questions/4675932/passing-a-variable-from-one-php-include-file-to-another-global-vs-not
-//
+/*
+ * Pass the search mode and search_input into this function and the rest is 
+ * taken care of. Uses prepared statements to prevent database injection
+ */
 function SearchDB($mode, $search_input) {
-    global $CONN;
+    global $CONN;   // let function know about the global declared connection
     
     /*
     $search_input = function($search_input) use ($search_input) {
             return htmlspecialchars(stripslashes(trim($search_input)));
         } // cleanup input */
-    $qq = "SELECT barcode AS PackageIDs, parts.PART_NUM AS PartNum, barcode_lookup.added AS BarAdd, name AS PartName, category AS PartCat, description AS PartDesc, datasheet AS PartSheet, location AS PartLocation, flag_error AS PartErr, status AS PartStatus, parts.updated AS PartUpdated FROM barcode_lookup LEFT JOIN parts ON parts.PART_NUM=barcode_lookup.PART_NUM WHERE barcode_lookup.barcode=?";
-    $query = $CONN->prepare($qq);
     
-    if(!$query){
+    $sql = sql_Barcode();
+    
+    if(!$query = $CONN->prepare($sql)){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
     }
     if (!$query->bind_param("s", $search_input)) {
@@ -29,68 +30,52 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    return FilterPartData($query);   // return the json encoded data after being filtered
-}
+    return FilterResults($query);   // return the results after formatting to json data
+}   //  ==========  SearchDB ==========
 
-    // This function filters the results for searched data
-function FilterPartData($result) {
-    if (!$result->bind_result($one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven)) {
-        echo "Binding output parameters failed: (" . $query->errno . ") " . $query->error . "\n";
+/*
+ * This function filters the results from the searched data and formats it as
+ * json encoded information that is returned to the caller.
+ */
+function FilterResults($query) {
+    $meta = $query->result_metadata();  // get the metadata from the results
+    
+    // store the field heading names into an array, pass by reference
+    while ($field = $meta->fetch_field()) {
+        $params[] = &$row[$field->name];
     }
-    $response = array();
-    while ($result->fetch()){
-        $temp['PackageIDs'] = $one;
-        $temp['PartNum'] = $two;
-        $temp['BarAdd'] = $three;
-        $temp['PartName'] =  $four;
-        $temp['PartCat'] = $five;
-        $temp['PartDesc'] = $six;
-        $temp['PartSheet'] = $seven;
-        $temp['PartLocation'] = $eight;
-        $temp['PartErr'] = $nine;
-        $temp['PartStatus'] =  $ten;
-        $temp['PartUpdated'] = $eleven;
-        array_push($response, $temp);
-    }
-    return json_encode($response);
-}
 
-function FilterAtrbs($result){
+    // callback function; same as: $query->bind_result($params)
+    call_user_func_array(array($query, 'bind_result'), $params);
+
     
+    while ($query->fetch()) {   // fetch the results for every field
+        foreach($row as $key => $val) { // itterate through all rows
+            $temp[$key] = $val; 
+        } 
+        $result[] = $temp;
+    } 
     
-}
+    // close the open database/query information
+    $meta->close();
+    $query->close();
+    
+    // format the info as json data and return
+    return json_encode($result);
+}   //  ==========  FilterResults    ==========
 
 function getStatement($mode) {
     switch ($mode) {
     case 'bin':
-        return sqlBin();
+        return sql_Bin();
     case 'barcode':
-        return sqlBarcode();
+        return sql_Barcode();
     default:
         exit(1);    // do not perform db operations without bin or barcode mode specified
     }   // end of switch case
 }
 
-// sql queries - needs 
-function sqlBarcode(){  // query part information from a barcde
-    $query = "SELECT barcode AS PackageIDs, "
-            . "parts.PART_NUM AS PartNum, "
-            . "barcode_lookup.added AS BarAdd, "
-            . "name AS PartName, category AS PartCat, "
-            . "description AS PartDesc, "
-            . "datasheet AS PartSheet, "
-            . "location AS PartLocation, "
-            . "flag_error AS PartErr, "
-            . "status AS PartStatus, "
-            . "parts.updated AS PartUpdated, "
-            . "FROM barcode_lookup "
-                . "LEFT JOIN parts "
-                . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
-            . "WHERE barcode_lookup.barcode=(?)";
-    return $query;
-}
-
-function sqlPart() {    // query part information from a part number
+function sql_Barcode() { // query part information from a barcde
     return "SELECT barcode AS PackageIDs, "
             . "parts.PART_NUM AS PartNum, "
             . "barcode_lookup.added AS BarAdd, "
@@ -101,80 +86,54 @@ function sqlPart() {    // query part information from a part number
             . "flag_error AS PartErr, "
             . "status AS PartStatus, "
             . "parts.updated AS PartUpdated, "
+            . "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
+            . "GROUP_CONCAT(attributes.value) AS AtribVals "
+            . "FROM barcode_lookup "
+                . "LEFT JOIN parts "
+                . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
+                . "LEFT JOIN attributes "
+                . "ON attributes.PART_NUM=parts.PART_NUM "
+            . "WHERE barcode_lookup.barcode=(?)";
+}   //  ==========  sql_Barcode  ==========
+
+function sql_Part() {    // query part information from a part number
+    return "SELECT barcode AS PackageIDs, "
+            . "parts.PART_NUM AS PartNum, "
+            . "barcode_lookup.added AS BarAdd, "
+            . "name AS PartName, category AS PartCat, "
+            . "description AS PartDesc, "
+            . "datasheet AS PartSheet, "
+            . "location AS PartLocation, "
+            . "flag_error AS PartErr, "
+            . "status AS PartStatus, "
+            . "parts.updated AS PartUpdated, "
+            . "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
+            . "GROUP_CONCAT(attributes.value) AS AtribVals "
             . "FROM parts "
                 . "LEFT JOIN barcode_lookup "
                 . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
+                . "LEFT JOIN attributes "
+                . "ON attributes.PART_NUM=parts.PART_NUM "
             . "WHERE parts.PART_NUM=(?)";
-}
+}   //  ==========  sql_Part    ==========
 
-/*
-function sqlPart() {
-    return "\"SELECT
-        barcode AS PackageIDs,
-        parts.PART_NUM AS PartNum,
-        barcode_lookup.added AS BarAdd,
-        name AS PartName,
-        category AS PartCat,
-        description AS PartDesc,
-        datasheet AS PartSheet,
-        location AS PartLocation,
-        flag_error AS PartErr,
-        status AS PartStatus,
-        parts.updated AS PartUpdated,
-        attributes.attribute AS PartAtrbs, 
-        attributes.value AS PartVals,
-        attributes.priority AS PartPrty
-    FROM parts
-        LEFT JOIN attributes
-            ON parts.PART_NUM=attributes.PART_NUM
-        LEFT JOIN barcode_lookup
-            ON parts.PART_NUM=barcode_lookup.PART_NUM
-    WHERE parts.PART_NUM=(?)\"";
-} */
-
-function sqlBin() { // query part information from a bin number
-    return "\"SELECT
-        barcode AS PackageIDs,
-        parts.PART_NUM AS PartNum,
-        barcode_lookup.added AS BarAdd,
-        name AS PartName,
-        category AS PartCat,
-        description AS PartDesc,
-        datasheet AS PartSheet,
-        location AS PartLocation,
-        flag_error AS PartErr,
-        status AS PartStatus,
-        parts.updated AS PartUpdated,
-    FROM parts
-        LEFT JOIN barcode_lookup
-            ON parts.PART_NUM=barcode_lookup.PART_NUM
-    WHERE parts.location=(?)\"";
-}
-
-/*
-function sqlBin() {
-    return "\"SELECT
-        barcode AS PackageIDs,
-        parts.PART_NUM AS PartNum,
-        barcode_lookup.added AS BarAdd,
-        name AS PartName,
-        category AS PartCat,
-        description AS PartDesc,
-        datasheet AS PartSheet,
-        location AS PartLocation,
-        flag_error AS PartErr,
-        status AS PartStatus,
-        parts.updated AS PartUpdated,
-        attributes.attribute AS PartAtrbs, 
-        attributes.value AS PartVals,
-        attributes.priority AS PartPrty
-    FROM parts
-        LEFT JOIN attributes
-            ON parts.PART_NUM=attributes.PART_NUM
-        LEFT JOIN barcode_lookup
-            ON parts.PART_NUM=barcode_lookup.PART_NUM
-    WHERE parts.location=(?)\"";
-}*/
+function sql_Bin() {    // query part information from a bin number
+    return "SELECT barcode AS PackageIDs, "
+        . "parts.PART_NUM AS PartNum, "
+        . "barcode_lookup.added AS BarAdd, "
+        . "name AS PartName, "
+        . "category AS PartCat, "
+        . "description AS PartDesc, "
+        . "datasheet AS PartSheet, "
+        . "location AS PartLocation, "
+        . "flag_error AS PartErr, "
+        . "status AS PartStatus, "
+        . "parts.updated AS PartUpdated, "
+        . "FROM parts "
+            . "LEFT JOIN barcode_lookup "
+            . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
+        . "WHERE parts.location=(?)";
+}   //  ==========  sql_Bin ==========
 
 /*
 function sqlCountAllBar(){  // the total number of unique barcodes
