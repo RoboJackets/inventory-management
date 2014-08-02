@@ -3,7 +3,6 @@
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader(); //Req'd since not using Composer
 
-
 $app = new \Slim\Slim();
 
 $app->get('/', function() use ($app) {
@@ -22,10 +21,7 @@ $app->get('/add', function() use ($app) {
     $app->render('add.html');
 });
 
-
 require 'php/validate-pn.php';
-
-
 
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
@@ -36,6 +32,5 @@ $app->get('/:mode', function($mode) use ($app) {
                                    'partNum'=>null
                                   ));
 });
-
 
 $app->run();
