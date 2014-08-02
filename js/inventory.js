@@ -20,12 +20,7 @@ $(document).ready(function(){
     $('#BtnSubmitQuery').click(function(){
         var query = $('#txtSubmitQuery').val();
         console.log("query=" + query);
-        //Post results here
-        //$.post('../searchusers.php',{search: search},function(response){
-            //$('#userSearchResultsTable').html(response);
-        //});
-        
-        // testing some things out here
+        // ajax communication for getting database results
         $.ajax({
             type: 'GET',
             url: '/php/search.php',
