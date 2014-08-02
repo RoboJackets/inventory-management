@@ -342,4 +342,17 @@ $(document).ready(function() {
             $(".submit").removeClass("btn-enabled");
         }
     });
+    
+    /* The values to send to database that will be added
+    $().click(function(){
+        $('#partNumberInput').val();
+        $('#partNameInput').val();
+        $('#categoryInput').val();
+        $('#descriptionInput').val();
+        $('#datasheetInput').val();
+        $('#locationInput').val();
+        $('#barcodeInput').val();
+            
+    });
+    */
 });
