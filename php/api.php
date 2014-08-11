@@ -62,17 +62,6 @@ function FilterResults($query) {
     
     // format the info as json data and return
     return json_encode($result);
-}   //  ==========  FilterResults    ==========
-
-function getStatement($mode) {
-    switch ($mode) {
-    case 'bin':
-        return sql_Bin();
-    case 'barcode':
-        return sql_Barcode();
-    default:
-        exit(1);    // do not perform db operations without bin or barcode mode specified
-    }   // end of switch case
 }
 
 function sql_Barcode() { // query part information from a barcde
@@ -135,39 +124,39 @@ function sql_Bin() {    // query part information from a bin number
         . "WHERE parts.location=(?)";
 }   //  ==========  sql_Bin ==========
 
-/*
-function sqlCountAllBar(){  // the total number of unique barcodes
+
+function sql_NumBarcodes(){  // the total number of unique barcodes
     return "SELECT COUNT(*) FROM barcode_lookup";
 }
 
-function sqlCountAllParts(){    // the total number of unique parts(components)
+function sql_NumParts(){    // the total number of unique parts(components)
     return "SELECT COUNT(*) FROM parts";
 }
 
-function sqlGetSimilarBarcodes(){   // find how many packages of a given barcode exist
-    return "SELECT COUNT(*) FROM barcode_lookup 
-    LEFT JOIN barcode_lookup ON barcode_lookup.PART_NUM=parts.PART_NUM
-    WHERE barcode_lookup.barcode=(?)";
+function sql_NumPackages(){   // find how many packages of a given barcode exist
+    return "SELECT COUNT(*) FROM barcode_lookup"
+        . "LEFT JOIN barcode_lookup ON barcode_lookup.PART_NUM=parts.PART_NUM"
+        . "WHERE barcode_lookup.barcode=(?)";
 }
 
-function AddAttribs() {
-    return "INSERT INTO attributes (PART_NUM, attribute, value, priority)
-        VALUES ($PartNum, ?, ?, ?)";
+function sql_AddAttribs() {
+    return "INSERT INTO attributes"
+        . "(PART_NUM, attribute, value, priority)"
+        . "VALUES (?, ?, ?, ?)";
 }
 
-function LinkBarcode() {
+function sql_LinkBarcode() {
     return "INSERT INTO barcode_lookup (PART_NUM, barcode)
-        VALUES ($PartNum, ?)";
+        VALUES (?, ?)";
 }
 
-function sqlReorders() {
+function sql_Reorders() {
     return "SELECT * FROM parts WHERE statue='out_of_stock'";
 }
 
-function sqlEmpty() {
+function sql_Empty() {
     return "SELECT * FROM parts WHERE statue='no_reorder'";
 }
-*/
 
 /*  might come of use later...but not now.
 function StartSession() {       // function used for making initial connections
