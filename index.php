@@ -21,7 +21,7 @@ $app->get('/add', function() use ($app) {
     $app->render('add.html');
 });
 
-require 'php/validate-pn.php';
+require 'php/validate-pn.php'; //Test of new code layout system
 
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
@@ -32,5 +32,8 @@ $app->get('/:mode', function($mode) use ($app) {
                                    'partNum'=>null
                                   ));
 });
+
+
+require 'php/submit-part.php';
 
 $app->run();

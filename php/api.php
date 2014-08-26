@@ -151,11 +151,11 @@ function sql_LinkBarcode() {
 }
 
 function sql_Reorders() {
-    return "SELECT * FROM parts WHERE statue='out_of_stock'";
+    return "SELECT * FROM parts WHERE status='out_of_stock'";
 }
 
 function sql_Empty() {
-    return "SELECT * FROM parts WHERE statue='no_reorder'";
+    return "SELECT * FROM parts WHERE status='no_reorder'";
 }
 
 /*  might come of use later...but not now.

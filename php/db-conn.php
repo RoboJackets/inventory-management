@@ -5,7 +5,7 @@
 if (!isset($path)) { $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }                 
 if (!defined('HOST')) { require $path . 'config.php'; }   // make sure constants are defined
 
-// Create connection (object oriented way)
+// Create connection
 $CONN = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
 // Check for errors

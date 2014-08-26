@@ -1,6 +1,6 @@
 <?php
 
-define("HOST", "REPLACE WITH SERVER IP");
+define("HOST", "REPLACE WITH SERVER IP"); //Server must run on port 3307
 define("USER", "REPLACE WITH USERNAME");
 define("PASSWORD", "REPLACE WITH USER'S PASSWORD");
 define("DATABASE", "REPLACE WITH DATABASE NAME");
