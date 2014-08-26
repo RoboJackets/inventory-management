@@ -15,10 +15,14 @@ $app->post('/add/submit', function() use ($app) {
     
     $db = initDbConn();
     
+    var_dump($db);
     
     $stmt = $db->query("SELECT COUNT(*) FROM `parts` WHERE part_num=?");
+    echo "query prepared";
     $stmt->execute($data['part_num']);
+    echo "query executed";
     $numRows = $stmt->fetchColumn();
+    echo "result fetched. numRows = " . $numRows;
     
     var_dump($numRows);
 
@@ -28,7 +32,7 @@ $app->post('/add/submit', function() use ($app) {
     } else {
         //Error out if part already exists
         printf("Error: Part %s already exists", $_POST['partNumber']);
-        exit();
+        //exit();
     }  
     
     
