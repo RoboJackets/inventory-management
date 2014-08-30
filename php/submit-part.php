@@ -5,8 +5,10 @@ $app->post('/add/submit', function() use ($app) {
     if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
     require $path . 'db-conn.php';
 
-    $partNum = $_POST['partNumber'];
+    $partNum = $_POST['data'];
 
+    var_dump($partNum);
+    
     $sql = "SELECT COUNT(*) FROM `parts` WHERE PART_NUM='" . $partNum . "'";
     $result = $CONN->query($sql);
 
