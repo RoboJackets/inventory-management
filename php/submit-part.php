@@ -19,7 +19,7 @@ $app->post('/add/submit', function() use ($app) {
     
     var_dump($row);
 
-    if ($numRows == 0){
+    if ($row['COUNT(*)']){
         echo "Insert New Row\n"
         //Insert new row
         //Insert
@@ -28,7 +28,5 @@ $app->post('/add/submit', function() use ($app) {
         printf("Error: Part %s already exists", $_POST['partNumber']);
         //exit();
     }  
-    
-    
     
 });
