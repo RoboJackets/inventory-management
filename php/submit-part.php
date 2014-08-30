@@ -9,8 +9,11 @@ $app->post('/add/submit', function() use ($app) {
 
     var_dump($data);
     
+    echo "Line 12";
     
-    $partNum = $data.part_num;
+    $partNum = $data->part_num;
+    
+    echo "Line 16"
     
     $sql = "SELECT COUNT(*) FROM `parts` WHERE PART_NUM='" . $partNum . "'";
     $result = $CONN->query($sql);
