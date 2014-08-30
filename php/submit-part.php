@@ -43,6 +43,7 @@ $app->post('/add/submit', function() use ($app) {
         $stmt->close();
     } else {
         echo "Query Failed";
+        echo "Prepare failed: (" . $CONN->errno . ") " . $CONN->error;
     }
     
     var_dump($count);
