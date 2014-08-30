@@ -33,7 +33,7 @@ $app->post('/add/submit', function() use ($app) {
         //Insert
     } else {
         //Error out if part already exists
-        printf("Error: Part %s already exists", $_POST['partNumber']);
+        printf("Error: Part %s already exists: ", $partNum);
         //exit();
     }  
     
