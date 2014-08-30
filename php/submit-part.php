@@ -25,36 +25,25 @@ $app->post('/add/submit', function() use ($app) {
     
     $count = $row['COUNT(*)']
     */
-    echo "Ready to Query\n";
-    if (!($stmt = $mysqli->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=?"))) {
-        echo "Select failed: (" . $mysqli->errno . ") " . $mysqli->error;
-        $app->response->setStatus(500);
-        return;
+    if ($stmt = $mysqli->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=")) {
+
+        /* bind parameters for markers */
+        $stmt->bind_param("s", $partNum);
+
+        /* execute query */
+        $stmt->execute();
+
+        /* bind result variables */
+        $stmt->bind_result($count);
+
+        /* fetch value */
+        $stmt->fetch();
+
+        /* close statement */
+        $stmt->close();
     }
-    echo "prepared\n";
-    if (!$stmt->bind_param("s", $partNum)) {
-        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-        $app->response->setStatus(500);
-        return;
-    }
-    echo "bound\n";
-    if (!$stmt->execute()) {
-        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
-        $app->response->setStatus(500);
-        return;
-    }
-    echo "executed\n";
-    if (!($result = $stmt->get_result())) {
-        echo "Getting result set failed: (" . $stmt->errno . ") " . $stmt->error;
-        $app->response->setStatus(500);
-        return;
-    }
-    echo "fetched\n";
-    var_dump($result->fetch_all());
     
-    $stmt->close();
-    
-$count = 0;
+    var_dump($count);
 
     if ($count == 0){
         echo "Insert New Row\n";
