@@ -13,7 +13,7 @@ $app->post('/add/submit', function() use ($app) {
     
     $partNum = $data->part_num;
     
-    echo "Line 16"
+    echo "Line 16";
     
     $sql = "SELECT COUNT(*) FROM `parts` WHERE PART_NUM='" . $partNum . "'";
     $result = $CONN->query($sql);
