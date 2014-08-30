@@ -25,6 +25,7 @@ $app->post('/add/submit', function() use ($app) {
     
     $count = $row['COUNT(*)']
     */
+    echo "Ready to Query\n";
     if (!($stmt = $mysqli->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=?"))) {
         echo "Select failed: (" . $mysqli->errno . ") " . $mysqli->error;
         $app->response->setStatus(500);
