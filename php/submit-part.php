@@ -25,7 +25,7 @@ $app->post('/add/submit', function() use ($app) {
     
     $count = $row['COUNT(*)']
     */
-    if ($stmt = $CONN->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=")) {
+    if ($stmt = $CONN->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=?")) {
         echo "Running Query";
         /* bind parameters for markers */
         $stmt->bind_param("s", $partNum);
