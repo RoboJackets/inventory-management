@@ -9,7 +9,7 @@ $app->post('/add/submit', function() use ($app) {
 
     var_dump($data);
     
-    echo "\nLine 12\n";
+    echo "Line 12\n";
     
     $partNum = $data->part_num;
     
@@ -28,13 +28,13 @@ $app->post('/add/submit', function() use ($app) {
     var_dump($row);
 
     if ($row['COUNT(*)'] == 0){
-        echo "\nInsert New Row\n";
+        echo "Insert New Row\n";
         //Insert new row
         //Insert
     } else {
         //Error out if part already exists
-        printf("Error: Part %s already exists: ", $partNum);
-        //exit();
+        printf("Error: Part %s already exists:", $partNum);
+        $app->response->setStatus(409);
     }  
     
 });
