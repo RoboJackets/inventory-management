@@ -20,7 +20,7 @@ $app->post('/add/submit', function() use ($app) {
     var_dump($row);
 
     if ($row['COUNT(*)']){
-        echo "Insert New Row\n"
+        echo "Insert New Row\n";
         //Insert new row
         //Insert
     } else {
