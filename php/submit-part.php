@@ -3,30 +3,24 @@
 $app->post('/add/submit', function() use ($app) {
     // Set Database credentials
     if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-    require $path . 'create-pdo.php';
+    require $path . 'db-conn.php';
+
+    $partNum = $_POST['partNumber'];
+
+    $sql = "SELECT COUNT(*) FROM `parts` WHERE PART_NUM='" . $partNum . "'";
+    $result = $CONN->query($sql);
+
+    if (!$result) {
+        printf("Error: %s\n", mysqli_error($CONN));
+        exit();
+    }
+
+    $row = mysqli_fetch_array($result);
     
-    //Decode JSON object and convert o PHP Data object
-    
-    $data = json_decode($_POST['data']);
-    var_dump($data);
-    //Add protections against submitting multiple parts at once.
-    
-    //Test if part exists
-    
-    $db = initDbConn();
-    
-    var_dump($db);
-    
-    $stmt = $db->query("SELECT COUNT(*) FROM `parts` WHERE part_num=?");
-    echo "query prepared";
-    $stmt->execute($data['part_num']);
-    echo "query executed";
-    $numRows = $stmt->fetchColumn();
-    echo "result fetched. numRows = " . $numRows;
-    
-    var_dump($numRows);
+    var_dump($row);
 
     if ($numRows == 0){
+        echo "Insert New Row\n"
         //Insert new row
         //Insert
     } else {
