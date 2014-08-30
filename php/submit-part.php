@@ -9,25 +9,50 @@ $app->post('/add/submit', function() use ($app) {
 
     var_dump($data);
     
-    echo "Line 12\n";
-    
     $partNum = $data->part_num;
-    
-    echo "Line 16\n";
-    
+    /*
     $sql = "SELECT COUNT(*) FROM `parts` WHERE PART_NUM='" . $partNum . "'";
     $result = $CONN->query($sql);
 
     if (!$result) {
         printf("Error: %s\n", mysqli_error($CONN));
-        exit();
+        return;
     }
-
-    $row = mysqli_fetch_array($result);
     
-    var_dump($row);
+    $row = mysqli_fetch_array($result);
 
-    if ($row['COUNT(*)'] == 0){
+    var_dump($row);
+    
+    $count = $row['COUNT(*)']
+    */
+    if (!($stmt = $mysqli->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=?"))) {
+        echo "Select failed: (" . $mysqli->errno . ") " . $mysqli->error;
+        $app->response->setStatus(500);
+        return;
+    }
+    if (!$stmt->bind_param("s", $partNum)) {
+        echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+        $app->response->setStatus(500);
+        return;
+    }
+    if (!$stmt->execute()) {
+        echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
+        $app->response->setStatus(500);
+        return;
+    }
+    if (!($result = $stmt->get_result())) {
+        echo "Getting result set failed: (" . $stmt->errno . ") " . $stmt->error;
+        $app->response->setStatus(500);
+        return;
+    }
+    
+    var_dump($result->fetch_all());
+    
+    $stmt->close();
+    
+$count = 0;
+
+    if ($count == 0){
         echo "Insert New Row\n";
         //Insert new row
         //Insert
@@ -35,6 +60,7 @@ $app->post('/add/submit', function() use ($app) {
         //Error out if part already exists
         printf("Error: Part %s already exists:", $partNum);
         $app->response->setStatus(409);
+        return;
     }  
     
 });
