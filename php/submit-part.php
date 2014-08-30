@@ -30,22 +30,25 @@ $app->post('/add/submit', function() use ($app) {
         $app->response->setStatus(500);
         return;
     }
+    echo "prepared\n";
     if (!$stmt->bind_param("s", $partNum)) {
         echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
         $app->response->setStatus(500);
         return;
     }
+    echo "bound\n";
     if (!$stmt->execute()) {
         echo "Execute failed: (" . $mysqli->errno . ") " . $mysqli->error;
         $app->response->setStatus(500);
         return;
     }
+    echo "executed\n";
     if (!($result = $stmt->get_result())) {
         echo "Getting result set failed: (" . $stmt->errno . ") " . $stmt->error;
         $app->response->setStatus(500);
         return;
     }
-    
+    echo "fetched\n";
     var_dump($result->fetch_all());
     
     $stmt->close();
