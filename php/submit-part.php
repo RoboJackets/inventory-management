@@ -9,11 +9,11 @@ $app->post('/add/submit', function() use ($app) {
 
     var_dump($data);
     
-    echo "Line 12";
+    echo "\nLine 12\n";
     
     $partNum = $data->part_num;
     
-    echo "Line 16";
+    echo "Line 16\n";
     
     $sql = "SELECT COUNT(*) FROM `parts` WHERE PART_NUM='" . $partNum . "'";
     $result = $CONN->query($sql);
@@ -27,8 +27,8 @@ $app->post('/add/submit', function() use ($app) {
     
     var_dump($row);
 
-    if ($row['COUNT(*)']){
-        echo "Insert New Row\n";
+    if ($row['COUNT(*)'] == 0){
+        echo "\nInsert New Row\n";
         //Insert new row
         //Insert
     } else {
