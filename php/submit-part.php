@@ -40,12 +40,12 @@ $app->post('/add/submit', function() use ($app) {
         $part->part_id = $CONN->insert_id;
         
         if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode) VALUES (?,?)")){
-            for($part->barcodes as $barcode){
+            foreach($part->barcodes as $barcode){
                 $stmt->bind_param('ss', $part->part_id, $barcode);
                 $stmt->execute();
                 //$stmt->fetch();
-                $stmt->close();
             }
+            $stmt->close();
         } else {
             //remove earlier part from db
         }
