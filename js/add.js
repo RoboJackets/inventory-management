@@ -200,9 +200,9 @@ function submitData() {
     
     $attributes.each(function(index){
         attributes.push(new Attribute(
-            this.children("td:nth-child(2) input").val(),
-            this.children("td:nth-child(3) input").val(),              
-            this.children("td:nth-child(1)").text()
+            $(this).children("td:nth-child(2) input").val(),
+            $(this).children("td:nth-child(3) input").val(),              
+            $(this).children("td:nth-child(1)").text()
                      ));
     });
     
@@ -216,6 +216,7 @@ function submitData() {
         $('#barcodeInput').val(), //This line needs to be fixed for multi-barcode support
         attributes
     );
+    
 }
 
 $(document).ready(function() {
@@ -384,7 +385,7 @@ $(document).ready(function() {
     
     $("#btn-confirm-submit").click(function(){
         if($(this).hasClass("btn-enabled")){
-            console.log(SubmittingData)
+            console.log("Submitting Data");
             submitData();
         }
     });
