@@ -29,13 +29,29 @@ $app->post('/add/submit', function() use ($app) {
             VALUES (?,?,?,?,?,?)")){
             $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             $stmt->execute();
-            $stmt->fetch();
+            //$stmt->fetch();
             $stmt->close();
         } else {
             echo "Prepare failed: (" . $CONN->errno . ") " . $CONN->error . "<br>";
             $app->response->setStatus(500);
             return;
         }
+        
+        $part->part_id = $CONN->insert_id;
+        
+        if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode) VALUES (?,?)")){
+            for($part->barcodes as $barcode){
+                $stmt->bind_param('ss', $part->part_id, $barcode);
+                $stmt->execute();
+                //$stmt->fetch();
+                $stmt->close();
+            }
+        } else {
+            //remove earlier part from db
+        }
+        
+        //add attributes
+        
     } else {
         //Error out if part already exists
         printf("Error: Part %s already exists:", $part->part_num);
