@@ -213,7 +213,7 @@ function submitData() {
         $('#descriptionInput').val(),
         $('#datasheetInput').val(),
         $('#locationInput').val(),
-        $('#barcodeInput').val(), //This line needs to be fixed for multi-barcode support
+        [$('#barcodeInput').val()], //This line needs to be fixed for multi-barcode support
         attributes
     );
     
