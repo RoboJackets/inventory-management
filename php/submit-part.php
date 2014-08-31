@@ -5,9 +5,10 @@ $app->post('/add/submit', function() use ($app) {
     if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
     require $path . 'db-conn.php';
 
+    $data = json_decode($_POST['data']);
+    
     var_dump($data);
     
-    $data = json_decode($_POST['data']);
     $part = $data->parts[0];
     //add code here that check to ensure only 1 part was sent / use a for each structure
 
@@ -26,14 +27,9 @@ $app->post('/add/submit', function() use ($app) {
     if ($count == 0){
         echo "Insert New Row\n";
         
-        if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, part_name, category, description, datasheet, location)
+        if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location)
             Values (?,?,?,?,?,?)")){
-            $stmt->bind_param("s", $part->part_num);
-            $stmt->bind_param("s", $part->part_name);
-            $stmt->bind_param("s", $part->category);
-            $stmt->bind_param("s", $part->description);
-            $stmt->bind_param("s", $part->datasheet);
-            $stmt->bind_param("s", $part->location);
+            $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             $stmt->execute();
             $stmt->fetch();
             $stmt->close();
