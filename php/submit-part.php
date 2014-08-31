@@ -24,11 +24,9 @@ $app->post('/add/submit', function() use ($app) {
         return;
     }
 
-    if ($count == 0){
-        echo "Insert New Row\n";
-        
+    if ($count == 0){ // If part isn't already in DB
         if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location)
-            Values (?,?,?,?,?,?)")){
+            VALUES (?,?,?,?,?,?)")){
             $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             $stmt->execute();
             $stmt->fetch();
@@ -38,10 +36,9 @@ $app->post('/add/submit', function() use ($app) {
             $app->response->setStatus(500);
             return;
         }
-        
     } else {
         //Error out if part already exists
-        printf("Error: Part %s already exists:", $partNum);
+        printf("Error: Part %s already exists:", $part->part_num);
         $app->response->setStatus(409);
         return;
     }  
