@@ -221,10 +221,10 @@ function submitData() {
         "parts":[part]
     };
     
-    var data = JSON.stringify(part)
+    var data = JSON.stringify(parts);
     $.post("add/submit", data, function(result){
         console.log(result);
-    });
+    }, "json");
 }
 
 $(document).ready(function() {
