@@ -177,10 +177,49 @@ function validateAddAttributes() {
     return flag;
 }
 
+function Attribute(attribute, value, priority) {
+    this.attribute = attribute;
+    this.value = value;
+    this.priority = priority;
+}
+
+function Part(partNum, name, category, description, datasheet, location, barcodes, attributes) {
+    this.part_num = partNum;
+    this.name = name;
+    this.category = category;
+    this.description = description;
+    this.location = location;
+    this.barcodes = barcodes;
+    this.attributes = attributes;
+}
+
+function submitData() {
+    var attributes = [];
+    
+    $attributes = $("#add-attributes table tr:not(:last-child)");
+    
+    $attributes.each(function(index){
+        attributes.push(new Attribute(
+            this.children("td:nth-child(2) input").val(),
+            this.children("td:nth-child(3) input").val(),              
+            this.children("td:nth-child(1)").text()
+                     ));
+    });
+    
+    var part = new Part(
+        $('#partNumberInput').val(),
+        $('#partNameInput').val(),
+        $('#categoryInput').val(),
+        $('#descriptionInput').val(),
+        $('#datasheetInput').val(),
+        $('#locationInput').val(),
+        $('#barcodeInput').val(), //This line needs to be fixed for multi-barcode support
+        attributes
+    );
+}
+
 $(document).ready(function() {
     var currentCardID = "#add-part";
-
-    debug = "http://rj.str.at/";
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
@@ -222,7 +261,7 @@ $(document).ready(function() {
             enableCard($("#edit-details"));
 
             var query = {"partNumber":$(this).val()};
-            $.post(debug + "add/validate-pn", query, function(result) {
+            $.post("add/validate-pn", query, function(result) {
                 result = $.parseJSON(result);
                 if (result) {
                     $("#partNumberInput").parent().addClass("has-success");
@@ -343,16 +382,11 @@ $(document).ready(function() {
         }
     });
     
-    /* The values to send to database that will be added
-    $().click(function(){
-        $('#partNumberInput').val();
-        $('#partNameInput').val();
-        $('#categoryInput').val();
-        $('#descriptionInput').val();
-        $('#datasheetInput').val();
-        $('#locationInput').val();
-        $('#barcodeInput').val();
-            
+    $("#btn-confirm-submit").click(function(){
+        if($(this).hasClass("btn-enabled")){
+            console.log(SubmittingData)
+            submitData();
+        }
     });
-    */
+    
 });

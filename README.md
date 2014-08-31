@@ -5,7 +5,7 @@ This tool is used by the Robocup Electrical subteam to document part information
 
 ##Installation
 
-####Dependecies
+####Dependencies
 * Apache
 * PHP
 * MySQL
