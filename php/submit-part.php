@@ -29,7 +29,6 @@ $app->post('/add/submit', function() use ($app) {
             VALUES (?,?,?,?,?,?)")){
             $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             $stmt->execute();
-            //$stmt->fetch();
             $stmt->close();
         } else {
             echo "Prepare failed: (" . $CONN->errno . ") " . $CONN->error . "<br>";
@@ -43,14 +42,21 @@ $app->post('/add/submit', function() use ($app) {
             foreach($part->barcodes as $barcode){
                 $stmt->bind_param('ss', $part->part_id, $barcode);
                 $stmt->execute();
-                //$stmt->fetch();
             }
             $stmt->close();
         } else {
             //remove earlier part from db
         }
         
-        //add attributes
+        if ($stmt = $CONN->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?)")){
+            foreach($part->attributes as $attribute){
+                $stmt->bind_param('ssss', $part->part_id, $attribute->attribute, $attribute->value, $attribute->priority);
+                $stmt->execute();
+            }
+            $stmt->close();
+        } else {
+            //remove earlier part from db
+        }
         
     } else {
         //Error out if part already exists
