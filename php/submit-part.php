@@ -5,9 +5,9 @@ $app->post('/add/submit', function() use ($app) {
     if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
     require $path . 'db-conn.php';
 
-    $data = json_decode($_POST['data']);
+    //$data = json_decode($_POST['data']);
     
-    var_dump($data);
+    var_dump($_POST);
     
     $part = $data->parts[0];
     //add code here that check to ensure only 1 part was sent / use a for each structure

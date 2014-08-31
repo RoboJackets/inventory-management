@@ -217,6 +217,14 @@ function submitData() {
         attributes
     );
     
+    var parts = {
+        "parts":[part]
+    };
+    
+    var data = JSON.stringify(part)
+    $.post("add/submit", data, function(result){
+        console.log(result);
+    });
 }
 
 $(document).ready(function() {
