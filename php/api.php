@@ -106,7 +106,7 @@ function sql_Barcode() { // query part information from a barcde
             . "location AS location, "
             . "attributes.attribute AS attribute, "
             . "attributes.value AS value, "
-            . "attributes.priority AS priority "
+            . "attributes.priority AS priority, "
             . "attributes.attr_id AS attr_id "
             . "FROM barcode_lookup "
                 . "LEFT JOIN parts "
