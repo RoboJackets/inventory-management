@@ -1,4 +1,5 @@
 var allowedChars = /^[\w-+=& ]+$/;
+var currentCardID = "#add-part";
 
 function slideCard($card, direction, side) {
     if (direction === "in") {
@@ -242,8 +243,6 @@ function resetPage(){
 }
 
 $(document).ready(function() {
-    var currentCardID = "#add-part";
-
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
             event.preventDefault();
