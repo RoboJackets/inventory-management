@@ -53,7 +53,7 @@ function FilterResults($query) {
         /*foreach($row as $key => $val) { // itterate through all rows
             $temp[$key] = $val; 
         } */
-        $result[] = $temp;
+        $result[] = $row;
     } 
     
     var_dump($result);
