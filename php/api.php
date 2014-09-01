@@ -72,8 +72,6 @@ function FilterResults($query) {
 }
 
 
-
-
 function create_join_array($rows, $joins){
     /* build associative multidimensional array with joined tables from query rows */
 
@@ -82,15 +80,15 @@ function create_join_array($rows, $joins){
             $out[$row['id']] = $row;
         }
 
-        foreach($joins as $name => $item){
+        foreach($joins as $key => $value){
             unset($newitem);
-            foreach($item as $field => $newfield){
+            foreach($value as $field => $newfield){
                 unset($out[$row['id']][$field]);
                 if (!empty($row[$field]))
                     $newitem[$newfield] = $row[$field];
             }
             if (!empty($newitem))
-                $out[$row['id']][$name][$newitem[key($newitem)]] = $newitem;
+                $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
         }
     }
 
@@ -105,11 +103,9 @@ function sql_Barcode() { // query part information from a barcde
             . "description AS description, "
             . "datasheet AS datasheet, "
             . "location AS location, "
-            . "attribute AS attribute, "
-            . "value AS value, "
-            . "priority AS priority "
-            //. "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
-            //. "GROUP_CONCAT(attributes.value) AS AtribVals "
+            . "attributes.attribute AS attribute, "
+            . "attributes.value AS value, "
+            . "attributes.priority AS priority "
             . "FROM barcode_lookup "
                 . "LEFT JOIN parts "
                 . "ON parts.part_id=barcode_lookup.part_id "
