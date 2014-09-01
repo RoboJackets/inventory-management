@@ -225,7 +225,7 @@ function submitData() {
     $.post("add/submit", data, function(result){
         console.log("data submitted");
            
-        $("#steps-container").append(toast);
+        $("#toast-alert").show();
         
         resetPage();
     }, "json").error(function(xhr){
