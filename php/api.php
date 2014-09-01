@@ -30,8 +30,7 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    return;
-    //return FilterResults($query);   // return the results after formatting to json data
+    return FilterResults($query);   // return the results after formatting to json data
 }   //  ==========  SearchDB ==========
 
 /*
@@ -71,15 +70,11 @@ function FilterResults($query) {
 function sql_Barcode() { // query part information from a barcde
     return "SELECT barcode AS barcodes, "
             . "parts.part_num AS part_num, "
-            //. "barcode_lookup.added AS BarAdd, "
             . "name AS name, "
             . "category AS category, "
             . "description AS description, "
             . "datasheet AS datasheet, "
             . "location AS location, "
-            //. "flag_error AS PartErr, "
-            //. "status AS PartStatus, "
-            //. "parts.updated AS PartUpdated, "
             . "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
             . "GROUP_CONCAT(attributes.value) AS AtribVals "
             . "FROM barcode_lookup "
