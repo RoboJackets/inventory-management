@@ -175,3 +175,6 @@ td span.glyphicon:hover {
 .uppercase::-moz-placeholder {text-transform: none !important;}
 .uppercase:-ms-input-placeholder {text-transform: none !important;}
 
+.alert {
+    display: inline-block;
+}
