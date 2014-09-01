@@ -222,13 +222,15 @@ function submitData() {
     };
     
     var data = JSON.stringify(parts);
-    $.post("add/submit", data, function(result){
+    $.post("add/submit", data, "json")
+    .done(function(xhr){
         console.log("data submitted");
-           
+
         $("#toast-alert").show();
-        
+
         resetPage();
-    }, "json").error(function(xhr){
+    })
+    .fail(function(xhr){
         alert("Data could not be submitted. Error code: " + xhr.status);
         console.log(result);
     });
