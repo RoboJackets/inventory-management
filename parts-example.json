@@ -1,0 +1,36 @@
+{"parts":[
+    {"part_num":"11593lgy",
+    "name":"My Cool Part",
+    "category":"ic",
+    "description":"A really cool part",
+    "datasheet":"www.sketchywebsite.com/datasheet.pdf",
+    "location":"A04",
+    "barcodes":["200541","3011826"],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC8",
+        "priority":"2"
+        },
+        {"attribute":"Voltage",
+        "value":"6v",
+        "priority":"4"
+        }]
+    },
+    {"part_num":"14dgfy6",
+    "name":"My 2nd Cooler Part",
+    "category":"resistor",
+    "description":"My secod part. It Exists only in JSON",
+    "datasheet":"www.legitwebsite.com/datasheet2.pdf",
+    "location":"B06",
+    "barcodes":["2230531","5389381"],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC10",
+        "priority":"1"
+        },
+        {"attribute":"Voltage",
+        "value":"12v",
+        "priority":"3"
+        }]
+    }]
+}

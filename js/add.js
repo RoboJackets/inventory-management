@@ -223,8 +223,26 @@ function submitData() {
     
     var data = JSON.stringify(parts);
     $.post("add/submit", data, function(result){
+        console.log("data submitted");
+        
+        $("#steps-container").append("<div class="alert alert-success alert-dismissible" role="alert">
+                                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                     <strong>Success!</strong> Part has been successfully submitted
+                                     </div>")
+        
+        resetPage();
+    }, "json").error(function(xhr){
+        alert("Data could not be submitted. Error code: " + xhr.status);
         console.log(result);
-    }, "json");
+    });
+}
+
+function resetPage(){
+    $("#category-input").val("");
+    //remove attributes
+    $("input").val("");
+    disableCard($(".card").slice(2));
+    toCard("#add-part","#confirm");
 }
 
 $(document).ready(function() {
@@ -393,7 +411,6 @@ $(document).ready(function() {
     
     $("#btn-confirm-submit").click(function(){
         if($(this).hasClass("btn-enabled")){
-            console.log("Submitting Data");
             submitData();
         }
     });
