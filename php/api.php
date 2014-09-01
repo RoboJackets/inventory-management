@@ -60,7 +60,7 @@ function FilterResults($query) {
     
     $joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
     $result = create_join_array($result, $joins);
-    
+    var_dump($result);
     var_dump(json_encode($result));
     
     // close the open database/query information
