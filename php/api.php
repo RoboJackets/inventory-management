@@ -48,20 +48,25 @@ function FilterResults($query) {
     // callback function; same as: $query->bind_result($params)
     call_user_func_array(array($query, 'bind_result'), $params);
 
-    
-    while ($query->fetch()) {   // fetch the results for every field
-        /*foreach($row as $key => $val) { // itterate through all rows
-            $temp[$key] = $val; 
-        } */
-        $result[] = $row;
-    } 
-    
-    
-    //$joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
-    $joins = array('attribute'=>'attribute','value'=>'value','priority'=>'priority');
-    $result = joinAttributes($result, $joins);
-    var_dump($result);
+        $joins = array('attribute'=>'attribute','value'=>'value','priority'=>'priority');
 
+    while ($query->fetch()) {   // fetch the results for every field
+        
+        $tmpObj = new stdClass();
+        
+        foreach($row as $key => $val) { // itterate through all rows
+            $tmpObj->$key = $val; 
+        }
+        
+            $tmpObj->attributes = joinAttributes($result, $joins);
+
+        
+        $result[] = $tmpObj;
+    }
+    var_dump($tmpObj);
+ 
+    
+    
     var_dump(json_decode('{"parts":[
     {"part_num":"11593lgy",
     "name":"My Cool Part",
