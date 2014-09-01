@@ -56,6 +56,8 @@ function FilterResults($query) {
         $result[] = $temp;
     } 
     
+    var_dump($result);
+    
     $joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
     $result = create_join_array($result, $joins);
     
