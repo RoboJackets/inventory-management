@@ -58,7 +58,8 @@ function FilterResults($query) {
     
     var_dump($result);
     
-    $joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
+    //$joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
+    $joins = array('attribute'=>'attribute','value'=>'value','priority'=>'priority');
     $result = joinAttributes($result, $joins);
     var_dump($result);
     var_dump(json_encode($result));
@@ -114,26 +115,31 @@ function joinAttributes($rows, $joins){
     /* build associative multidimensional array with joined tables from query rows */
 
     foreach((array)$rows as $row){
-        
+        /*
         if (!isset($out[$row['attr_id']])) {
             $out[$row['attr_id']] = $row;
-        }
+        }*/
+        
+        $tmpObj = new stdClass();
 
-        foreach($joins as $key => $value){
-            unset($newitem);
-            foreach($value as $field => $newfield){
-                unset($out[$row['attr_id']][$field]);
-                if (!empty($row[$field]))
-                    $newitem[$newfield] = $row[$field];
+        //foreach($joins as $key => $value){
+           // unset($newitem);
+            foreach($joins as $key => $field){
+                unset($out[$row['attr_id']][key]);
+                //if (!empty($row[$field]))
+                    $tmpObj->$field= $row[$field];
+                    
             }
-            if (!empty($newitem)) {
+            
+            $tmpArray[]=$tmpObj;
+            //if (!empty($newitem)) {
             //    $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
-            $out[$row['attr_id']][$key] = $newitem;
-            }
-        }
+            //$out[$row['attr_id']][$key] = $newitem;
+            //}
+        //}
     }
 
-    return $out;
+    return $tmpArray;
 }
 
 function sql_Barcode() { // query part information from a barcde
