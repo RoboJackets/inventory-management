@@ -59,7 +59,7 @@ function FilterResults($query) {
     var_dump($result);
     
     $joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
-    $result = create_join_array($result, $joins);
+    $result = joinAttributes($result, $joins);
     var_dump($result);
     var_dump(json_encode($result));
     
@@ -72,24 +72,24 @@ function FilterResults($query) {
 }
 
 
-function create_join_array($rows, $joins){
+function joinAttributes($rows, $joins){
     /* build associative multidimensional array with joined tables from query rows */
 
     foreach((array)$rows as $row){
-        if (!isset($out[$row['id']])) {
-            $out[$row['id']] = $row;
+        if (!isset($out[$row['attr_id']])) {
+            $out[$row['attr_id']] = $row;
         }
 
         foreach($joins as $key => $value){
             unset($newitem);
             foreach($value as $field => $newfield){
-                unset($out[$row['id']][$field]);
+                unset($out[$row['attr_id']][$field]);
                 if (!empty($row[$field]))
                     $newitem[$newfield] = $row[$field];
             }
             if (!empty($newitem))
             //    $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
-            $out[$row['id']][$key] = $newitem;
+            $out[$row['attr_id']][$key] = $newitem;
         }
     }
 
