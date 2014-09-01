@@ -61,9 +61,9 @@ function FilterResults($query) {
             $tmpObj->attributes = joinAttributes($result, $joins);
 
         
-        $result[] = $tmpObj;
+        $results[] = $tmpObj;
     }
-    var_dump($tmpObj);
+    var_dump($results);
  
     
     
