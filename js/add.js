@@ -240,7 +240,7 @@ function resetPage(){
     $("#category-input").val("");
     //remove attributes
     $("input").val("");
-    disableCard($(".card").slice(2));
+    disableCard($(".card").slice(1));
     toCard("#add-part","#confirm");
 }
 
