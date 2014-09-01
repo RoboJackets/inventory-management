@@ -66,7 +66,7 @@ function disableFastTrack() {
     $(".card:first-child .next, .submit").removeClass("fast-track");
     $("ol.steps li:last-child").removeClass("fast-track");
     disableCard($(".card").slice(2));
-};
+}
 
 function addAttributeInput(readOnly, key, value) {
     if (readOnly === undefined) readOnly = false;
@@ -224,10 +224,7 @@ function submitData() {
     var data = JSON.stringify(parts);
     $.post("add/submit", data, "json")
     .done(function(xhr){
-        console.log("data submitted");
-
-        $("#toast-alert").show();
-
+        $("#toast-alert").show(); //This should be replaced with a more generic toast function
         resetPage();
     })
     .fail(function(xhr){
@@ -237,11 +234,11 @@ function submitData() {
 }
 
 function resetPage(){
-    $("#category-input").val("");
-    //remove attributes
+    $("#categoryInput").val("");
+    $("#add-attributes table tr:not(:last-child) td span").click();
     $("input").val("");
     disableCard($(".card").slice(1));
-    toCard("#add-part","#confirm");
+    currentCardID = toCard("#add-part","#confirm");
 }
 
 $(document).ready(function() {
