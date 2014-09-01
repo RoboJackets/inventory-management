@@ -10,7 +10,7 @@ $app->post('/add/submit', function() use ($app) {
 
     
     $part = $data->parts[0];
-    //add code here that check to ensure only 1 part was sent / use a for each structure
+    //add code here that check to ensure only 1 part was sent / use a foreach structure
 
     if ($stmt = $CONN->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=?")) {
         $stmt->bind_param("s", $part->part_num);
@@ -34,35 +34,24 @@ $app->post('/add/submit', function() use ($app) {
             echo "Prepare failed: (" . $CONN->errno . ") " . $CONN->error . "<br>";
             $app->response->setStatus(500);
             return;
-        }
-        
-        $part->part_id = $CONN->insert_id;
-        
-        if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode) VALUES (?,?)")){
-            foreach($part->barcodes as $barcode){
-                $stmt->bind_param('ss', $part->part_id, $barcode);
-                $stmt->execute();
-            }
-            $stmt->close();
-        } else {
-            //remove earlier part from db
-        }
-        
-        if ($stmt = $CONN->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?)")){
-            foreach($part->attributes as $attribute){
-                $stmt->bind_param('ssss', $part->part_id, $attribute->attribute, $attribute->value, $attribute->priority);
-                $stmt->execute();
-            }
-            $stmt->close();
-        } else {
-            //remove earlier part from db
-        }
-        
-    } else {
-        //Error out if part already exists
-        printf("Error: Part %s already exists:", $part->part_num);
-        $app->response->setStatus(409);
-        return;
-    }  
+        } 
+        $part->part_id = $CONN->insert_id; 
+    }
     
-});
+    if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode) VALUES (?,?)")){
+        foreach($part->barcodes as $barcode){
+            $stmt->bind_param('ss', $part->part_id, $barcode);
+            $stmt->execute();
+        }
+        $stmt->close();
+    }
+
+    if ($stmt = $CONN->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value), priority=VALUES(priority)")){
+        foreach($part->attributes as $attribute){
+            $stmt->bind_param('ssss', $part->part_id, $attribute->attribute, $attribute->value, $attribute->priority);
+            $stmt->execute();
+        }
+        $stmt->close();
+    }
+    
+});s
