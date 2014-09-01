@@ -56,14 +56,12 @@ function FilterResults($query) {
         $result[] = $row;
     } 
     
-    var_dump($result);
     
     //$joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
     $joins = array('attribute'=>'attribute','value'=>'value','priority'=>'priority');
     $result = joinAttributes($result, $joins);
     var_dump($result);
-    var_dump(json_encode($result));
-    
+
     var_dump(json_decode('{"parts":[
     {"part_num":"11593lgy",
     "name":"My Cool Part",
