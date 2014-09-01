@@ -63,6 +63,44 @@ function FilterResults($query) {
     var_dump($result);
     var_dump(json_encode($result));
     
+    var_dump(json_decode('{"parts":[
+    {"part_num":"11593lgy",
+    "name":"My Cool Part",
+    "category":"ic",
+    "description":"A really cool part",
+    "datasheet":"www.sketchywebsite.com/datasheet.pdf",
+    "location":"A04",
+    "barcodes":["200541","3011826"],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC8",
+        "priority":"2"
+        },
+        {"attribute":"Voltage",
+        "value":"6v",
+        "priority":"4"
+        }]
+    },
+    {"part_num":"14dgfy6",
+    "name":"My 2nd Cooler Part",
+    "category":"resistor",
+    "description":"My secod part. It Exists only in JSON",
+    "datasheet":"www.legitwebsite.com/datasheet2.pdf",
+    "location":"B06",
+    "barcodes":["2230531","5389381"],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC10",
+        "priority":"1"
+        },
+        {"attribute":"Voltage",
+        "value":"12v",
+        "priority":"3"
+        }]
+    }
+]
+}'));
+    
     // close the open database/query information
     $meta->close();
     $query->close();
@@ -76,6 +114,7 @@ function joinAttributes($rows, $joins){
     /* build associative multidimensional array with joined tables from query rows */
 
     foreach((array)$rows as $row){
+        
         if (!isset($out[$row['attr_id']])) {
             $out[$row['attr_id']] = $row;
         }
@@ -87,9 +126,10 @@ function joinAttributes($rows, $joins){
                 if (!empty($row[$field]))
                     $newitem[$newfield] = $row[$field];
             }
-            if (!empty($newitem))
+            if (!empty($newitem)) {
             //    $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
             $out[$row['attr_id']][$key] = $newitem;
+            }
         }
     }
 
