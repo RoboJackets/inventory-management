@@ -30,7 +30,8 @@ function SearchDB($mode, $search_input) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
     
-    return FilterResults($query);   // return the results after formatting to json data
+    return;
+    //return FilterResults($query);   // return the results after formatting to json data
 }   //  ==========  SearchDB ==========
 
 /*
@@ -55,6 +56,9 @@ function FilterResults($query) {
         } 
         $result[] = $temp;
     } 
+    
+    
+    var_dump($result);
     
     // close the open database/query information
     $meta->close();
