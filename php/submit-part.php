@@ -25,7 +25,7 @@ $app->post('/add/submit', function() use ($app) {
     }
 
     if ($count == 0){ // If part isn't already in DB
-        if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description), datasheet=VALUES(datasheet), location=VALUES(location)")){
+        if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description), datasheet=VALUES(datasheet), location=VALUES(location);")){
             $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             $stmt->execute();
             $stmt->close();
@@ -37,7 +37,7 @@ $app->post('/add/submit', function() use ($app) {
         $part->part_id = $CONN->insert_id; 
     }
     
-    if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode) VALUES (?,?)")){
+    if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode) VALUES (?,?);")){
         foreach($part->barcodes as $barcode){
             $stmt->bind_param('ss', $part->part_id, $barcode);
             $stmt->execute();
@@ -45,7 +45,7 @@ $app->post('/add/submit', function() use ($app) {
         $stmt->close();
     }
 
-    if ($stmt = $CONN->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value), priority=VALUES(priority)")){
+    if ($stmt = $CONN->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value), priority=VALUES(priority);")){
         foreach($part->attributes as $attribute){
             $stmt->bind_param('ssss', $part->part_id, $attribute->attribute, $attribute->value, $attribute->priority);
             $stmt->execute();
