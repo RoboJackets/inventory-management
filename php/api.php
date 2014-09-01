@@ -50,38 +50,71 @@ function FilterResults($query) {
 
     
     while ($query->fetch()) {   // fetch the results for every field
-        foreach($row as $key => $val) { // itterate through all rows
+        /*foreach($row as $key => $val) { // itterate through all rows
             $temp[$key] = $val; 
-        } 
-        $result[] = $temp;
+        } */
+        $result[] = $row;
     } 
+    
+    var_dump($result);
+    
+    $joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
+    $result = create_join_array($result, $joins);
+    
+    var_dump(json_encode($result));
     
     // close the open database/query information
     $meta->close();
     $query->close();
     
     // format the info as json data and return
-    return json_encode($result);
+    //return json_encode($result);
+}
+
+
+
+
+function create_join_array($rows, $joins){
+    /* build associative multidimensional array with joined tables from query rows */
+
+    foreach((array)$rows as $row){
+        if (!isset($out[$row['id']])) {
+            $out[$row['id']] = $row;
+        }
+
+        foreach($joins as $name => $item){
+            unset($newitem);
+            foreach($item as $field => $newfield){
+                unset($out[$row['id']][$field]);
+                if (!empty($row[$field]))
+                    $newitem[$newfield] = $row[$field];
+            }
+            if (!empty($newitem))
+                $out[$row['id']][$name][$newitem[key($newitem)]] = $newitem;
+        }
+    }
+
+    return $out;
 }
 
 function sql_Barcode() { // query part information from a barcde
-    return "SELECT barcode AS PackageIDs, "
-            . "parts.PART_NUM AS PartNum, "
-            . "barcode_lookup.added AS BarAdd, "
-            . "name AS PartName, category AS PartCat, "
-            . "description AS PartDesc, "
-            . "datasheet AS PartSheet, "
-            . "location AS PartLocation, "
-            . "flag_error AS PartErr, "
-            . "status AS PartStatus, "
-            . "parts.updated AS PartUpdated, "
-            . "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
-            . "GROUP_CONCAT(attributes.value) AS AtribVals "
+    return "SELECT barcode AS barcodes, "
+            . "parts.part_num AS part_num, "
+            . "name AS name, "
+            . "category AS category, "
+            . "description AS description, "
+            . "datasheet AS datasheet, "
+            . "location AS location, "
+            . "attribute AS attribute, "
+            . "value AS value, "
+            . "priority AS priority "
+            //. "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
+            //. "GROUP_CONCAT(attributes.value) AS AtribVals "
             . "FROM barcode_lookup "
                 . "LEFT JOIN parts "
-                . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
+                . "ON parts.part_id=barcode_lookup.part_id "
                 . "LEFT JOIN attributes "
-                . "ON attributes.PART_NUM=parts.PART_NUM "
+                . "ON attributes.part_id=parts.part_id "
             . "WHERE barcode_lookup.barcode=(?)";
 }   //  ==========  sql_Barcode  ==========
 
