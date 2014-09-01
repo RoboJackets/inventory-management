@@ -57,11 +57,13 @@ function FilterResults($query) {
         foreach($row as $key => $val) { // itterate through all rows
             $tmpObj->$key = $val; 
         }
-        
-            $tmpObj->attributes = joinAttributes($row, $joins);
 
         
-        $results[] = $tmpObj;
+        $results['parts'] = $tmpObj;
+    }
+    
+    foreach($results as $part => $value){
+        $part->attributes = joinAttributes($part, $joins);
     }
     var_dump($results);
  
