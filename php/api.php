@@ -50,12 +50,14 @@ function FilterResults($query) {
 
     
     while ($query->fetch()) {   // fetch the results for every field
-        foreach($row as $key => $val) { // itterate through all rows
+        /*foreach($row as $key => $val) { // itterate through all rows
             $temp[$key] = $val; 
-        } 
+        } */
         $result[] = $temp;
     } 
     
+    $joins = array('attributes' => array('attribute'=>'attribute','value'=>'value','priority'=>'priority'));
+    $result = create_join_array($result, $joins);
     
     var_dump($result);
     
@@ -64,7 +66,33 @@ function FilterResults($query) {
     $query->close();
     
     // format the info as json data and return
-    return json_encode($result);
+    //return json_encode($result);
+}
+
+
+
+
+function create_join_array($rows, $joins){
+    /* build associative multidimensional array with joined tables from query rows */
+
+    foreach((array)$rows as $row){
+        if (!isset($out[$row['id']])) {
+            $out[$row['id']] = $row;
+        }
+
+        foreach($joins as $name => $item){
+            unset($newitem);
+            foreach($item as $field => $newfield){
+                unset($out[$row['id']][$field]);
+                if (!empty($row[$field]))
+                    $newitem[$newfield] = $row[$field];
+            }
+            if (!empty($newitem))
+                $out[$row['id']][$name][$newitem[key($newitem)]] = $newitem;
+        }
+    }
+
+    return $out;
 }
 
 function sql_Barcode() { // query part information from a barcde
@@ -75,8 +103,11 @@ function sql_Barcode() { // query part information from a barcde
             . "description AS description, "
             . "datasheet AS datasheet, "
             . "location AS location, "
-            . "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
-            . "GROUP_CONCAT(attributes.value) AS AtribVals "
+            . "attribute AS attribute, "
+            . "value AS value, "
+            . "priority AS priority "
+            //. "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
+            //. "GROUP_CONCAT(attributes.value) AS AtribVals "
             . "FROM barcode_lookup "
                 . "LEFT JOIN parts "
                 . "ON parts.part_id=barcode_lookup.part_id "
