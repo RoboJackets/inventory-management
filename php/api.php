@@ -58,7 +58,7 @@ function FilterResults($query) {
             $tmpObj->$key = $val; 
         }
         
-            $tmpObj->attributes = joinAttributes($result, $joins);
+            $tmpObj->attributes = joinAttributes($row, $joins);
 
         
         $results[] = $tmpObj;
