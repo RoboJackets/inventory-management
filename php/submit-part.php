@@ -25,9 +25,7 @@ $app->post('/add/submit', function() use ($app) {
     }
 
     if ($count == 0){ // If part isn't already in DB
-        if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location)
-                VALUES (?,?,?,?,?,?)
-                ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description), datasheet=VALUES(datasheet), location=VALUES(location)")){
+        if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description), datasheet=VALUES(datasheet), location=VALUES(location)")){
             $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             $stmt->execute();
             $stmt->close();
