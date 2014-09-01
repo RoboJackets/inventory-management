@@ -88,7 +88,8 @@ function create_join_array($rows, $joins){
                     $newitem[$newfield] = $row[$field];
             }
             if (!empty($newitem))
-                $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
+            //    $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
+            $out[$row['id']][$key] = $newitem;
         }
     }
 
