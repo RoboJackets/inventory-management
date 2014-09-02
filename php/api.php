@@ -29,7 +29,8 @@ function getAttributes($part_id) {
 }
 
 function getPartID($barcode) {
-    return queryDB("SELECT * FROM barcode_lookup WHERE part_id=(?)", $barcode);
+    $results = queryDB("SELECT * FROM barcode_lookup WHERE part_id=(?)", $barcode);
+    return $results->part_id;
 }
 
 function queryDB($sql, $input) {
@@ -71,7 +72,6 @@ function FilterResults($query) {
         }
 
         // add row (now as object) to the array of results
-        var_dump($tmpObj);
         $results[] = $tmpObj;
     }
 
