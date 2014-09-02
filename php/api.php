@@ -24,7 +24,7 @@ function SearchDB($mode, $input) {
      
     $partData->barcodes = getAllBarcodes($partData->part_id);
     $partData->attributes = getAttributes($partData->part_id);
-    unset($partData->pard_id);
+    unset($partData->part_id);
     
     var_dump($partData);
     echo "-------------------------- \n";
