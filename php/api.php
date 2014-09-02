@@ -27,13 +27,12 @@ function SearchDB($mode, $input) {
 
 
 function getPartID($barcode) {
-    $results = queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $barcode);
+    $results = FilterResults(queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $barcode));
     return $results[0]->part_id;
 }
 
 function getAllBarcodes($part_id) {
-    $results = queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id);
-    return $results;
+    return FilterBarcodes(queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id));
 }
 
 function getAttributes($part_id) {
@@ -53,7 +52,7 @@ function queryDB($sql, $input) {
     if (!$query->execute()) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
-    return FilterResults($query);   // return the results after formatting to an arry of php objects
+    return $query;   // return the results after formatting to an arry of php objects
 }
 
 /*
@@ -89,6 +88,35 @@ function FilterResults($query) {
     
     // format the info as json data and return
     return $results;
+}
+
+function FilterBarcodes($query) {
+    $meta = $query->result_metadata();  // get the metadata from the results
+    
+    // store the field heading names into an array, pass by reference
+    while ($field = $meta->fetch_field()) {
+        $params[] = &$row[$field->name];
+    }
+
+    // callback function; same as: $query->bind_result($params)
+    call_user_func_array(array($query, 'bind_result'), $params);
+
+    while ($query->fetch()) {   // fetch the results for every field
+        /*
+        foreach($row as $key => $val) { // itterate through all fields
+            $tmpObj[] = $val; 
+        }*/
+
+        // add row (now as object) to the array of results
+        $barcodes[] = $row['barcode'];
+    }
+
+    // close the open database/query information
+    $meta->close();
+    $query->close();
+    
+    // format the info as json data and return
+    return $barcodes;
 }
 
 
