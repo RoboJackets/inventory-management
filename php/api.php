@@ -22,10 +22,9 @@ function SearchDB($mode, $input) {
             $partData->$key = $val; 
     }
      
-
-    $partData->part_id = $part_id;
     $partData->barcodes = getAllBarcodes($partData->part_id);
     $partData->attributes = getAttributes($partData->part_id);
+    unset($partData->pard_id);
     
     var_dump($partData);
     echo "-------------------------- \n";
