@@ -189,6 +189,7 @@ function Part(partNum, name, category, description, datasheet, location, barcode
     this.name = name;
     this.category = category;
     this.description = description;
+    this.datasheet = datasheet;
     this.location = location;
     this.barcodes = barcodes;
     this.attributes = attributes;
