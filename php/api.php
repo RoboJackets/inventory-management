@@ -17,6 +17,7 @@ function SearchDB($mode, $input) {
     $partData->part_id = getPartID($input);
     $partData->barcodes = getAllBarcodes($partData->part_id);
     $partData->attributes = getAttributes($partData->part_id);
+    $partData = getPartInfo($partData->part_id);
     var_dump($partData);
     echo "--------------------------\n";
     temp();
@@ -41,6 +42,11 @@ function getAttributes($part_id) {
     return $results;
 }
 
+function getPartInfo($part_id) {
+     $results = FilterResults(queryDB("SELECT * FROM parts WHERE part_id=(?)", $part_id));
+    
+    
+}
 function queryDB($sql, $input) {
     global $CONN;   // let function know about the global declared connection
 
