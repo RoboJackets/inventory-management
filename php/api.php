@@ -16,8 +16,9 @@ function SearchDB($mode, $input) {
     
     $partData->part_id = getPartID($input);
     $partData->barcodes = getAllBarcodes($partData->part_id);
+    $partData->attributes = getAttributes($partData->part_id);
     var_dump($partData);
-    echo'--------------------------\n';
+    echo "--------------------------\n";
     temp();
     
     //$sql_statement = sql_Barcode();
@@ -36,8 +37,8 @@ function getAllBarcodes($part_id) {
 }
 
 function getAttributes($part_id) {
-    
-    
+    $results = FilterResults(queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $barcode));
+    return $results;
 }
 
 function queryDB($sql, $input) {
