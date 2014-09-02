@@ -13,12 +13,15 @@ require $path.'db-conn.php';
 function SearchDB($mode, $search_input) {
     global $CONN;   // let function know about the global declared connection
     
-    /*
-    $search_input = function($search_input) use ($search_input) {
-            return htmlspecialchars(stripslashes(trim($search_input)));
-        } // cleanup input */
+    $results = query_db(sql_Barcode());
+    return $results;
+}   //  ==========  SearchDB ==========
+
+function sql_getAttributes($part_id) {
     
-    $sql = sql_Barcode();
+}
+
+function query_db($query) {
     
     if(!$query = $CONN->prepare($sql)){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
@@ -29,9 +32,9 @@ function SearchDB($mode, $search_input) {
     if (!$query->execute()) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
-    
-    return FilterResults($query);   // return the results after formatting to json data
-}   //  ==========  SearchDB ==========
+   
+    return FilterResults($query);   // return the results after formatting to an arry of php objects
+}
 
 /*
  * This function filters the results from the searched data and formats it as
@@ -58,92 +61,15 @@ function FilterResults($query) {
 
         $results[] = $tmpObj;
     }
-    
-    foreach($results as $part => $value){
-        $part->attributes = joinAttributes($part, array($part->attribute=>'attribute',$part->value=>'value',$part->priority=>'priority'));
-    }
-    
-    var_dump($results);
-    
-    echo "----------------------------\n";
-    
-    var_dump(json_decode('{"parts":[
-    {"part_num":"11593lgy",
-    "name":"My Cool Part",
-    "category":"ic",
-    "description":"A really cool part",
-    "datasheet":"www.sketchywebsite.com/datasheet.pdf",
-    "location":"A04",
-    "barcodes":["200541","3011826"],
-    "attributes":[
-        {"attribute":"Package",
-        "value":"SOIC8",
-        "priority":"2"
-        },
-        {"attribute":"Voltage",
-        "value":"6v",
-        "priority":"4"
-        }]
-    },
-    {"part_num":"14dgfy6",
-    "name":"My 2nd Cooler Part",
-    "category":"resistor",
-    "description":"My secod part. It Exists only in JSON",
-    "datasheet":"www.legitwebsite.com/datasheet2.pdf",
-    "location":"B06",
-    "barcodes":["2230531","5389381"],
-    "attributes":[
-        {"attribute":"Package",
-        "value":"SOIC10",
-        "priority":"1"
-        },
-        {"attribute":"Voltage",
-        "value":"12v",
-        "priority":"3"
-        }]
-    }
-]
-}'));
-    
+
     // close the open database/query information
     $meta->close();
     $query->close();
     
     // format the info as json data and return
-    //return json_encode($result);
+    return $results;
 }
 
-
-function joinAttributes($rows, $joins){
-    /* build associative multidimensional array with joined tables from query rows */
-
-    foreach((array)$rows as $row){
-        
-        if (!isset($out[$row['attr_id']])) {
-            $out[$row['attr_id']] = $row;
-        }
-        
-        $tmpObj = new stdClass();
-
-        //foreach($joins as $key => $value){
-           // unset($newitem);
-            foreach($joins as $key => $field){
-                unset($out[$row['attr_id']][key]);
-                //if (!empty($row[$field]))
-                    $tmpObj->$field= $row[$field];
-                    
-            }
-            
-            $tmpArray[]=$tmpObj;
-            //if (!empty($newitem)) {
-            //    $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
-            //$out[$row['attr_id']][$key] = $newitem;
-            //}
-        //}
-    }
-
-    return $tmpArray;
-}
 
 function sql_Barcode() { // query part information from a barcde
     return "SELECT barcode AS barcodes, "
@@ -164,6 +90,8 @@ function sql_Barcode() { // query part information from a barcde
                 . "ON attributes.part_id=parts.part_id "
             . "WHERE barcode_lookup.barcode=(?)";
 }   //  ==========  sql_Barcode  ==========
+
+
 
 function sql_Part() {    // query part information from a part number
     return "SELECT barcode AS PackageIDs, "
