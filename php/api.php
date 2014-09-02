@@ -11,17 +11,28 @@ require $path.'db-conn.php';
  * taken care of. Uses prepared statements to prevent database injection
  */
 function SearchDB($mode, $input) {
-
-    $sql_statement = sql_Barcode();
-    $results = query_db($sql_statement, $input);
-    return $results;
+    $partData = new stdClass();
+    
+    
+    $partData->part_id = getPartID($input);
+    
+    
+    echo $partData->part_id;
+    
+    //$sql_statement = sql_Barcode();
+    //$results = queryDB($sql_statement, $input);
+    //return $results;
 }   //  ==========  SearchDB ==========
 
-function sql_getAttributes($part_id) {
+function getAttributes($part_id) {
     
 }
 
-function query_db($sql, $input) {
+function getPartID($barcode) {
+    return queryDB("SELECT * FROM barcode_lookup WHERE part_id=(?)", $barcode);
+}
+
+function queryDB($sql, $input) {
     global $CONN;   // let function know about the global declared connection
 
     if(!$query = $CONN->prepare($sql)){
@@ -75,9 +86,13 @@ function FilterResults($query) {
 }
 
 
-function sql_Barcode() { // query part information from a barcde
-    return "SELECT * FROM barcode_lookup WHERE barcode=(?)";
+function sql_Barcodes() { // query part information from a barcde
+    return "SELECT * FROM barcode_lookup WHERE part_id=(?)";
 }   //  ==========  sql_Barcode  ==========
+
+function sql_Part_ID(){
+    return "SELECT * FROM barcode_lookup WHERE barcode=(?)";
+}
 
 
 
