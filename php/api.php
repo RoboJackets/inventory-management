@@ -34,6 +34,7 @@ function query_db($sql) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
    var_dump($query);
+   echo "---------------------------------\n";
     return FilterResults($query);   // return the results after formatting to an arry of php objects
 }
 
@@ -61,6 +62,7 @@ function FilterResults($query) {
         }
 
         // add row (now as object) to the array of results
+        var_dump($tmpObj);
         $results[] = $tmpObj;
     }
 
