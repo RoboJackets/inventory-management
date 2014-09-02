@@ -21,7 +21,7 @@ function SearchDB($mode, $input) {
     foreach($placeholder->parts as $key => $val) { // itterate through all fields
             $partData->$key = $val; 
     }
-    
+     
 
     $partData->part_id = $part_id;
     $partData->barcodes = getAllBarcodes($partData->part_id);
@@ -53,7 +53,8 @@ function getAttributes($part_id) {
 }
 
 function getPartInfo($part_id) {
-    return FilterResults(queryDB("SELECT * FROM parts WHERE part_id=(?)", $part_id));    
+    $result = FilterResults(queryDB("SELECT * FROM parts WHERE part_id=(?)", $part_id));
+    return $result[0];
 }
 
 function queryDB($sql, $input) {
