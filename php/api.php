@@ -24,13 +24,20 @@ function SearchDB($mode, $input) {
     //return $results;
 }   //  ==========  SearchDB ==========
 
-function getAttributes($part_id) {
-    
-}
 
 function getPartID($barcode) {
-    $results = queryDB("SELECT * FROM barcode_lookup WHERE part_id=(?)", $barcode);
+    $results = queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $barcode);
     return $results[0]->part_id;
+}
+
+function getAllBarcodes($part_id) {
+    $results = queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id);
+    return $results;
+}
+
+function getAttributes($part_id) {
+    
+    
 }
 
 function queryDB($sql, $input) {
