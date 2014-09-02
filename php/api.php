@@ -15,9 +15,8 @@ function SearchDB($mode, $input) {
     
     
     $partData->part_id = getPartID($input);
-    
+    $partData->barcodes = getAllBarcodes($partData->part_id);
     var_dump($partData);
-    echo $partData->part_id;
     
     //$sql_statement = sql_Barcode();
     //$results = queryDB($sql_statement, $input);
