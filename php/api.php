@@ -10,10 +10,10 @@ require $path.'db-conn.php';
  * Pass the search mode and search_input into this function and the rest is 
  * taken care of. Uses prepared statements to prevent database injection
  */
-function SearchDB($mode, $search_input) {
+function SearchDB($mode, $input) {
 
     $sql_statement = sql_Barcode();
-    $results = query_db($sql_statement);
+    $results = query_db($sql_statement, $input);
     return $results;
 }   //  ==========  SearchDB ==========
 
@@ -21,13 +21,13 @@ function sql_getAttributes($part_id) {
     
 }
 
-function query_db($sql) {
+function query_db($sql, $input) {
     global $CONN;   // let function know about the global declared connection
     $sql="SELECT * FROM barcode_lookup WHERE barcode=(?)";
     if(!$query = $CONN->prepare($sql)){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
     }
-    if (!$query->bind_param("s", $search_input)) {
+    if (!$query->bind_param("s", $input)) {
         echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
     }
     if (!$query->execute()) {
