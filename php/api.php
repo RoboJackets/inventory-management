@@ -37,7 +37,7 @@ function getAllBarcodes($part_id) {
 }
 
 function getAttributes($part_id) {
-    $results = FilterResults(queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $barcode));
+    $results = FilterResults(queryDB("SELECT * FROM attributes WHERE part_id=(?)", $part_id));
     return $results;
 }
 
