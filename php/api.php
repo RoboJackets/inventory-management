@@ -44,15 +44,13 @@ function getAllBarcodes($part_id) {
 }
 
 function getAttributes($part_id) {
-    $results = FilterResults(queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $part_id));
-    return $results;
+    return FilterResults(queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $part_id));
 }
 
 function getPartInfo($part_id) {
-     $results = FilterResults(queryDB("SELECT * FROM parts WHERE part_id=(?)", $part_id));
-    
-    
+    return FilterResults(queryDB("SELECT * FROM parts WHERE part_id=(?)", $part_id));    
 }
+
 function queryDB($sql, $input) {
     global $CONN;   // let function know about the global declared connection
 
