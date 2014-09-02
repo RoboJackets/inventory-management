@@ -11,9 +11,9 @@ require $path.'db-conn.php';
  * taken care of. Uses prepared statements to prevent database injection
  */
 function SearchDB($mode, $search_input) {
-    global $CONN;   // let function know about the global declared connection
-    
-    $results = query_db(sql_Barcode());
+
+    $sql_statement = sql_Barcode();
+    $results = query_db($sql_statement);
     return $results;
 }   //  ==========  SearchDB ==========
 
@@ -22,6 +22,7 @@ function sql_getAttributes($part_id) {
 }
 
 function query_db($query) {
+    global $CONN;   // let function know about the global declared connection
     
     if(!$query = $CONN->prepare($sql)){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
@@ -55,10 +56,11 @@ function FilterResults($query) {
         
         $tmpObj = new stdClass();
         
-        foreach($row as $key => $val) { // itterate through all rows
+        foreach($row as $key => $val) { // itterate through all fields
             $tmpObj->$key = $val; 
         }
 
+        // add row (now as object) to the array of results
         $results[] = $tmpObj;
     }
 
