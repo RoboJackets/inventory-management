@@ -23,7 +23,7 @@ function sql_getAttributes($part_id) {
 
 function query_db($sql, $input) {
     global $CONN;   // let function know about the global declared connection
-    $sql="SELECT * FROM barcode_lookup WHERE barcode=(?)";
+
     if(!$query = $CONN->prepare($sql)){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
     }
