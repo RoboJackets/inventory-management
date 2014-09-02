@@ -59,7 +59,7 @@ function FilterResults($query) {
         }
 
         
-        $results['parts'] = $tmpObj;
+        $results[] = $tmpObj;
     }
     
     foreach($results as $part => $value){
