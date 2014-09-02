@@ -17,7 +17,8 @@ function SearchDB($mode, $input) {
     $placeholder->part_id = getPartID($input);
    
     $partData = new stdClass();
-    $partData = getPartInfo($placeholder->part_id);
+    $partData->part_id = $placeholder->part_id;
+    $partData->parts = getPartInfo($placeholder->part_id);
     
     $partData->part_id = $placeholder->part_id;
     $partData->barcodes = getAllBarcodes($partData->part_id);
@@ -39,7 +40,9 @@ function getPartID($barcode) {
 }
 
 function getAllBarcodes($part_id) {
-    return FilterBarcodes(queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id));
+    $result = FilterBarcodes(queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id));
+    return $result;
+    
 }
 
 function getAttributes($part_id) {
