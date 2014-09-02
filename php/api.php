@@ -18,6 +18,7 @@ function SearchDB($mode, $input) {
     $placeholder->barcodes = getAllBarcodes($placeholder->part_id);
     $placeholder->attributes = getAttributes($placeholder->part_id);
     
+    $partData = new stdClass();
     $partData = getPartInfo($placeholder->part_id);
     
     $partData->part_id = $placeholder->part_id;
