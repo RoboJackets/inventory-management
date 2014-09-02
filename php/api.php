@@ -17,6 +17,8 @@ function SearchDB($mode, $input) {
     $partData->part_id = getPartID($input);
     $partData->barcodes = getAllBarcodes($partData->part_id);
     var_dump($partData);
+    echo'--------------------------\n';
+    temp();
     
     //$sql_statement = sql_Barcode();
     //$results = queryDB($sql_statement, $input);
@@ -98,6 +100,47 @@ function sql_Part_ID(){
     return "SELECT * FROM barcode_lookup WHERE barcode=(?)";
 }
 
+
+function temp() {
+    var_dump( json_decode('{"parts":[
+    {"part_num":"11593lgy",
+    "name":"My Cool Part",
+    "category":"ic",
+    "description":"A really cool part",
+    "datasheet":"www.sketchywebsite.com/datasheet.pdf",
+    "location":"A04",
+    "barcodes":["200541","3011826"],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC8",
+        "priority":"2"
+        },
+        {"attribute":"Voltage",
+        "value":"6v",
+        "priority":"4"
+        }]
+    },
+    {"part_num":"14dgfy6",
+    "name":"My 2nd Cooler Part",
+    "category":"resistor",
+    "description":"My secod part. It Exists only in JSON",
+    "datasheet":"www.legitwebsite.com/datasheet2.pdf",
+    "location":"B06",
+    "barcodes":["2230531","5389381"],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC10",
+        "priority":"1"
+        },
+        {"attribute":"Voltage",
+        "value":"12v",
+        "priority":"3"
+        }]
+    }
+]
+}'));
+return;
+}
 
 
 function sql_Part() {    // query part information from a part number
