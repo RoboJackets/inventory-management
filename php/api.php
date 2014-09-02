@@ -10,28 +10,69 @@ require $path.'db-conn.php';
  * Pass the search mode and search_input into this function and the rest is 
  * taken care of. Uses prepared statements to prevent database injection
  */
-function SearchDB($mode, $search_input) {
+function SearchDB($mode, $input) {
+    $placeholder = new stdClass();
+    $partData = new stdClass();
+
+    $part_id = getPartID($input);
+
+    $placeholder->parts = getPartInfo($part_id);
+    
+    foreach($placeholder->parts as $key => $val) { // itterate through all fields
+            $partData->$key = $val; 
+    }
+     
+    $partData->barcodes = getAllBarcodes($partData->part_id);
+    $partData->attributes = getAttributes($partData->part_id);
+    unset($partData->part_id);
+    unset($partData->status);
+    unset($partData->updated);
+    unset($partData->flag_error);
+    
+    var_dump($partData);
+    echo "-------------------------- \n";
+    temp();
+    
+    //$sql_statement = sql_Barcode();
+    //$results = queryDB($sql_statement, $input);
+    //return $results;
+}   //  ==========  SearchDB ==========
+
+
+function getPartID($barcode) {
+    $results = FilterResults(queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $barcode));
+    return $results[0]->part_id;
+}
+
+function getAllBarcodes($part_id) {
+    $result = FilterBarcodes(queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id));
+    return $result;
+    
+}
+
+function getAttributes($part_id) {
+    return FilterResults(queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $part_id));
+}
+
+function getPartInfo($part_id) {
+    $result = FilterResults(queryDB("SELECT * FROM parts WHERE part_id=(?)", $part_id));
+    return $result[0];
+}
+
+function queryDB($sql, $input) {
     global $CONN;   // let function know about the global declared connection
-    
-    /*
-    $search_input = function($search_input) use ($search_input) {
-            return htmlspecialchars(stripslashes(trim($search_input)));
-        } // cleanup input */
-    
-    $sql = sql_Barcode();
-    
+
     if(!$query = $CONN->prepare($sql)){
         echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
     }
-    if (!$query->bind_param("s", $search_input)) {
+    if (!$query->bind_param("s", $input)) {
         echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
     }
     if (!$query->execute()) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
-    
-    return FilterResults($query);   // return the results after formatting to json data
-}   //  ==========  SearchDB ==========
+    return $query;   // return the results after formatting to an arry of php objects
+}
 
 /*
  * This function filters the results from the searched data and formats it as
@@ -48,28 +89,67 @@ function FilterResults($query) {
     // callback function; same as: $query->bind_result($params)
     call_user_func_array(array($query, 'bind_result'), $params);
 
-        $joins = array('attribute'=>'attribute','value'=>'value','priority'=>'priority');
-
     while ($query->fetch()) {   // fetch the results for every field
         
         $tmpObj = new stdClass();
         
-        foreach($row as $key => $val) { // itterate through all rows
+        foreach($row as $key => $val) { // itterate through all fields
             $tmpObj->$key = $val; 
         }
 
-        
-        $results['parts'] = $tmpObj;
+        // add row (now as object) to the array of results
+        $results[] = $tmpObj;
     }
+
+    // close the open database/query information
+    $meta->close();
+    $query->close();
     
-    foreach($results as $part => $value){
-        $part->attributes = joinAttributes($part, $joins);
+    // format the info as json data and return
+    return $results;
+}
+
+function FilterBarcodes($query) {
+    $meta = $query->result_metadata();  // get the metadata from the results
+    
+    // store the field heading names into an array, pass by reference
+    while ($field = $meta->fetch_field()) {
+        $params[] = &$row[$field->name];
     }
-    var_dump($results);
- 
+
+    // callback function; same as: $query->bind_result($params)
+    call_user_func_array(array($query, 'bind_result'), $params);
+
+    while ($query->fetch()) {   // fetch the results for every field
+        /*
+        foreach($row as $key => $val) { // itterate through all fields
+            $tmpObj[] = $val; 
+        }*/
+
+        // add row (now as object) to the array of results
+        $barcodes[] = $row['barcode'];
+    }
+
+    // close the open database/query information
+    $meta->close();
+    $query->close();
     
-    
-    var_dump(json_decode('{"parts":[
+    // format the info as json data and return
+    return $barcodes;
+}
+
+
+function sql_Barcodes() { // query part information from a barcde
+    return "SELECT * FROM barcode_lookup WHERE part_id=(?)";
+}   //  ==========  sql_Barcode  ==========
+
+function sql_Part_ID(){
+    return "SELECT * FROM barcode_lookup WHERE barcode=(?)";
+}
+
+
+function temp() {
+    var_dump( json_decode('{"parts":[
     {"part_num":"11593lgy",
     "name":"My Cool Part",
     "category":"ic",
@@ -106,66 +186,9 @@ function FilterResults($query) {
     }
 ]
 }'));
-    
-    // close the open database/query information
-    $meta->close();
-    $query->close();
-    
-    // format the info as json data and return
-    //return json_encode($result);
+return;
 }
 
-
-function joinAttributes($rows, $joins){
-    /* build associative multidimensional array with joined tables from query rows */
-
-    foreach((array)$rows as $row){
-        /*
-        if (!isset($out[$row['attr_id']])) {
-            $out[$row['attr_id']] = $row;
-        }*/
-        
-        $tmpObj = new stdClass();
-
-        //foreach($joins as $key => $value){
-           // unset($newitem);
-            foreach($joins as $key => $field){
-                unset($out[$row['attr_id']][key]);
-                //if (!empty($row[$field]))
-                    $tmpObj->$field= $row[$field];
-                    
-            }
-            
-            $tmpArray[]=$tmpObj;
-            //if (!empty($newitem)) {
-            //    $out[$row['id']][$key][$newitem[key($newitem)]] = $newitem;
-            //$out[$row['attr_id']][$key] = $newitem;
-            //}
-        //}
-    }
-
-    return $tmpArray;
-}
-
-function sql_Barcode() { // query part information from a barcde
-    return "SELECT barcode AS barcodes, "
-            . "parts.part_num AS part_num, "
-            . "name AS name, "
-            . "category AS category, "
-            . "description AS description, "
-            . "datasheet AS datasheet, "
-            . "location AS location, "
-            . "attributes.attribute AS attribute, "
-            . "attributes.value AS value, "
-            . "attributes.priority AS priority, "
-            . "attributes.attr_id AS attr_id "
-            . "FROM barcode_lookup "
-                . "LEFT JOIN parts "
-                . "ON parts.part_id=barcode_lookup.part_id "
-                . "LEFT JOIN attributes "
-                . "ON attributes.part_id=parts.part_id "
-            . "WHERE barcode_lookup.barcode=(?)";
-}   //  ==========  sql_Barcode  ==========
 
 function sql_Part() {    // query part information from a part number
     return "SELECT barcode AS PackageIDs, "
