@@ -15,15 +15,13 @@ function SearchDB($mode, $input) {
     
     
     $placeholder->part_id = getPartID($input);
-    $placeholder->barcodes = getAllBarcodes($placeholder->part_id);
-    $placeholder->attributes = getAttributes($placeholder->part_id);
-    
+   
     $partData = new stdClass();
     $partData = getPartInfo($placeholder->part_id);
     
     $partData->part_id = $placeholder->part_id;
-    $partData->barcodes = $placeholder->barcodes;
-    $partData->attributes = $placeholder->attributes;
+    $partData->barcodes = getAllBarcodes($partData->part_id);
+    $partData->attributes = getAttributes($partData->part_id);
     
     var_dump($partData);
     echo "-------------------------- \n";
