@@ -74,23 +74,7 @@ function FilterResults($query) {
 
 
 function sql_Barcode() { // query part information from a barcde
-    return "SELECT barcode AS barcodes, "
-            . "parts.part_num AS part_num, "
-            . "name AS name, "
-            . "category AS category, "
-            . "description AS description, "
-            . "datasheet AS datasheet, "
-            . "location AS location, "
-            . "attributes.attribute AS attribute, "
-            . "attributes.value AS value, "
-            . "attributes.priority AS priority, "
-            . "attributes.attr_id AS attr_id "
-            . "FROM barcode_lookup "
-                . "LEFT JOIN parts "
-                . "ON parts.part_id=barcode_lookup.part_id "
-                . "LEFT JOIN attributes "
-                . "ON attributes.part_id=parts.part_id "
-            . "WHERE barcode_lookup.barcode=(?)";
+    return "SELECT * FROM barcode_lookup WHERE barcode=(?)";
 }   //  ==========  sql_Barcode  ==========
 
 
