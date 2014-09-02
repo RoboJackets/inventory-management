@@ -21,7 +21,7 @@ function sql_getAttributes($part_id) {
     
 }
 
-function query_db($query) {
+function query_db($sql) {
     global $CONN;   // let function know about the global declared connection
     
     if(!$query = $CONN->prepare($sql)){
