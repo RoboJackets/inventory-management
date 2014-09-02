@@ -30,7 +30,7 @@ function getAttributes($part_id) {
 
 function getPartID($barcode) {
     $results = queryDB("SELECT * FROM barcode_lookup WHERE part_id=(?)", $barcode);
-    return $results->part_id;
+    return $results[0]->part_id;
 }
 
 function queryDB($sql, $input) {
