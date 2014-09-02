@@ -33,7 +33,7 @@ function query_db($sql) {
     if (!$query->execute()) {
         echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
     }
-   
+   var_dump($query);
     return FilterResults($query);   // return the results after formatting to an arry of php objects
 }
 
