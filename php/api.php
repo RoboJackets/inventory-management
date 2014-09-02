@@ -12,15 +12,18 @@ require $path.'db-conn.php';
  */
 function SearchDB($mode, $input) {
     $placeholder = new stdClass();
-    
-    
-    $placeholder->part_id = getPartID($input);
-   
     $partData = new stdClass();
-    $partData->part_id = $placeholder->part_id;
-    $partData->parts = getPartInfo($placeholder->part_id);
+
+    $part_id = getPartID($input);
+
+    $placeholder->parts = getPartInfo($part_id);
     
-    $partData->part_id = $placeholder->part_id;
+    foreach($placeholder->parts as $key => $val) { // itterate through all fields
+            $partData->$key = $val; 
+    }
+    
+
+    $partData->part_id = $part_id;
     $partData->barcodes = getAllBarcodes($partData->part_id);
     $partData->attributes = getAttributes($partData->part_id);
     
