@@ -11,15 +11,21 @@ require $path.'db-conn.php';
  * taken care of. Uses prepared statements to prevent database injection
  */
 function SearchDB($mode, $input) {
-    $partData = new stdClass();
+    $placeholder = new stdClass();
     
     
-    $partData->part_id = getPartID($input);
-    $partData->barcodes = getAllBarcodes($partData->part_id);
-    $partData->attributes = getAttributes($partData->part_id);
-    $partData = getPartInfo($partData->part_id);
+    $placeholder->part_id = getPartID($input);
+    $placeholder->barcodes = getAllBarcodes($placeholder->part_id);
+    $placeholder->attributes = getAttributes($placeholder->part_id);
+    
+    $partData = getPartInfo($placeholder->part_id);
+    
+    $partData->part_id = $placeholder->part_id;
+    $partData->barcodes = $placeholder->barcodes;
+    $partData->attributes = $placeholder->attributes;
+    
     var_dump($partData);
-    echo "--------------------------\n";
+    echo "-------------------------- \n";
     temp();
     
     //$sql_statement = sql_Barcode();
