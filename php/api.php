@@ -60,7 +60,7 @@ function FilterResults($query) {
     }
     
     foreach($results as $part => $value){
-        $value->attributes = joinAttributes($value, array($value->attribute=>'attribute',$value->value=>'value',$value->priority=>'priority'));
+        $part->attributes = joinAttributes($part, array($part->attribute=>'attribute',$part->value=>'value',$part->priority=>'priority'));
     }
     
     var_dump($results);
