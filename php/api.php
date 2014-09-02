@@ -37,7 +37,7 @@ function getAllBarcodes($part_id) {
 }
 
 function getAttributes($part_id) {
-    $results = FilterResults(queryDB("SELECT * FROM attributes WHERE part_id=(?)", $part_id));
+    $results = FilterResults(queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $part_id));
     return $results;
 }
 
