@@ -66,7 +66,7 @@ function FilterResults($query) {
         $part->attributes = joinAttributes($part, $joins);
     }
     var_dump($results);
- 
+ echo "----------------------------\n";
     
     
     var_dump(json_decode('{"parts":[
