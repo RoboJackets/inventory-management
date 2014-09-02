@@ -48,8 +48,6 @@ function FilterResults($query) {
     // callback function; same as: $query->bind_result($params)
     call_user_func_array(array($query, 'bind_result'), $params);
 
-        $joins = array('attribute'=>'attribute','value'=>'value','priority'=>'priority');
-
     while ($query->fetch()) {   // fetch the results for every field
         
         $tmpObj = new stdClass();
@@ -58,16 +56,16 @@ function FilterResults($query) {
             $tmpObj->$key = $val; 
         }
 
-        
         $results[] = $tmpObj;
     }
     
     foreach($results as $part => $value){
-        $part->attributes = joinAttributes($part, $joins);
+        $value->attributes = joinAttributes($value, array($value->attribute=>'attribute',$value->value=>'value',$value->priority=>'priority'));
     }
-    var_dump($results);
- echo "----------------------------\n";
     
+    var_dump($results);
+    
+    echo "----------------------------\n";
     
     var_dump(json_decode('{"parts":[
     {"part_num":"11593lgy",
@@ -120,10 +118,10 @@ function joinAttributes($rows, $joins){
     /* build associative multidimensional array with joined tables from query rows */
 
     foreach((array)$rows as $row){
-        /*
+        
         if (!isset($out[$row['attr_id']])) {
             $out[$row['attr_id']] = $row;
-        }*/
+        }
         
         $tmpObj = new stdClass();
 
