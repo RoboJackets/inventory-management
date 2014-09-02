@@ -16,7 +16,7 @@ function SearchDB($mode, $input) {
     
     $partData->part_id = getPartID($input);
     
-    
+    var_dump($partData);
     echo $partData->part_id;
     
     //$sql_statement = sql_Barcode();
