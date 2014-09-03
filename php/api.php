@@ -38,8 +38,7 @@ function SearchDB($mode, $input) {
     echo "-------------------------- \n";
     temp();
     
-    //$results = queryDB($sql_statement, $input);
-    return $results;
+    return json_encode($results);
 }   //  ==========  SearchDB ==========
 
 
@@ -119,11 +118,6 @@ function FilterBarcodes($query) {
     call_user_func_array(array($query, 'bind_result'), $params);
 
     while ($query->fetch()) {   // fetch the results for every field
-        /*
-        foreach($row as $key => $val) { // itterate through all fields
-            $tmpObj[] = $val; 
-        }*/
-
         // add row (now as object) to the array of results
         $barcodes[] = $row['barcode'];
     }
@@ -187,28 +181,6 @@ function temp() {
 return;
 }
 
-
-function sql_Part() {    // query part information from a part number
-    return "SELECT barcode AS PackageIDs, "
-            . "parts.PART_NUM AS PartNum, "
-            . "barcode_lookup.added AS BarAdd, "
-            . "name AS PartName, category AS PartCat, "
-            . "description AS PartDesc, "
-            . "datasheet AS PartSheet, "
-            . "location AS PartLocation, "
-            . "flag_error AS PartErr, "
-            . "status AS PartStatus, "
-            . "parts.updated AS PartUpdated, "
-            . "GROUP_CONCAT(attributes.attribute) AS AtribKeys, "
-            . "GROUP_CONCAT(attributes.value) AS AtribVals "
-            . "FROM parts "
-                . "LEFT JOIN barcode_lookup "
-                . "ON parts.PART_NUM=barcode_lookup.PART_NUM "
-                . "LEFT JOIN attributes "
-                . "ON attributes.PART_NUM=parts.PART_NUM "
-            . "WHERE parts.PART_NUM=(?)";
-}   //  ==========  sql_Part    ==========
-
 function sql_Bin() {    // query part information from a bin number
     return "SELECT barcode AS PackageIDs, "
         . "parts.PART_NUM AS PartNum, "
@@ -260,29 +232,3 @@ function sql_Reorders() {
 function sql_Empty() {
     return "SELECT * FROM parts WHERE status='no_reorder'";
 }
-
-/*  might come of use later...but not now.
-function StartSession() {       // function used for making initial connections
-    $session_name = 'sec_session_id';   // Set a custom session name
-    $secure = SECURE;   // defined in rj-inv_config.php
-    
-    // Stop JavaScript from being able to access the session id.
-    $httponly = true;
- * 
-    // Get current cookies params.
-    $cookieParams = session_get_cookie_params();
-    
-    // Set the cookie params.
-    session_set_cookie_params(
-        $cookieParams['lifetime'],
-        $cookieParams['path'], 
-        $cookieParams['domain'], 
-        $secure,
-        $httponly
-        );
-    
-    session_name($session_name);    // Sets the session name to the one set above.
-    session_start();                // Start the PHP session 
-    session_regenerate_id();        // Regenerated the session, delete the old one.
-    return;
-} */
