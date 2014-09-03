@@ -88,7 +88,7 @@ function addInputField(id, readOnly, key, value) {
         });
     });
 
-    $newRow.find("input").on("change keyup paste", function() {
+    $newRow.find("input").on("change keyup paste focus", function() {
         if (id == "#add-attributes") {
             if (validateAddAttributes()) {
                 enableCard($("#barcode"));
@@ -290,7 +290,7 @@ $(document).ready(function() {
 
     $(".card .next").click(function() {
         if ($(this).hasClass("fast-track")) {
-            var target = "confirm";
+            var target = "barcode";
             $(".card .next, ol.steps li").addClass("btn-enabled")
         } else {
             var target = $(this).parent().next().attr("id");
