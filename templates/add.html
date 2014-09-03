@@ -36,7 +36,7 @@
                 <img src="img/robobuzz-header.svg" alt="RoboBuzz" height="65" width="65">
             </div>
             <div class="col-xs-9 col-sm-11">
-                <h2>Robojackets Inventory</h2>
+                <h2>RoboJackets Inventory</h2>
             </div>
         </div>
     </nav>
@@ -169,10 +169,10 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <input class="form-control attribute" type="text" placeholder="Add attribute">
+                                <input class="form-control attribute" type="text" placeholder="Add Attribute" maxLength="32">
                             </td>
                             <td>
-                                <input class="form-control attribute" type="text">
+                                <input class="form-control attribute" type="text" maxLength="32">
                             </td>
                             <td></td>
                         </tr>
@@ -190,17 +190,30 @@
             <div class="card off-right hidden" id="confirm">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="page-header">Confirm and Add</h3>
+                        <h3 class="page-header">Add Barcodes and Submit</h3>
                     </div>
                 </div>
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label for="barcodeInput" class="col-sm-2 control-label">Barcode</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control focus" id="barcodeInput" placeholder="Scan Barcode">
-                        </div>
-                    </div>
-                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Barcode</td>
+                            <td>Quantity</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <input class="form-control attribute" type="text" placeholder="Barcode" maxLength="32">
+                            </td>
+                            <td>
+                                <input class="form-control attribute" type="text" placeholder="Quantity" maxLength="32">
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div id="btn-confirm-back" class="round-icon pull-left back btn-enabled">
                     <span class="glyphicon glyphicon-chevron-left"></span>
                 </div>

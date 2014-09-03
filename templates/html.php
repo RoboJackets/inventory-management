@@ -33,7 +33,7 @@
             <img src="img/robobuzz-header.svg" height="65px" width="65px">
         </div>
         <div class="col-xs-9 col-sm-11">
-            <h2>Robojackets Inventory</h2>
+            <h2>RoboJackets Inventory</h2>
         </div>
     </div>
 </nav>

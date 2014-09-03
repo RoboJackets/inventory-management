@@ -69,12 +69,12 @@ function disableFastTrack() {
     disableCard($(".card").slice(2));
 }
 
-function addAttributeInput(readOnly, key, value) {
+function addInputField(id, readOnly, key, value) {
     if (readOnly === undefined) readOnly = false;
     if (key === undefined) key = "";
     if (value === undefined) value = "";
 
-    $newRow = $("#add-attributes tbody tr:last-child").clone().find("input").val("").end();
+    $newRow = $(id + " tbody tr:last-child").clone().find("input").val("").end();
     $newRow.find("input").attr("placeholder","");
 
     var $removeButton = $($.parseHTML('<span class="glyphicon glyphicon-remove"></span>'));
@@ -103,12 +103,12 @@ function addAttributeInput(readOnly, key, value) {
     if (readOnly) $newRow.find("td:nth-child(2) input").attr({readonly: true, tabindex:-1});
 
     if (readOnly) {
-        $("#add-attributes tbody tr td:nth-child(2) input:not([readonly])").first().parents("tr").before($newRow);
+        $(id + " tbody tr td:nth-child(2) input:not([readonly])").first().parents("tr").before($newRow);
     } else {
-        $("#add-attributes tbody tr:last-child").before($newRow);
+        $(id + " tbody tr:last-child").before($newRow);
     }
 
-    $(".card table tbody tr").each(function(idx){
+    $(id + " table tbody tr").each(function(idx){
         $(this).children().first().text(idx + 1);
     });
 };
@@ -116,7 +116,7 @@ function addAttributeInput(readOnly, key, value) {
 function addAttributes(fields) {
     $("#add-attributes table tbody tr td:nth-child(2) input[readonly]").parents("tr").find("span.glyphicon-remove").click();
     $.each(fields, function(index, value) {
-        addAttributeInput(true, value);
+        addInputField("#add-attributes", true, value);
     })
 }
 
@@ -215,7 +215,7 @@ function submitData() {
         $('#descriptionInput').val(),
         $('#datasheetInput').val(),
         $('#locationInput').val(),
-        [$('#barcodeInput').val()], //This line needs to be fixed for multi-barcode support
+        //[$('#barcodeInput').val()], //This line needs to be fixed for multi-barcode support
         attributes
     );
     
@@ -237,7 +237,7 @@ function submitData() {
 
 function resetPage(){
     $("#categoryInput").val("");
-    $("#add-attributes table tr:not(:last-child) td span").click();
+    $("card table tr:not(:last-child) td span").click();
     $("input").val("");
     disableCard($(".card").slice(1));
     currentCardID = toCard("#add-part","#confirm");
@@ -308,7 +308,13 @@ $(document).ready(function() {
     });
 
     $("#add-attributes tbody tr:last-child input").on("focus", function() {
-        addAttributeInput();
+        addInputField("#add-attributes");
+        var index = $(this).parent().index() + 1;
+        $(this).parents("tr").prev().find("td:nth-child(" + index + ") input").focus();
+    });
+    
+    $("#confirm tbody tr:last-child input").on("focus", function() {
+        addInputField("#confirm");
         var index = $(this).parent().index() + 1;
         $(this).parents("tr").prev().find("td:nth-child(" + index + ") input").focus();
     });
