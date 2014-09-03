@@ -33,7 +33,6 @@ function SearchDB($mode, $input) {
     echo "-------------------------- \n";
     temp();
     
-    //$sql_statement = sql_Barcode();
     //$results = queryDB($sql_statement, $input);
     //return $results;
 }   //  ==========  SearchDB ==========
@@ -45,9 +44,7 @@ function getPartID($barcode) {
 }
 
 function getAllBarcodes($part_id) {
-    $result = FilterBarcodes(queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id));
-    return $result;
-    
+    return FilterBarcodes(queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?)", $part_id));
 }
 
 function getAttributes($part_id) {
@@ -74,10 +71,6 @@ function queryDB($sql, $input) {
     return $query;   // return the results after formatting to an arry of php objects
 }
 
-/*
- * This function filters the results from the searched data and formats it as
- * json encoded information that is returned to the caller.
- */
 function FilterResults($query) {
     $meta = $query->result_metadata();  // get the metadata from the results
     
