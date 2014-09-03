@@ -24,12 +24,17 @@ function SearchDB($mode, $input) {
      
     $partData->barcodes = getAllBarcodes($partData->part_id);
     $partData->attributes = getAttributes($partData->part_id);
+    
+    // unset values that are not required
     unset($partData->part_id);
     unset($partData->status);
     unset($partData->updated);
     unset($partData->flag_error);
     
-    var_dump($partData);
+    $results = new stdClass();
+    $results->parts = $partData;
+    
+    var_dump($results);
     echo "-------------------------- \n";
     temp();
     
