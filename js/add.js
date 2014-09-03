@@ -1,4 +1,4 @@
-var allowedChars = /^[\w-+=& ]+$/;
+var allowedChars = /^[\w-+=&' ]+$/;
 var currentCardID = "#add-part";
 
 function slideCard($card, direction, side) {
@@ -89,10 +89,18 @@ function addInputField(id, readOnly, key, value) {
     });
 
     $newRow.find("input").on("change keyup paste", function() {
-        if (validateAddAttributes()) {
-            enableCard($("#confirm"));
-        } else {
-            disableCard($("#confirm"));
+        if (id == "#add-attributes") {
+            if (validateAddAttributes()) {
+                enableCard($("#barcode"));
+            } else {
+                disableCard($("#barcode"));
+            }
+        else if (id == "#barcode") {
+            if (validateBarcode()) {
+                $(".submit").addClass("btn-enabled");
+            } else {
+                $(".submit").removeClass("btn-enabled");
+            }
         }
     });
 
@@ -170,7 +178,27 @@ function validateAddAttributes() {
     });
 
     $("#add-attributes table tbody tr input").each(function(index, value) {
-        if(!/^[^'"\\]*$/.test($(this).val())) {
+        if(!/^[^"\\]*$/.test($(this).val())) {
+            $(this).parent().addClass("has-error");
+            flag = false;
+        }
+    });
+    return flag;
+}
+
+function validateBarcode() {
+    var flag = true;
+    $("#barcode table tbody tr input").parent().removeClass("has-error");
+    $("#barcode table tbody tr").each(function(index, value) {
+        $key = $(this).find("td:nth-child(2) input");
+        $val = $(this).find("td:nth-child(3) input");
+        if(($key.val() == "")?!($val.val() == ""):($val.val() == "")) { //XNOR
+            flag = false;
+        }
+    });
+
+    $("#barcode table tbody tr input").each(function(index, value) {
+        if(!/^\d*$/.test($(this).val())) {
             $(this).parent().addClass("has-error");
             flag = false;
         }
@@ -240,7 +268,7 @@ function resetPage(){
     $("card table tr:not(:last-child) td span").click();
     $("input").val("");
     disableCard($(".card").slice(1));
-    currentCardID = toCard("#add-part","#confirm");
+    currentCardID = toCard("#add-part","#barcode");
 }
 
 $(document).ready(function() {
@@ -313,8 +341,8 @@ $(document).ready(function() {
         $(this).parents("tr").prev().find("td:nth-child(" + index + ") input").focus();
     });
     
-    $("#confirm tbody tr:last-child input").on("focus", function() {
-        addInputField("#confirm");
+    $("#barcode tbody tr:last-child input").on("focus", function() {
+        addInputField("#barcode");
         var index = $(this).parent().index() + 1;
         $(this).parents("tr").prev().find("td:nth-child(" + index + ") input").focus();
     });
