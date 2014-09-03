@@ -82,7 +82,7 @@ function addInputField(id, readOnly, key, value) {
     $removeButton.click(function(){
         $(this).closest('tr').children('td').animate({ padding: 0 }).wrapInner('<div />').children().slideUp(200, function() { 
             $(this).closest('tr').remove(); 
-            $(".card table tbody tr").each(function(idx){
+            $(id + " table tbody tr").each(function(idx){
                 $(this).children().first().text(idx + 1);
             });
         });
