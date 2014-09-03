@@ -39,7 +39,7 @@ function SearchDB($mode, $input) {
     temp();
     
     //$results = queryDB($sql_statement, $input);
-    //return $results;
+    return $results;
 }   //  ==========  SearchDB ==========
 
 
