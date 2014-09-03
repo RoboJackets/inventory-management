@@ -32,7 +32,7 @@ function SearchDB($mode, $input) {
     unset($partData->flag_error);
     
     $results = new stdClass();
-    $results->parts = $partData;
+    $results->parts[] = $partData;
     
     var_dump($results);
     echo "-------------------------- \n";
