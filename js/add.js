@@ -95,7 +95,7 @@ function addInputField(id, readOnly, key, value) {
             } else {
                 disableCard($("#barcode"));
             }
-        else if (id == "#barcode") {
+        } else if (id == "#barcode") {
             if (validateBarcode()) {
                 $(".submit").addClass("btn-enabled");
             } else {
