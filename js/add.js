@@ -237,7 +237,7 @@ function submitData() {
     $attributes.each(function(index){
         attributes.push(new Attribute(
             $(this).find("td:nth-child(2) input").val(),
-            $(this).find("td:nth-child(3) input").val(),              
+            $(this).find("td:nth-child(3) input").val(),
             $(this).children("td:nth-child(1)").text()
                      ));
     });
@@ -247,7 +247,7 @@ function submitData() {
     $bags.each(function(index){
         bags.push(new Bag(
             $(this).find("td:nth-child(2) input").val(),
-            $(this).find("td:nth-child(3) input").val(),              
+            $(this).find("td:nth-child(3) input").val()
         ));
     });
 
