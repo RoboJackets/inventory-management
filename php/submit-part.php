@@ -39,12 +39,12 @@ $app->post('/add/submit', function() use ($app) {
         $part->part_id = $CONN->insert_id; 
     }
     
-    if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode) VALUES (?,?);")){
-        foreach($part->barcodes as $barcode){
-            $stmt->bind_param('ss', $part->part_id, $barcode);
+    if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode, quantity) VALUES (?,?,?);")){
+        foreach($part->bags as $bag){
+            $stmt->bind_param('ss', $part->part_id, $bag->barcode, $bag->quantity);
             $stmt->execute();
         }
-        $stmt->close();
+        $stmt->close();s
     }
 
     if ($stmt = $CONN->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value), priority=VALUES(priority);")){
