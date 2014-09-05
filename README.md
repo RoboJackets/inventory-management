@@ -1,7 +1,7 @@
 
 <img src="https://dl.dropboxusercontent.com/s/ao3pe3n8npuxrfo/robobuzz-header.svg" height="120px" width="120px" style="float:left"/>
-#Robojackets Part Management
-This tool is used by the Robocup Electrical subteam to document part information and location.
+#RoboJackets Part Management
+This tool is used by the RoboCup Electrical subteam to document part information and location.
 
 ##Installation
 
