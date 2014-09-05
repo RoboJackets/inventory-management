@@ -5,7 +5,13 @@
     "description":"A really cool part",
     "datasheet":"www.sketchywebsite.com/datasheet.pdf",
     "location":"A04",
-    "barcodes":["200541","3011826"],
+    "bags":[
+        {"barcode":"54345432",
+        "quantity":"175"
+        },
+        {"barcode":"1254865",
+         "quantity":"20"
+        }],
     "attributes":[
         {"attribute":"Package",
         "value":"SOIC8",
@@ -22,7 +28,13 @@
     "description":"My secod part. It Exists only in JSON",
     "datasheet":"www.legitwebsite.com/datasheet2.pdf",
     "location":"B06",
-    "barcodes":["2230531","5389381"],
+     "bags":[
+         {"barcode":"943710",
+          "quantity":"34"
+         },
+         {"barcode":"684258",
+          "quantity":"1500"
+         }],
     "attributes":[
         {"attribute":"Package",
         "value":"SOIC10",

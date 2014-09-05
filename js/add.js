@@ -212,19 +212,25 @@ function Attribute(attribute, value, priority) {
     this.priority = priority;
 }
 
-function Part(partNum, name, category, description, datasheet, location, barcodes, attributes) {
+function Bag(barcode, quantity) {
+    this.barcode = barcode;
+    this.quantity = quantity;
+}
+
+function Part(partNum, name, category, description, datasheet, location, bags, attributes) {
     this.part_num = partNum;
     this.name = name;
     this.category = category;
     this.description = description;
     this.datasheet = datasheet;
     this.location = location;
-    this.barcodes = barcodes;
+    this.bags = bags;
     this.attributes = attributes;
 }
 
 function submitData() {
     var attributes = [];
+    var bags = [];
     
     $attributes = $("#add-attributes table tr:not(:last-child)");
     
@@ -236,6 +242,16 @@ function submitData() {
                      ));
     });
     
+    $bags = $("#barcode table tr:not(:last-child)");
+
+    $bags.each(function(index){
+        bags.push(new Bag(
+            $(this).find("td:nth-child(2) input").val(),
+            $(this).find("td:nth-child(3) input").val(),              
+        ));
+    });
+
+    
     var part = new Part(
         $('#partNumberInput').val(),
         $('#partNameInput').val(),
@@ -243,7 +259,7 @@ function submitData() {
         $('#descriptionInput').val(),
         $('#datasheetInput').val(),
         $('#locationInput').val(),
-        //[$('#barcodeInput').val()], //This line needs to be fixed for multi-barcode support
+        bags,
         attributes
     );
     
