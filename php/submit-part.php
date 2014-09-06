@@ -44,7 +44,7 @@ $app->post('/add/submit', function() use ($app) {
             $stmt->bind_param('ss', $part->part_id, $bag->barcode, $bag->quantity);
             $stmt->execute();
         }
-        $stmt->close();s
+        $stmt->close();
     }
 
     if ($stmt = $CONN->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value), priority=VALUES(priority);")){

@@ -239,7 +239,7 @@ function submitData() {
             $(this).find("td:nth-child(2) input").val(),
             $(this).find("td:nth-child(3) input").val(),
             $(this).children("td:nth-child(1)").text()
-                     ));
+        ));
     });
     
     $bags = $("#barcode table tr:not(:last-child)");
@@ -250,7 +250,6 @@ function submitData() {
             $(this).find("td:nth-child(3) input").val()
         ));
     });
-
     
     var part = new Part(
         $('#partNumberInput').val(),
