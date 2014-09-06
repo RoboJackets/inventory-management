@@ -41,7 +41,7 @@ $app->post('/add/submit', function() use ($app) {
     
     if ($stmt = $CONN->prepare("INSERT INTO barcode_lookup (part_id, barcode, quantity) VALUES (?,?,?);")){
         foreach($part->bags as $bag){
-            $stmt->bind_param('ss', $part->part_id, $bag->barcode, $bag->quantity);
+            $stmt->bind_param('sss', $part->part_id, $bag->barcode, $bag->quantity);
             $stmt->execute();
         }
         $stmt->close();
