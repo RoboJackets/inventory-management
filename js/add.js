@@ -280,8 +280,8 @@ function submitData() {
 
 function resetPage(){
     $("#categoryInput").val("");
-    $("card table tr:not(:last-child) td span").click();
-    $("input").val("");
+    $(".card table tr:not(:last-child) td span").click();
+    $("input, textarea").val("");
     disableCard($(".card").slice(1));
     currentCardID = toCard("#add-part","#barcode");
 }
