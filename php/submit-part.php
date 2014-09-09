@@ -29,7 +29,7 @@ $app->post('/add/submit', function() use ($app) {
             $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             if (!$stmt->execute()) {
                 echo "Error: Failed to execute query. (" . $stmt->errno . ") " . $stmt->error . "\n";
-            } else echo "Added Part\n";
+            }
             $stmt->close();
         } else {
             echo "Prepare failed: (" . $stmt->errno . ") " . $stmt->error . "<br>";
@@ -44,7 +44,7 @@ $app->post('/add/submit', function() use ($app) {
             $stmt->bind_param('sss', $part->part_id, $bag->barcode, $bag->quantity);
             if (!$stmt->execute()) {
                 echo "Error: Failed to execute query. (" . $stmt->errno . ") " . $stmt->error . "\n";
-            } else echo "Added Barcode\n";
+            }
         }
         $stmt->close();
     }
@@ -54,7 +54,7 @@ $app->post('/add/submit', function() use ($app) {
             $stmt->bind_param('ssss', $part->part_id, $attribute->attribute, $attribute->value, $attribute->priority);
             if (!$stmt->execute()) {
                 echo "Error: Failed to execute query. (" . $stmt->errno . ") " . $stmt->error . "\n";
-            } else echo "Added Attribute\n";
+            }
         }
         $stmt->close();
     }
