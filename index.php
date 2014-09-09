@@ -7,7 +7,7 @@ $app = new \Slim\Slim();
 
 $app->get('/', function() use ($app) {
     $app->view();
-    $app->render('html.php', array('title'=>'Robojackets Inventory',
+    $app->render('html.php', array('title'=>'RoboJackets Inventory',
                                    'mode'=>'barcode',
                                    'partLocation'=>null,
                                    'partName'=>null,
@@ -25,7 +25,7 @@ require 'php/validate-pn.php'; //Test of new code layout system
 
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
-    $app->render('html.php', array('title'=>'Robojackets Inventory',
+    $app->render('html.php', array('title'=>'RoboJackets Inventory',
                                    'mode'=>$mode,
                                    'partLocation'=>null,
                                    'partName'=>null,
