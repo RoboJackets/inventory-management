@@ -12,6 +12,8 @@ $app->post('/add/submit', function() use ($app) {
     $part = $data->parts[0];
     //add code here that check to ensure only 1 part was sent / use a foreach structure
 
+    
+    
     if ($stmt = $CONN->prepare("SELECT COUNT(*) FROM `parts` WHERE part_num=?")) {
         $stmt->bind_param("s", $part->part_num);
         $stmt->execute();
@@ -25,6 +27,9 @@ $app->post('/add/submit', function() use ($app) {
     }
 
     if ($count == 0){ // If part isn't already in DB
+        
+        $part->location = strtoupper($part->location);
+        if($part->description == "") $part->description = null;
         if ($stmt = $CONN->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description), datasheet=VALUES(datasheet), location=VALUES(location);")){
             $stmt->bind_param("ssssss", $part->part_num, $part->name, $part->category, $part->description, $part->datasheet, $part->location);
             if (!$stmt->execute()) {
