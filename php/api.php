@@ -31,12 +31,6 @@ function SearchDB($mode, $input) {
     $partData->barcodes = getAllBarcodes($partData->part_id);
     $partData->attributes = getAttributes($partData->part_id);
     
-    // unset values that are not required
-    //unset($partData->part_id);
-    //unset($partData->status);
-    //unset($partData->updated);
-    //unset($partData->flag_error);
-    
     $SearchResults->parts[] = $partData;
     
     //var_dump($SearchResults);
@@ -46,8 +40,8 @@ function SearchDB($mode, $input) {
 
 
 function getPartID($barcode) {
-    $results = FilterResults(queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $barcode));
-    return $results[0]->part_id;
+    $results = FilterResults(queryDB("SELECT TOP 1 FROM barcode_lookup WHERE barcode=(?)", $barcode));
+    return $results->part_id;
 }
 
 function getAllBarcodes($part_id) {
