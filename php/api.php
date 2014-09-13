@@ -11,6 +11,12 @@ require $path.'db-conn.php';
  * taken care of. Uses prepared statements to prevent database injection
  */
 function SearchDB($mode, $input) {
+    
+    if($mode!='barcode'){ return; };    // exit and return nothing if mode not supported...yet
+    
+    $searchResults = new stdClass();    // declare the location where all results will be placed
+    
+    
     $placeholder = new stdClass();
     $partData = new stdClass();
 
@@ -31,8 +37,7 @@ function SearchDB($mode, $input) {
     unset($partData->updated);
     unset($partData->flag_error);
     
-    $results = new stdClass();
-    $results->parts[] = $partData;
+    $SearchResults->parts[] = $partData;
     
     var_dump($results);
     echo "-------------------------- \n";

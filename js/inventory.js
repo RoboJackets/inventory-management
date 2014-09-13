@@ -20,6 +20,7 @@ $(document).ready(function(){
     $('#BtnSubmitQuery').click(function(){
         var query = $('#txtSubmitQuery').val();
         console.log("query=" + query);
+        
         // ajax communication for getting database results
         $.ajax({
             type: 'GET',
@@ -29,13 +30,16 @@ $(document).ready(function(){
                 input:  $('#txtSubmitQuery').val()
             },
             success: function(result){
-                // data come back in json format
+                
+                // data comes back in json format
                 var json = jQuery.parseJSON(result);
                 console.log(JSON.stringify(json[0]));
-                // parse and place the data in their respective places
-                $('#part-location-data').html(json[0].PartLocation);
-                $('#part-name-data').html(json[0].PartName);
-                $('#part-num-data').html(json[0].PartNum);
+
+                var data = json[0]; // get the first search result returned
+                
+                $('#part-location-data').html(data.location);
+                $('#part-name-data').html(data.name);
+                $('#part-num-data').html(data.part_num);
             }
         });
         
