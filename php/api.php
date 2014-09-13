@@ -32,10 +32,10 @@ function SearchDB($mode, $input) {
     $partData->attributes = getAttributes($partData->part_id);
     
     // unset values that are not required
-    unset($partData->part_id);
-    unset($partData->status);
-    unset($partData->updated);
-    unset($partData->flag_error);
+    //unset($partData->part_id);
+    //unset($partData->status);
+    //unset($partData->updated);
+    //unset($partData->flag_error);
     
     $SearchResults->parts[] = $partData;
     
