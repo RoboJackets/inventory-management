@@ -36,7 +36,7 @@ $(document).ready(function(){
                 console.log(JSON.stringify(json[0]));
 
                 var data = json[0]; // get the first search result returned
-                
+                cd
                 $('#part-location-data').html(data.location);
                 $('#part-name-data').html(data.name);
                 $('#part-num-data').html(data.part_num);
