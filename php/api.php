@@ -39,9 +39,7 @@ function SearchDB($mode, $input) {
     
     $SearchResults->parts[] = $partData;
     
-    var_dump($SearchResults);
-    echo "-------------------------- \n";
-    temp();
+    //var_dump($SearchResults);
     
     return json_encode($SearchResults);
 }   //  ==========  SearchDB ==========
