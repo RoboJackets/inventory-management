@@ -40,9 +40,8 @@ function SearchDB($mode, $input) {
 
 
 function getPartID($barcode) {
-    $results = FilterResults(queryDB("SELECT part_id FROM barcode_lookup WHERE barcode=(?) LIMIT 1", $barcode));
-    //return $results->part_id;
-    var_dump($results);
+    $result = FilterResults(queryDB("SELECT part_id FROM barcode_lookup WHERE barcode=(?) LIMIT 1", $barcode));
+    var_dump($result->part_id);
     return $results;
 }
 
