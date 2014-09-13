@@ -40,7 +40,7 @@ function SearchDB($mode, $input) {
 
 
 function getPartID($barcode) {
-    $results = FilterResults(queryDB("SELECT TOP 1 * FROM barcode_lookup WHERE barcode=(?)", $barcode));
+    $results = FilterResults(queryDB("SELECT TOP 1 * part_id FROM barcode_lookup WHERE barcode=(?)", $barcode));
     return $results->part_id;
 }
 
