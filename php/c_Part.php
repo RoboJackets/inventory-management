@@ -134,7 +134,7 @@ class Part {
 
         // store the field heading names into an array, pass by reference
         while ($field = $meta->fetch_field()) {
-            $params[] = &$row[$field->name];
+            $params[] = &$row[$field_name];
         }
 
         // callback function; same as: $query->bind_result($params)
