@@ -49,6 +49,7 @@ class Part {
         $this->bags = array();
         $this->attributes = array();
         $this->barcode = $barcode;
+        echo $this->barcode;
         
     }   // function __construct
     
