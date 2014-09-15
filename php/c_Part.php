@@ -66,9 +66,13 @@ class Part {
             
             foreach($data_array as $index => $item)
             {
+                echo "$index    =>  $item\n";
+                echo "======\n";
                 foreach($item as $key => $val) { // itterate through all fields
-                    $this->$key = $val; 
+                    $this->$key = $val;
+                    echo "$key => $val\n";
                 }
+                echo "\n\n";
             }
             
         }
