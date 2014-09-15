@@ -91,12 +91,12 @@ class Part {
     
     function findPartID()
     {
-        echo "made it!\n\n";
+        echo "Made it!\n\n";
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
+            echo "Made it into barcode being set from findPartID()!\n\n";
             $this->part_id = filterSingle(queryDB("SELECT part_id FROM barcode_lookup WHERE barcode=(?)", $this->barcode), "part_id");
         }  
-        echo "made it!\n\n";
     }
     
     
@@ -113,6 +113,9 @@ class Part {
         if (!$query->execute()) {
             echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
         }
+        
+        echo "Made it past db setup!\n\n";
+        
         return $query;   // return the results after formatting to an arry of php objects
     }   // function queryDB
     
@@ -121,6 +124,9 @@ class Part {
     // filters a queries results
     private function filterSingle($query, $field_name)
     {
+        
+        echo "Made it into filterSingle!\n\n"
+        
         $meta = $query->result_metadata();  // get the metadata from the results
 
         // store the field heading names into an array, pass by reference
@@ -140,6 +146,8 @@ class Part {
         $meta->close();
         $query->close();
 
+        echo "Made it past filterSingle!\n\n";
+        
         // format the info as json data and return
         return $results;
     }   // function filterSingle
