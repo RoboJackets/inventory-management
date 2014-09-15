@@ -99,17 +99,17 @@ class Part {
     {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
-            $temp = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), "part_id");
-            $this->part_id = $temp[0];
+            $temp = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), 'part_id');
+            $this->part_id = $temp;
         }  
     }
     
     
     function queryDB($sql, $user_input)
     {
-        $input = mysql_real_escape_string($user_input);
-        
         global $CONN;   // let function know about the global declared connection
+        
+        $input = mysql_real_escape_string($user_input);
 
         if(!$query = $CONN->prepare($sql)){
             echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
@@ -126,7 +126,7 @@ class Part {
     
     
     
-        // filters a queries results
+    // filters a queries results
     function filterSingle($query, $field_name)
     {
         $meta = $query->result_metadata();  // get the metadata from the results
@@ -139,10 +139,10 @@ class Part {
         // callback function; same as: $query->bind_result($params)
         call_user_func_array(array($query, 'bind_result'), $params);
        
-        $results;
+        $results = array();
         while ($query->fetch()) {   // fetch the results for every field
             
-            $result;
+            $result = array();
             foreach($row as $key => $val) { // itterate through all fields
                 $result[$key] = $val; 
             }
@@ -154,7 +154,6 @@ class Part {
         $meta->close();
         $query->close();
 
-        // format the info as json data and return
         return $results;
     }   // function filterSingle
     
