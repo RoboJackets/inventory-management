@@ -145,6 +145,9 @@ class Part {
         echo "made it!\n\n";
         
         while ($query->fetch()) {   // fetch the results for every field
+            
+            echo "i\n";
+            
             foreach($row as $key => $val) { // itterate through all fields
                 echo '$key';
                 echo '$val';
