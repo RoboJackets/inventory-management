@@ -102,6 +102,9 @@ class Part {
     
     function queryDB($sql, $input)
     {
+        
+        echo "Made it into queryDB!\n\n";
+        
         global $CONN;   // let function know about the global declared connection
 
         if(!$query = $CONN->prepare($sql)){
