@@ -140,10 +140,9 @@ class Part {
         // callback function; same as: $query->bind_result($params)
         call_user_func_array(array($query, 'bind_result'), $params);
         
-        $results = array();
+        //$results = array();
         
         while ($query->fetch()) {   // fetch the results for every field
-            // add row (now as object) to the array of results
             $results[] = $row['part_id'];
         }
 
