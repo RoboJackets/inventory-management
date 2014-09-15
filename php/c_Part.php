@@ -64,17 +64,15 @@ class Part {
         {
             $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
             
-            /*
+            
             foreach($data_array as $index => $item)
             {
-                echo "$index    =>  $item\n";
-                echo "======\n";
                 foreach($item as $key => $val) { // itterate through all fields
                     $this->$key = $val;
                     echo "$key => $val\n";
                 }
                 echo "\n";
-            }*/
+            }
             
         }
         
