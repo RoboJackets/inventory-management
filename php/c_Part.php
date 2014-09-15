@@ -122,7 +122,7 @@ class Part {
     
     
     // filters a queries results
-    private function filterSingle($query, $field_name)
+    function filterSingle($query, $field_name)
     {
         
         echo "Made it into filterSingle!\n\n";
