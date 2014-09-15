@@ -1,5 +1,8 @@
 <?php
 
+
+if (!defined('HOST')) { require $path . 'config.php'; }   // make sure constants are defined
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -51,6 +54,12 @@ class Part {
         $this->barcode = $barcode;
         
         $this->part_id = 44;
+        
+        
+        
+        
+        
+        $this->$connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
         
     }   // function __construct
     
@@ -112,8 +121,10 @@ class Part {
         
         echo "Made it into queryDB!\n\n";
         
-        global $CONN;   // let function know about the global declared connection
+        //global $CONN;   // let function know about the global declared connection
 
+        $CONN = $this->connection;
+        
         if(!$query = $CONN->prepare($sql)){
             echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
         }
