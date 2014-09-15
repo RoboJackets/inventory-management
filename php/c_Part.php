@@ -38,7 +38,7 @@ class Part {
         echo "Part::showResults:\n";
         foreach($this as $key => $val)
         {
-            echo "$key => $val";
+            echo "$key => $val\n";
         }
     }
     
@@ -64,7 +64,7 @@ class Part {
         {
             $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
                     
-            foreach($data_array as $key => $val) { // itterate through all fields
+            foreach($data_array[0] as $key => $val) { // itterate through all fields
                 $this->$key = $val; 
             }
             
@@ -131,7 +131,7 @@ class Part {
         // callback function; same as: $query->bind_result($params)
         call_user_func_array(array($query, 'bind_result'), $params);
         
-        $results;
+        $results = array();
         
         while ($query->fetch()) {   // fetch the results for every field
             // add row (now as object) to the array of results
@@ -143,7 +143,7 @@ class Part {
         $query->close();
 
         // format the info as json data and return
-        return $results;
+        return $results[];
     }   // function filterSingle
     
     
@@ -160,6 +160,8 @@ class Part {
         // callback function; same as: $query->bind_result($params)
         call_user_func_array(array($query, 'bind_result'), $params);
 
+        $results = array();
+        
         while ($query->fetch()) {   // fetch the results for every field
 
             $tmpObj = new stdClass();
@@ -176,7 +178,7 @@ class Part {
         $meta->close();
         $query->close();
 
-        return $results;
+        return $results[];
     }   // function filterMany
     
 }
