@@ -144,7 +144,7 @@ class Part {
         
         while ($query->fetch()) {   // fetch the results for every field
             // add row (now as object) to the array of results
-            $results[] = $row[$field_name];
+            $results[] = $row['part_id'];
         }
 
         // close the open database/query information
