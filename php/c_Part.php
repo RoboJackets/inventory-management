@@ -125,7 +125,7 @@ class Part {
     private function filterSingle($query, $field_name)
     {
         
-        echo "Made it into filterSingle!\n\n"
+        echo "Made it into filterSingle!\n\n";
         
         $meta = $query->result_metadata();  // get the metadata from the results
 
