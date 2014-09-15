@@ -152,6 +152,8 @@ class Part {
                 $result[$key] = $val; 
             }
             
+            var_dump($result);
+            
             $results[] = $result;
         }
 
