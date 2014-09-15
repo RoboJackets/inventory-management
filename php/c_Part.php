@@ -142,9 +142,7 @@ class Part {
         $results = array();
         while ($query->fetch()) {   // fetch the results for every field
             
-            echo "$row[$field_name]\n";
-            
-            $results[] = [$field_name];
+            $results[] = $row[$field_name];
         }
 
         // close the open database/query information
