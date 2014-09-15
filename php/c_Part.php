@@ -16,7 +16,7 @@ if (!defined('HOST')) { require $path . 'config.php'; }   // make sure constants
  */
 class Part {
     
-    protected $part_id;
+    public $part_id;
     protected $part_num;
     protected $name;
     protected $category;
@@ -28,7 +28,7 @@ class Part {
     protected $barcodes;
     protected $quantity;
     
-    protected $barcode;
+    public $barcode;
     
     protected $attributes;
     protected $attribute;
