@@ -143,7 +143,9 @@ class Part {
         //$results = array();
         
         while ($query->fetch()) {   // fetch the results for every field
-            $results[] = $row['part_id'];
+            $result = $row['part_id'];
+            
+            $results[] = $result;
         }
 
         // close the open database/query information
