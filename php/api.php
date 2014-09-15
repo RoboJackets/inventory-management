@@ -57,7 +57,7 @@ function getPartInfo($part_id) {
     return $result[0];
 }
 
-function queryDB($sql, $input) {
+function queryDB2($sql, $input) {
     global $CONN;   // let function know about the global declared connection
 
     if(!$query = $CONN->prepare($sql)){
@@ -72,7 +72,7 @@ function queryDB($sql, $input) {
     return $query;   // return the results after formatting to an arry of php objects
 }
 
-function FilterResults($query) {
+function FilterResults2($query) {
     $meta = $query->result_metadata();  // get the metadata from the results
     
     // store the field heading names into an array, pass by reference
@@ -103,7 +103,7 @@ function FilterResults($query) {
     return $results;
 }
 
-function FilterBarcodes($query) {
+function FilterBarcodes2($query) {
     $meta = $query->result_metadata();  // get the metadata from the results
     
     // store the field heading names into an array, pass by reference
