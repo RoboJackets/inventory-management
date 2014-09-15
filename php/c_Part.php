@@ -144,6 +144,8 @@ class Part {
         
         while ($query->fetch()) {   // fetch the results for every field
             foreach($row as $key => $val) { // itterate through all fields
+                echo '$key';
+                echo '$val';
                 $result['$key'] = $val; 
             }
             
