@@ -94,6 +94,8 @@ class Part {
             $this->barcodes[] = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
         }
         
+        var_dump($this->barcodes);
+        
     }
     
     function findPartID()
