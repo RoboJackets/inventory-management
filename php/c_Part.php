@@ -36,7 +36,7 @@ class Part {
     
     function showResults()
     {
-        echo "Part::showResults:n";
+        echo "Part::showResults:\n";
         foreach($this as $key => $val)
         {
             echo "$key => $val";
@@ -46,8 +46,8 @@ class Part {
     // prepares the object when a new one is created
     function __construct($barcode)
     {
-        $this->bags[] = array();
-        $this->attributes[] = array();
+        $this->bags = array();
+        $this->attributes = array();
         $this->barcode = $barcode;
         
     }   // function __construct
