@@ -51,6 +51,71 @@ class Part {
         $this->barcode = $barcode;
         
     }   // function __construct
+   
+
+    // searches the database for a partnumber when given a barcode
+    function findPartInfo()
+    {
+        if(empty($this->part_id))
+        {
+            $this->findPartID();
+        }
+        if(empty($this->part_num))
+        {
+            $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
+                    
+            foreach($data_array as $key => $val) { // itterate through all fields
+                $this->$key = $val; 
+            }
+            
+        }
+        
+    }   // function getPartNum
+    
+    
+    function findAllBarcodes()
+    {
+        
+        if(empty($this->part_id))
+        {
+            $this->findPartID();
+        }
+        
+        if(isset($this->part_id))
+        {
+            $this->barcodes[] = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
+        }
+        
+    }
+    
+    function findPartID()
+    {
+        if(isset($this->barcode))   // this should never be empty since assigned in the constructor
+        {
+            $this->part_id = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), "part_id");
+        }  
+    }
+    
+    
+    function queryDB($sql, $user_input)
+    {
+        //$input = mysql_real_escape_string($user_input);
+        
+        global $CONN;   // let function know about the global declared connection
+
+        if(!$query = $CONN->prepare($sql)){
+            echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
+        }
+        if (!$query->bind_param("s", $input)) {
+            echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
+        }
+        if (!$query->execute()) {
+            echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
+        }
+        
+        return $query;   // return the results after formatting to an arry of php objects
+    }   // function queryDB
+    
     
     
         // filters a queries results
@@ -83,84 +148,6 @@ class Part {
         // format the info as json data and return
         return $results;
     }   // function filterSingle
-    
-    
-    // searches the database for a partnumber when given a barcode
-    function findPartInfo()
-    {
-        if(empty($this->part_id))
-        {
-            findPartID();
-        }
-        if(empty($this->part_num))
-        {
-            $data_array = filterMany(queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
-                    
-            foreach($data_array as $key => $val) { // itterate through all fields
-                $this->$key = $val; 
-            }
-            
-        }
-        
-    }   // function getPartNum
-    
-    
-    function findAllBarcodes()
-    {
-        
-        if(empty($this->part_id))
-        {
-            findPartID();
-        }
-        
-        if(isset($this->part_id))
-        {
-            $this->barcodes[] = filterMany(queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
-        }
-        
-    }
-    
-    function findPartID()
-    {
-        if(isset($this->barcode))   // this should never be empty since assigned in the constructor
-        {
-            echo "Made it into barcode being set from findPartID()!\n";
-            echo "$this->barcode \n";
-            $this->part_id = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), "part_id");
-        }  
-    }
-    
-    
-    function queryDB($sql, $user_input)
-    {
-        
-        //$input = mysql_real_escape_string($user_input);
-        $input = strval($user_input);
-        
-        echo "Made it into queryDB!\n\n";
-        
-        global $CONN;   // let function know about the global declared connection
-
-
-        
-        if(!$query = $CONN->prepare($sql)){
-            echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
-        }
-        if (!$query->bind_param("s", $input)) {
-            echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
-        }
-        if (!$query->execute()) {
-            echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
-        }
-        
-        echo "Made it past db setup!\n\n";
-        
-        return $query;   // return the results after formatting to an arry of php objects
-    }   // function queryDB
-    
-    
-    
-
     
     
     
