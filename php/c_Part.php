@@ -35,7 +35,7 @@ class Part {
     
     function showResults()
     {
-        echo "Part::showResults:\n";
+        echo "\nPart::showResults:\n";
         foreach($this as $key => $val)
         {
             echo "$key => $val\n";
@@ -72,7 +72,7 @@ class Part {
                     $this->$key = $val;
                     echo "$key => $val\n";
                 }
-                echo "\n\n";
+                echo "\n";
             }
             
         }
@@ -134,24 +134,18 @@ class Part {
         // store the field heading names into an array, pass by reference
         while ($field = $meta->fetch_field()) {
             $params[] = &$row[$field->name];
-            echo "$field->name\n";
         }
 
         // callback function; same as: $query->bind_result($params)
         call_user_func_array(array($query, 'bind_result'), $params);
-        
-        //$results = array();
        
         $results;
         while ($query->fetch()) {   // fetch the results for every field
+            
             $result;
             foreach($row as $key => $val) { // itterate through all fields
-                //echo '$key';
-                //echo '$val';
                 $result[$key] = $val; 
             }
-            
-            var_dump($result);
             
             $results[] = $result;
         }
