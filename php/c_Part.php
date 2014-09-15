@@ -1,8 +1,4 @@
 <?php
-
-
-if (!defined('HOST')) { require $path . 'config.php'; }   // make sure constants are defined
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -49,20 +45,44 @@ class Part {
     // prepares the object when a new one is created
     function __construct($barcode)
     {
+        
         $this->bags = array();
         $this->attributes = array();
         $this->barcode = $barcode;
         
-        $this->part_id = 44;
-        
-        
-        
-        
-        
-
-        
     }   // function __construct
     
+    
+        // filters a queries results
+    function filterSingle($query, $field_name)
+    {
+        
+        echo "Made it into filterSingle!\n\n";
+        
+        $meta = $query->result_metadata();  // get the metadata from the results
+
+        // store the field heading names into an array, pass by reference
+        while ($field = $meta->fetch_field()) {
+            $params[] = &$row[$field->name];
+        }
+
+        // callback function; same as: $query->bind_result($params)
+        call_user_func_array(array($query, 'bind_result'), $params);
+
+        while ($query->fetch()) {   // fetch the results for every field
+            // add row (now as object) to the array of results
+            $results[] = $row[$field_name];
+        }
+
+        // close the open database/query information
+        $meta->close();
+        $query->close();
+
+        echo "Made it past filterSingle!\n\n";
+        
+        // format the info as json data and return
+        return $results;
+    }   // function filterSingle
     
     
     // searches the database for a partnumber when given a barcode
@@ -102,13 +122,11 @@ class Part {
     
     function findPartID()
     {
-        echo "Made it!\n\n";
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
-            echo "Made it into barcode being set from findPartID()!\n\n";
+            echo "Made it into barcode being set from findPartID()!\n";
             echo "$this->barcode \n";
-            echo "$this->part_id\n";
-            $this->part_id = filterSingle(queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode), "part_id");
+            $this->part_id = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), "part_id");
         }  
     }
     
@@ -142,36 +160,7 @@ class Part {
     
     
     
-    // filters a queries results
-    function filterSingle($query, $field_name)
-    {
-        
-        echo "Made it into filterSingle!\n\n";
-        
-        $meta = $query->result_metadata();  // get the metadata from the results
 
-        // store the field heading names into an array, pass by reference
-        while ($field = $meta->fetch_field()) {
-            $params[] = &$row[$field->name];
-        }
-
-        // callback function; same as: $query->bind_result($params)
-        call_user_func_array(array($query, 'bind_result'), $params);
-
-        while ($query->fetch()) {   // fetch the results for every field
-            // add row (now as object) to the array of results
-            $results[] = $row[$field_name];
-        }
-
-        // close the open database/query information
-        $meta->close();
-        $query->close();
-
-        echo "Made it past filterSingle!\n\n";
-        
-        // format the info as json data and return
-        return $results;
-    }   // function filterSingle
     
     
     
