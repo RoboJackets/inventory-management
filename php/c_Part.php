@@ -121,9 +121,6 @@ class Part {
         // filters a queries results
     function filterSingle($query, $field_name)
     {
-        
-        echo "Made it into filterSingle!\n\n";
-        
         $meta = $query->result_metadata();  // get the metadata from the results
 
         // store the field heading names into an array, pass by reference
@@ -133,7 +130,9 @@ class Part {
 
         // callback function; same as: $query->bind_result($params)
         call_user_func_array(array($query, 'bind_result'), $params);
-
+        
+        $results;
+        
         while ($query->fetch()) {   // fetch the results for every field
             // add row (now as object) to the array of results
             $results[] = $row[$field_name];
@@ -143,8 +142,6 @@ class Part {
         $meta->close();
         $query->close();
 
-        echo "Made it past filterSingle!\n\n";
-        
         // format the info as json data and return
         return $results;
     }   // function filterSingle
