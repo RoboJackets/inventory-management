@@ -64,6 +64,7 @@ class Part {
         {
             $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
             
+            /*
             foreach($data_array as $index => $item)
             {
                 echo "$index    =>  $item\n";
@@ -73,7 +74,7 @@ class Part {
                     echo "$key => $val\n";
                 }
                 echo "\n";
-            }
+            }*/
             
         }
         
