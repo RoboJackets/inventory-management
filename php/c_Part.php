@@ -59,7 +59,7 @@ class Part {
         
         
         
-        $this->$connection = new mysqli(HOST, USER, PASSWORD, DATABASE);
+
         
     }   // function __construct
     
