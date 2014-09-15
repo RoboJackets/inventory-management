@@ -50,6 +50,8 @@ class Part {
         $this->attributes = array();
         $this->barcode = $barcode;
         
+        $this->part_id = 44;
+        
     }   // function __construct
     
     
@@ -96,6 +98,7 @@ class Part {
         {
             echo "Made it into barcode being set from findPartID()!\n\n";
             echo "$this->barcode \n";
+            echo "$this->part_id\n";
             $this->part_id = filterSingle(queryDB("SELECT part_id FROM barcode_lookup WHERE barcode=(?)", $this->barcode), "part_id");
         }  
     }
