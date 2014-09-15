@@ -49,7 +49,6 @@ class Part {
         $this->bags = array();
         $this->attributes = array();
         $this->barcode = $barcode;
-        echo $this->barcode;
         
     }   // function __construct
     
@@ -96,13 +95,16 @@ class Part {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
             echo "Made it into barcode being set from findPartID()!\n\n";
+            echo "$this->barcode \n";
             $this->part_id = filterSingle(queryDB("SELECT part_id FROM barcode_lookup WHERE barcode=(?)", $this->barcode), "part_id");
         }  
     }
     
     
-    function queryDB($sql, $input)
+    function queryDB($sql, $user_input)
     {
+        
+        $input = mysql_real_escape_string($user_input);
         
         echo "Made it into queryDB!\n\n";
         
