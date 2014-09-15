@@ -104,7 +104,8 @@ class Part {
     function queryDB($sql, $user_input)
     {
         
-        $input = mysql_real_escape_string($user_input);
+        //$input = mysql_real_escape_string($user_input);
+        $input = strval($user_input);
         
         echo "Made it into queryDB!\n\n";
         
