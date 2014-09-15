@@ -121,9 +121,9 @@ class Part {
         
         echo "Made it into queryDB!\n\n";
         
-        //global $CONN;   // let function know about the global declared connection
+        global $CONN;   // let function know about the global declared connection
 
-        $CONN = $this->connection;
+
         
         if(!$query = $CONN->prepare($sql)){
             echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
