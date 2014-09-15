@@ -109,7 +109,7 @@ class Part {
     {
         global $CONN;   // let function know about the global declared connection
         
-        $input = mysql_real_escape_string($user_input);
+        $input = (string)$user_input;
 
         if(!$query = $CONN->prepare($sql)){
             echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
