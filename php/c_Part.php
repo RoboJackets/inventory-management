@@ -142,16 +142,13 @@ class Part {
         call_user_func_array(array($query, 'bind_result'), $params);
         
         //$results = array();
-        
-        echo "made it!\n\n";
+       
         $results;
         while ($query->fetch()) {   // fetch the results for every field
             
-            echo "i\n";
-            
             foreach($row as $key => $val) { // itterate through all fields
-                echo '$key';
-                echo '$val';
+                //echo '$key';
+                //echo '$val';
                 $result['$key'] = $val; 
             }
             
