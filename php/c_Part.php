@@ -100,7 +100,7 @@ class Part {
     }
     
     
-    private function queryDB($sql, $input)
+    function queryDB($sql, $input)
     {
         global $CONN;   // let function know about the global declared connection
 
