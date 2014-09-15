@@ -63,9 +63,12 @@ class Part {
         if(empty($this->part_num))
         {
             $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
-                    
-            foreach($data_array[0] as $key => $val) { // itterate through all fields
-                $this->$key = $val; 
+            
+            foreach($data_array as $index => $item)
+            {
+                foreach($item as $key => $val) { // itterate through all fields
+                    $this->$key = $val; 
+                }
             }
             
         }
