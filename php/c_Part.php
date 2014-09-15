@@ -149,7 +149,7 @@ class Part {
             foreach($row as $key => $val) { // itterate through all fields
                 //echo '$key';
                 //echo '$val';
-                $result['$key'] = $val; 
+                $result[$key] = $val; 
             }
             
             $results[] = $result;
