@@ -143,7 +143,7 @@ class Part {
         $query->close();
 
         // format the info as json data and return
-        return $results[];
+        return $results;
     }   // function filterSingle
     
     
@@ -178,7 +178,7 @@ class Part {
         $meta->close();
         $query->close();
 
-        return $results[];
+        return $results;
     }   // function filterMany
     
 }
