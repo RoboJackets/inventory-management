@@ -100,6 +100,7 @@ class Part {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
             $temp = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), "part_id");
+            var_dump($temp);
             $this->part_id = $temp[0];
         }  
     }
