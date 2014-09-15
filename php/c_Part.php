@@ -107,7 +107,7 @@ class Part {
     
     function queryDB($sql, $user_input)
     {
-        //$input = mysql_real_escape_string($user_input);
+        $input = mysql_real_escape_string($user_input);
         
         global $CONN;   // let function know about the global declared connection
 
