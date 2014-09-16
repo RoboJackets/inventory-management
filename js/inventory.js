@@ -38,7 +38,9 @@ $(document).ready(function(){
                 
                 //var part;
                 
-                var num_r = $.parseJSON(result).num_results;
+                var num_r = $.parseJSON(result), function num_results;
+                
+                console.log(result);
                 
                 console.log("\n\n\n\========\n" + num_r + "\n\n================");
                 
