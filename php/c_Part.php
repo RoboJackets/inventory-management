@@ -99,15 +99,11 @@ class Part {
         {
             // move user's input to part number field and remove from barcode field
             $this->part_num = $this->barcode;
-            //unset($this->barcode);
+            $this->barcode = "None";
             
             // search again for the part's id number
             $temp = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num), 'part_id');
             $this->part_id = array_shift($temp);
-            
-            // assign a barcode to the object for required functionality. The top result works since all found results share the same part_id
-            //$temp = $this->filterSingle($this->queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?) LIMIT 1", $this->part_id), 'barcode');
-            //$this->barcode = array_shift($temp);
         }
     }
     
