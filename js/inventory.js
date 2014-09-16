@@ -60,7 +60,7 @@ $(document).ready(function(){
                     console.log(index + " => " + object + "\n");                        
                             
                         console.log(index + " => " + object);     
-                        console.log(value.name);
+                        console.log(index.name);
 
                         $('#part-location-data').html(data.parts.location);
                         $('#part-name-data').html(data.parts.name);
