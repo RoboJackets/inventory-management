@@ -48,7 +48,7 @@ $(document).ready(function(){
                     {
                         $.each(container_count, function(part_index, part_vals){
                             
-                            $.each(parts_vals, function(){
+                            $.each(part_vals, function(){
                                 
                             
                             
