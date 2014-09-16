@@ -45,6 +45,8 @@ $(document).ready(function(){
                     
                     if (index == "num_results")
                     {
+                        console.log(index + " => " + container_count);
+                        
                     $.get("php/populate-result-panes.php", { "items": container_count }, function (containers) {
                         
                         $( 'body' ).append( containers );
@@ -54,29 +56,32 @@ $(document).ready(function(){
                     
                 });
                 
-                console.log(result);
+                //console.log(result);
                 
                 console.log("\n\n\n\========\n" + num_r + "\n\n================");
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    part = object;  // assign the object to a declared variable
+                    part = object.parts;  // assign the object to a declared variable
                     
                     
                     // log the values of the part to the console (for debugging
                     // purposes only)
                     
-                    /*
+                    
                     $.each(object, function (key, value) { 
                         console.log(key + " => " + value);
-                    });
-                    */
-                   
+                    
+                    
+                   if (key = 'parts') 
+                   {
                    // Update the information on the current page
-                    //$('#part-location-data').html(part.location);
-                    //$('#part-name-data').html(part.name);
-                    //$('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                   $('#part-location-data').html(part.location);
+                   $('#part-name-data').html(part.name);
+                   $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                   }
                    
+                   });
                    
                 });
                 
