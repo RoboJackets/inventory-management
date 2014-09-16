@@ -38,6 +38,10 @@ $(document).ready(function(){
                 
                 var part;
                 
+                var num_r = $.parseJSON(result).num_results;
+                
+                console.log("\n\n\n\========\n" + num_r + "\n\n================");
+                
                 $.each($.parseJSON(result), function (index, object) {
                     
                     part = object;  // assign the object to a declared variable
