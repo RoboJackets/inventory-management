@@ -17,9 +17,10 @@ error_reporting(-1);
 // begin searching if user input is given
 if ($_SERVER["REQUEST_METHOD"] == "GET")
 {
-    $part = new MultiPart($_GET['input']);
+    $bin = new MultiPart($_GET['input']);
     
-    $part->findBinData();
+    $bin->findBinData();
+    $bin->sendMultiParts()
     
     mysqli_close($CONN);
 }

@@ -24,7 +24,7 @@ $(document).ready(function(){
         // ajax communication for getting database results
         $.ajax({
             type: 'GET',
-            url: '/php/search.php',
+            url: '/php/binSearch.php',
             data: {
                 mode:   $('#mode-storage').val(),
                 input:  $('#txtSubmitQuery').val()
@@ -51,12 +51,16 @@ $(document).ready(function(){
                         console.log(key + " => " + value);
                     });
                     */
+                   
+                   // Update the information on the current page
+                    $('#part-location-data').html(part.location);
+                    $('#part-name-data').html(part.name);
+                    $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                   
+                   
                 });
                 
-                // Update the information on the current page
-                $('#part-location-data').html(part.location);
-                $('#part-name-data').html(part.name);
-                $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                
             }
         });
         

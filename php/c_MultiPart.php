@@ -41,9 +41,9 @@ class MultiPart
     
     
     // Sends results to client as JSON encoded data.
-    public function sendMultiPart()
+    public function sendMultiParts()
     {
-        // nothing here yet.
+        echo json_encode($this->parts[]);
     }
     
     private function queryDB($sql, $user_input)
