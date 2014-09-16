@@ -63,7 +63,7 @@
     </div>
 </nav>
 <body>
-    <div class='results-placeholder'>
+    <div id="results-placeholder">
         
     </div>
 </body>

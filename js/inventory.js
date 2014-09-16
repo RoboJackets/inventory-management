@@ -37,7 +37,7 @@ $(document).ready(function(){
                 // Create placeholder containers
                 data = $.parseJSON(result);         
 
-                $('.results-placeholder').empty();
+                $('#results-placeholder').empty();
 
                 $.each(data, function (index, container_count) {
                     
