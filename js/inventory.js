@@ -36,21 +36,21 @@ $(document).ready(function(){
                 // data comes back in json format
 
                 // Create placeholder containers
-                data = $.parseJSON(result);
-                        $.each(data.parts, function(part_index, part_vals){
+               // data = $.parseJSON(result);
+                 //       $.each(data.parts, function(part_index, part_vals){
                             
-                            $.get("/php/populate-result-panes.php", function(container) {
+                   //         $.get("/php/populate-result-panes.php", function(container) {
                             
-                                $('#results-placeholder').append(container);
+                                $('#results-placeholder').append(result);
                                 //, function(){
                                     // nothing
                                 //});
 
                                 console.log(part_vals.part_num);
 
-                            });
+                            //});
 
-                        });
+                        //});
                     /*
                     var i = 0;
 
@@ -70,6 +70,7 @@ $(document).ready(function(){
                         
                     }*/
                     
+                    /*
                     // fll in data
                     $.each(data.parts, function(arg, obj){
                         $('#part-location-data').each(function( index ){
@@ -79,7 +80,7 @@ $(document).ready(function(){
                         $('#part-name-data').html(obj.name);
                         $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
                     });
-                    
+                    */
                 }
         });
 
