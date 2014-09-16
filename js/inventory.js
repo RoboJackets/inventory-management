@@ -43,7 +43,7 @@ $(document).ready(function(){
                 //var num_r;
                 $.each($.parseJSON(result), function (index, container_count) {
                     
-                    if (index == "num_results")
+                    if (index === "num_results")
                     {
                         console.log(index + " => " + container_count);
                         
@@ -64,7 +64,7 @@ $(document).ready(function(){
                     
                     var part = object;
                     //part = object;  // assign the object to a declared variable
-                    if (index == "parts")
+                    if (index === "parts")
                     {
                         console.log(index + " => " + object);
                         
@@ -76,17 +76,17 @@ $(document).ready(function(){
                      //   console.log(key + " => " + value);
 
                     // Update the information on the current page
-                    if (key == "location")
+                    if (key === "location")
                     {
                         $('#part-location-data').html(part.location);
                     }
                     
-                    if (key == "name")
+                    if (key === "name")
                     {
                         $('#part-name-data').html(part.name);
                     }
                 
-                    if (key == "part_num")
+                    if (key === "part_num")
                     {
                         $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
                     }
