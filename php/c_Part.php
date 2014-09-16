@@ -121,7 +121,7 @@ class Part {
         // make sure part_id was found if not before
         if(isset($this->part_id))
         {
-            $this->bags = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $this->part_id));
+            $this->attributes = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $this->part_id));
         }
     }
     
@@ -213,7 +213,7 @@ class Part {
     {
         
         echo "\n\n\n";
-        echo "Example of Data Model:\n==============\n\n";
+        echo "Example of Data Model:\n==============\n";
         var_dump( json_decode('{"parts":[
     {"part_num":"11593lgy",
     "name":"My Cool Part",
@@ -268,7 +268,7 @@ class Part {
     public function testTest()
     {
         echo $this->attributes;
-    
+        echo "\n\n";
         echo $this->bags;
     }
     
