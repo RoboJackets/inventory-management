@@ -6,12 +6,6 @@ require $path . '/templates/result-pane.html';
 // begin searching if user input is given
 if ($_SERVER["REQUEST_METHOD"] == "GET")
 {
-    $count = $_GET['items'];
-
-    for ( $i=0 ; $i<$count ; $i++ )
-    {
-      readfile($path . 'templates/result-pane.html');
-    }
-}
-        
+    readfile($path . '/templates/result-pane.html');
+}     
 ?>

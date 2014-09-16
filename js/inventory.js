@@ -43,28 +43,29 @@ $(document).ready(function(){
                     {
                         console.log(index + " => " + container_count + "\n\n\n");
                         
-                    $.get("/php/populate-result-panes.php", { "items": container_count }, function (containers) {
-                        
-                        for (i = 0; i<data.num_results; i++)
-                        {
-                            $( 'body' ).append( containers );
-                        }
-                        
-                    });
+                        $.get("/php/populate-result-panes.php", function(containers) {
+
+                        $('body').append(containers);
+
+                            $.each(data.parts, function(arg, obj){
+                                $('#part-location-data').html(obj.location);
+                                $('#part-name-data').html(obj.name);
+                                $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
+                            });
+                        });
                     }
                 });
             },
             
+            /*
             complete: function(){
 
                 $.each(data.parts, function (arg, obj){
-                    $('#part-location-data').each(function($this){
-                        $($this).html(obj.location);
-                    });
+                    $('#part-location-data').html(obj.location);
                     $('#part-name-data').html(obj.name);
                     $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
                 
-                }); },
+                }); },*/
         });
 
         $('#txtSubmitQuery').val('');
