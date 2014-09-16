@@ -66,7 +66,8 @@ $(document).ready(function(){
                             $('#part-name-data').each( function(value){
                                 $(item).html(arg.name);
                             });
-                            ('#part-num-data').html("PN: " + arg.part_num + "  | Bags: " + arg.num_bags + "  | Qty: " + arg.total_qty);
+                            
+                            $('#part-num-data').html("PN: " + arg.part_num + "  | Bags: " + arg.num_bags + "  | Qty: " + arg.total_qty);
                         
                         //}
                 });
