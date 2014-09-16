@@ -48,13 +48,15 @@ $(document).ready(function(){
                     {
                         $.each(container_count, function(part_index, part_vals){
                             
+                            $.get("/php/populate-result-panes.php", function(container) {
+                            
                             $.each(part_vals, function(){
                                 
                             
                             
                             console.log(part_index + " => " + part_vals);
                             
-                            $.get("/php/populate-result-panes.php", function(container) {
+                            
 
                                 $('#results-placeholder').append(container, function(){
                                     // nothing
