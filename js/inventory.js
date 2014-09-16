@@ -45,18 +45,21 @@ $(document).ready(function(){
                         console.log(index + " => " + container_count + "\n\n\n");
                         
                         $.get("/php/populate-result-panes.php", function(containers) {
-
-                        $('#results-placeholder').append(containers);
-
-                            $.each(data.parts, function(arg, obj){
-                                $('#part-location-data').each(function(){
-                                        $(this).html(obj.location);
-                            });
-                                $('#part-name-data').html(obj.name);
-                                $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
-                            });
+                            $('#results-placeholder').append(containers);                      
                         });
                     }
+                    
+                    
+                    
+                    // fll in data
+                    $.each(data.parts, function(arg, obj){
+                        $('#part-location-data').each(function(){
+                                $(this).html(obj.location);
+                    });
+                        $('#part-name-data').html(obj.name);
+                        $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
+                    });
+                    
                 });
             },
             
