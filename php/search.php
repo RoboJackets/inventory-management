@@ -34,9 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     $part->findAttributes();
     $part->findPartInfo();
     
-    $results['parts'] = $part;  // add part to array
-    
-    echo json_encode($results);
+    $part->sendPart();
     
     //$part->testTest();
     //$part->showExample();
