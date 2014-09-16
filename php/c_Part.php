@@ -38,7 +38,6 @@ class Part {
     // prepares the object when a new one is created
     public function __construct($barcode)
     {
-        
         $this->bags = array();
         $this->attributes = array();
         $this->barcode = $barcode;
@@ -81,22 +80,6 @@ class Part {
     }   // function getPartNum
     
     
-    public function findAllBarcodes()
-    {
-        
-        if(empty($this->part_id))
-        {
-            $this->findPartID();
-        }
-        
-        if(isset($this->part_id))
-        {
-            $this->barcodes = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
-        }
-        
-        var_dump($this->barcodes);
-        
-    }
     
     public function findPartID()
     {
@@ -107,6 +90,47 @@ class Part {
         }  
     }
     
+    
+    
+    public function findAllBarcodes()
+    {
+        // make sure we can search using the part_id
+        if(empty($this->part_id))
+        {
+            $this->findPartID();
+        }
+        
+        // make sure part_id was found if not before
+        if(isset($this->part_id))
+        {
+            $this->bags = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
+        }
+        
+        var_dump($this->bags);
+        
+    }
+    
+    
+    
+    public function findAttributes()
+    {
+        // make sure we can search using the part_id
+        if(empty($this->part_id))
+        {
+            $this->findPartID();
+        }
+        
+        // make sure part_id was found if not before
+        if(isset($this->part_id))
+        {
+            $this->bags = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $this->part_id));
+        }
+        
+        var_dump($this->attributes);
+        
+    }
+    
+
     
     private function queryDB($sql, $user_input)
     {
