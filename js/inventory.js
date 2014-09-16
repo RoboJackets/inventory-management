@@ -57,7 +57,7 @@ $(document).ready(function(){
                     console.log(index + " => " + value + "\n");                        
                             
                         console.log(index + " => " + value + "\n");     
-                        console.log(index.name + "<- name");
+                        console.log(data.parts[0].name + "<- name");
                         if (index === "parts") {
 
                             $('#part-location-data').each( function(value){
