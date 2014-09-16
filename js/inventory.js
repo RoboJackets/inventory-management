@@ -54,7 +54,7 @@ $(document).ready(function(){
                 });
 
 
-                
+                console.log('hey\n\n');
                 $.each(data.parts, function (index, object) {
                     
                     console.log(index + " => " + object + "\n");
