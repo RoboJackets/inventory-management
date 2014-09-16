@@ -40,7 +40,7 @@ $(document).ready(function(){
 
                 $.each(data, function (index, container_count) {
                     
-                    if (index === "num_results")
+                    if (index === "num_results" && container_count > 0)
                     {
                         console.log(index + " => " + container_count + "\n\n\n");
                         
