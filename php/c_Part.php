@@ -34,7 +34,6 @@ class Part {
     }   // function __construct
     
     
-    
     public function get_part_id() {
         return $this->part_id;
     }
@@ -43,25 +42,17 @@ class Part {
         return $this->barcode;
     }
     
-    public function showResults()
-    {
-        echo "\nPart::showResults:\n";
-        foreach($this as $key => $val)
-        {
-            echo "$key => $val\n";
-        }
-    }
-    
     public function sendPart()
     {
-        
         $temp = array();
         
         $temp['parts'] = $this;
         
         echo json_encode($temp);
-    }
+    }   // function sendPart
 
+    
+    
     // searches the database for a partnumber when given a barcode
     public function findPartInfo()
     {
@@ -82,7 +73,7 @@ class Part {
             
         }
         
-    }   // function getPartNum
+    }   // function findPartNum
     
     
     
@@ -90,7 +81,7 @@ class Part {
     {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
-            $temp = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), 'part_id');
+            $temp = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?) LIMIT 1", $this->barcode ), 'part_id');
             $this->part_id = array_shift($temp);
         } 
         
@@ -105,7 +96,7 @@ class Part {
             $temp = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num), 'part_id');
             $this->part_id = array_shift($temp);
         }
-    }
+    }   // function findPartID
     
     
     
@@ -124,7 +115,7 @@ class Part {
             $this->num_bags = count($this->bags);
             $this->getQty();    // add up all the quantities for a grand total
         }
-    }
+    }   // function findBarcodes
     
     
     
@@ -141,7 +132,7 @@ class Part {
         {
             $this->attributes = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $this->part_id));
         }
-    }
+    }   // function findAttributes
     
 
     
@@ -241,7 +232,7 @@ class Part {
         }
         
         $this->total_qty = $qty['quantity'];
-    }
+    }   // function getQty
     
     
     
@@ -253,7 +244,7 @@ class Part {
         $this->findBarcodes();
         $this->findAttributes();
         $this->findPartInfo();
-    }
+    }   //  function locateAllInfo
     
     
     public function outputResultBox()
@@ -279,7 +270,7 @@ class Part {
         echo '</div>';
         echo '<div id="part-num-data" class="part-num">';
         
-        echo 'PN: ' . $this->part_num . '  | Bags: ' . count($this->bags) . '  | Qty: ' . $this->total_qty;
+        echo 'PN: ' . $this->part_num . '  | Bags: ' . $this->num_bags . '  | Qty: ' . $this->total_qty;
         
         echo '</div>';
         echo '</div>';
@@ -312,9 +303,8 @@ class Part {
                     echo '<dd>' . $val . '</dd>';   
                 }
             }
-        }
-        
-    }
+        }  
+    }   // function outputAttributeBox
     
     public function showExample()
     {

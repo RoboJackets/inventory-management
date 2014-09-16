@@ -27,7 +27,7 @@ $(document).ready(function(){
         // ajax communication for getting database results
         $.ajax({
             type: 'GET',
-            url: '/php/binSearch.php',
+            url: '/php/search.php',
             data: {
                 mode:   $('#mode-storage').val(),
                 input:  $('#txtSubmitQuery').val()
