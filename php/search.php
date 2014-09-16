@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     $part->findPartID();
     
     
-    echo "\n\nPart Number => "
+    echo "\n\nPart Number => ";
     var_dump($part->part_num);
     echo "\n\nPart ID: ";
     
