@@ -49,7 +49,7 @@ $(document).ready(function(){
                         });
                     }
                     
-                    $.each(data.parts, function(arg, obj){
+                    $.each(data.parts, function(){
                         $.get("/php/populate-result-panes.php", function(containers) {
                             $('#results-placeholder').append(containers);                      
                         });
