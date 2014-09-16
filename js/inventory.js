@@ -36,7 +36,7 @@ $(document).ready(function(){
                 var data = $.parseJSON(result);         
                 
                 
-                $.each(data.parts, function (arg, obj) {     
+                  
                 
                 
                 $.each(data, function (index, container_count) {
@@ -55,7 +55,9 @@ $(document).ready(function(){
                     });
                     }
                     
-                });
+             
+                        
+              $.each(data.parts, function (arg, obj){
      
                         console.log(obj.name + "<- name");
                         //if (index === "parts") {
@@ -65,7 +67,9 @@ $(document).ready(function(){
                             $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
                         
                         //}
+                           });
                 });
+
                 
             }
             
