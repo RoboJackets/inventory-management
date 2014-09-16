@@ -53,7 +53,7 @@ $(document).ready(function(){
                             $('#results-placeholder').add("div").addClass("c-" + i);
                             
                             $('#results-placeholder').append(container, function(){
-                                $().addClass( "" );
+                                $(this).addClass( "test" + i );
                             });
                         });
                         
