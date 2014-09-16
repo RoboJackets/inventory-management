@@ -52,6 +52,8 @@ $(document).ready(function(){
                 $.each($.parseJSON(result), function (index, object) {
                     
                     var part = object;
+                    
+                    console.log($part);
 
                     if (index === "parts")
                     {
