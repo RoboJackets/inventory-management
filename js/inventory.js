@@ -39,8 +39,7 @@ $(document).ready(function(){
                 $.each($.parseJSON(result), function (index, object) {
                     //console.log(object);
                     $.each(object, function (key, value) { 
-                        console.log(key);
-                        console.log(value);
+                        console.log(key + " => " + value);
                     });
                     
                 });
