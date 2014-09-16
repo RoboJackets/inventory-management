@@ -36,7 +36,7 @@ $(document).ready(function(){
                 //console.log(json);
                 //var data = json.parts[0]; // get the first search result returned
                 
-                var part;
+                //var part;
                 
                 var num_r = $.parseJSON(result).num_results;
                 
@@ -57,9 +57,9 @@ $(document).ready(function(){
                     */
                    
                    // Update the information on the current page
-                    $('#part-location-data').html(part.location);
-                    $('#part-name-data').html(part.name);
-                    $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                    //$('#part-location-data').html(part.location);
+                    //$('#part-name-data').html(part.name);
+                    //$('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
                    
                    
                 });
