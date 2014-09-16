@@ -31,7 +31,7 @@ class Part {
     protected $value;
     protected $priority;
     
-    protected $num_results;
+    protected $num_bags;
     
     
     
@@ -104,10 +104,8 @@ class Part {
         if(isset($this->part_id))
         {
             $this->bags = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
+            $this->num_bags = count($this->bags);
         }
-        
-        var_dump($this->bags);
-        
     }
     
     
@@ -125,9 +123,6 @@ class Part {
         {
             $this->bags = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $this->part_id));
         }
-        
-        var_dump($this->attributes);
-        
     }
     
 
@@ -268,7 +263,13 @@ class Part {
     }
 ]
 }'));
-        
+    }
+    
+    public function testTest()
+    {
+        echo $this->attributes;
+    
+        echo $this->bags;
     }
     
 }
