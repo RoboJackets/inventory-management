@@ -52,18 +52,18 @@ $(document).ready(function(){
                     
                 });
 
-                $.each(data, function (index, object) {
+                $.each(data.parts, function (index, value) {
                     
-                    console.log(index + " => " + object + "\n");                        
+                    console.log(index + " => " + value + "\n");                        
                             
-                        console.log(index + " => " + object);     
+                        console.log(index + " => " + value);     
                         console.log(index.name);
                         if (index === "parts") {
 
-                            $('#part-location-data').each( function(object){
+                            $('#part-location-data').each( function(value){
                                 $(item).html(data.parts.location);
                             });
-                            $('#part-name-data').each( function(object){
+                            $('#part-name-data').each( function(value){
                                 $(item).html(data.parts.name);
                             });
                             ('#part-num-data').html("PN: " + data.parts.part_num + "  | Bags: " + data.parts.num_bags + "  | Qty: " + data.parts.total_qty);
