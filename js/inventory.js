@@ -58,7 +58,7 @@ $(document).ready(function(){
                             
                       //  console.log(index + " => " + value + "\n");     
                         console.log(arg.name + "<- name");
-                        if (index === "parts") {
+                        //if (index === "parts") {
 
                             $('#part-location-data').each( function(value){
                                 $(item).html(arg.location);
@@ -68,7 +68,7 @@ $(document).ready(function(){
                             });
                             ('#part-num-data').html("PN: " + arg.part_num + "  | Bags: " + arg.num_bags + "  | Qty: " + arg.total_qty);
                         
-                        }
+                        //}
                 });
                 
             }
