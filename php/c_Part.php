@@ -69,7 +69,7 @@ class Part {
         {
             $this->findPartID();
         }
-        if(empty($this->part_num))
+        if(empty($this->part_num) | empty($this->location))
         {
             $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
             
@@ -106,8 +106,8 @@ class Part {
             $this->part_id = array_shift($temp);
             
             // assign a barcode to the object for required functionality. The top result works since all found results share the same part_id
-            $temp = $this->filterSingle($this->queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?) LIMIT 1", $this->part_id), 'barcode');
-            $this->barcode = array_shift($temp);
+            //$temp = $this->filterSingle($this->queryDB("SELECT barcode FROM barcode_lookup WHERE part_id=(?) LIMIT 1", $this->part_id), 'barcode');
+            //$this->barcode = array_shift($temp);
         }
     }
     
