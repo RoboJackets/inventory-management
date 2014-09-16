@@ -44,7 +44,7 @@ $(document).ready(function(){
 
                     console.log(index + " => " + container_count)
 
-                    if (index === "part")
+                    if (index === "parts")
                     {
                         
                     
