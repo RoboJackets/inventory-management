@@ -53,15 +53,17 @@ $(document).ready(function(){
                     
                     var part = object;
                     
-                    console.log(part);
+                    console.log(index + " => " + part);
 
                     if (index === "parts")
                     {
-                        
+                        console.log("\n");
                     $.each(part, function(key, value){
                         // log the values of the part to the console (for debugging
                         // purposes only)
-
+                            
+                        console.log(key + " => " + value);    
+                            
                         // Update the information on the current page
                         if (key === "location")
                         {
