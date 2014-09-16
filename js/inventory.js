@@ -33,6 +33,7 @@ $(document).ready(function(){
                 // data comes back in json format
 
                 // Create placeholder containers
+                /*
                 $.each($.parseJSON(result), function (index, container_count) {
                     
                     if (index === "num_results")
@@ -46,7 +47,7 @@ $(document).ready(function(){
                     });
                     }
                     
-                });
+                }); */
 
                 
                 $.each($.parseJSON(result), function (index, object) {
