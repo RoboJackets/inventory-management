@@ -44,8 +44,6 @@ $(document).ready(function(){
                     if (index === "parts")
                     {
                         $.each(container_count, function(part_index, part_vals){
-                            //$.each(part_vals, function(){
-                                
                             
                             $.get("/php/populate-result-panes.php", function(container) {
                             
@@ -53,17 +51,10 @@ $(document).ready(function(){
                                 //, function(){
                                     // nothing
                                 //});
-                            
-                            //$.each(part_vals, function(){
-                                
-                            
-                            
-                            console.log(" => " + part_vals.part_num);
-//});
 
+                                console.log(" => " + part_vals.part_num);
 
                             });
-                            //});
 
                         });
                     }
