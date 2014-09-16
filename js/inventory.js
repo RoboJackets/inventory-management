@@ -64,7 +64,7 @@ $(document).ready(function(){
                     
                     part = object.parts;  // assign the object to a declared variable
                     
-                    
+                    $.each(part, function(){
                     // log the values of the part to the console (for debugging
                     // purposes only)
                     
@@ -80,7 +80,7 @@ $(document).ready(function(){
                    $('#part-name-data').html(part.name);
                    $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
                    }
-                   
+               });
                   // });
                    
                 });
