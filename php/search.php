@@ -5,7 +5,7 @@
 
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; } // make sure path is known
 require $path.'db-conn.php';
-require $path.'api.php';
+//require $path.'api.php';
 require $path.'c_Part.php';
 /*
 if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is given
@@ -36,9 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     
     $part->sendPart();
     
-    //$part->testTest();
-    //$part->showExample();
-    //echo "\n\nActual Data\n================\n";
-    //var_dump($part);
+    mysqli_close($CONN);
     
 }
