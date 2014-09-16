@@ -62,8 +62,10 @@ $(document).ready(function(){
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
+                    console.log("made it!");
+                    
                     var part = object;
-                    //part = object;  // assign the object to a declared variable
+
                     if (index === "parts")
                     {
                         console.log(index + " => " + object);
@@ -71,9 +73,6 @@ $(document).ready(function(){
                     $.each(part, function(key, value){
                     // log the values of the part to the console (for debugging
                     // purposes only)
-                    
-                   //$.each(object, function (key, value) { 
-                     //   console.log(key + " => " + value);
 
                     // Update the information on the current page
                     if (key === "location")
