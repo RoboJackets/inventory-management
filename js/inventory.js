@@ -50,17 +50,19 @@ $(document).ready(function(){
                             
                             $.get("/php/populate-result-panes.php", function(container) {
                             
+                            
+                            
+                                                            $('#results-placeholder').append(container, function(){
+                                    // nothing
+                                });
+                            
                             $.each(part_vals, function(){
                                 
                             
                             
                             console.log(part_index + " => " + part_vals);
-                            
-                            
 
-                                $('#results-placeholder').append(container, function(){
-                                    // nothing
-                                });
+
 
                             });
                             });
