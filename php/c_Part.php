@@ -218,7 +218,7 @@ class Part {
             }
         }
         
-        $this->total_qty = $qty;
+        $this->total_qty = $qty['quantity'];
     }
     
     
