@@ -62,10 +62,11 @@ $(document).ready(function(){
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    part = object.parts;  // assign the object to a declared variable
+                    
+                    //part = object;  // assign the object to a declared variable
                     if (index == "parts")
                     {
-                    $.each(part, function(index, value){
+                    $.each(object, function(key, value){
                     // log the values of the part to the console (for debugging
                     // purposes only)
                     
@@ -73,19 +74,19 @@ $(document).ready(function(){
                      //   console.log(key + " => " + value);
 
                     // Update the information on the current page
-                    if (index == "location")
+                    if (key == "location")
                     {
-                        $('#part-location-data').html(part.location);
+                        $('#part-location-data').html(object.location);
                     }
                     
-                    if (index == "name")
+                    if (key == "name")
                     {
-                        $('#part-name-data').html(part.name);
+                        $('#part-name-data').html(object.name);
                     }
                 
-                    if (index == "part_num")
+                    if (key == "part_num")
                     {
-                        $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                        $('#part-num-data').html("PN: " + object.part_num + "  | Bags: " + object.num_bags + "  | Qty: " + object.total_qty);
                     }
 
                });
