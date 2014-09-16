@@ -38,7 +38,7 @@ $(document).ready(function(){
                     
                     if (index === "num_results")
                     {
-                        console.log(index + " => " + container_count);
+                        console.log(index + " => " + container_count + "\n\n\n");
                         
                     $.get("/php/populate-result-panes.php", { "items": container_count }, function (containers) {
                         
