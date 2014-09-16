@@ -212,7 +212,7 @@ class Part {
         
         foreach ($this->bags as $index->$items)
         {
-            foreach ($iteams as $bag->$bag_qty)
+            foreach ($items as $bag->$bag_qty)
             {
                 $qty += $bag_qty;
             }
