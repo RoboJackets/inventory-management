@@ -53,7 +53,7 @@ $(document).ready(function(){
                     
                     var part = object;
                     
-                    console.log($part);
+                    console.log(part);
 
                     if (index === "parts")
                     {
