@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
     $bin = new MultiPart($_GET['input']);
     
     $bin->findBinData();
-    $bin->sendMultiParts()
+    $bin->sendMultiParts();
     
     mysqli_close($CONN);
 }
