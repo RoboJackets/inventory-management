@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
     
     if ($_GET['mode'] == 'bin')
     {
-        $bin = new $MultiPart($_GET['input']);
+        $bin = new MultiPart($_GET['input']);
         $bin->findBinData();
         $bin->outputParts();
     }
