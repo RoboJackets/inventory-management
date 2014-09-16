@@ -38,16 +38,16 @@ $(document).ready(function(){
                 // Create placeholder containers
                 data = $.parseJSON(result);
 
-                $.each(data, function (index, container_count) {
+                //$.each(data, function (index, container_count) {
                     // only append data if results are found
 
-                    if (index === "parts")
-                    {
-                        $.get("/php/populate-result-panes.php", function(container) {
+                    //if (index === "parts")
+                    //{
                         
-                        $.each(container_count, function(part_index, part_vals){
+                        
+                        $.each(data.parts, function(part_index, part_vals){
                             
-                            
+                            $.get("/php/populate-result-panes.php", function(container) {
                             
                                 $('#results-placeholder').append(container);
                                 //, function(){
@@ -59,7 +59,7 @@ $(document).ready(function(){
                             });
 
                         });
-                    }
+                   //}
                     /*
                     var i = 0;
 
