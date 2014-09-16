@@ -66,6 +66,8 @@ $(document).ready(function(){
                     //part = object;  // assign the object to a declared variable
                     if (index == "parts")
                     {
+                        console.log(index + " => " + object);
+                        
                     $.each(part, function(key, value){
                     // log the values of the part to the console (for debugging
                     // purposes only)
