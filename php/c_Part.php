@@ -208,11 +208,11 @@ class Part {
     
     private function getQty()
     {
-        $qty;
+        $qty = 0;
         
-        foreach ($this->bags as $index->$items)
+        foreach ($this->bags as $index=>$items)
         {
-            foreach ($items as $bag->$bag_qty)
+            foreach ($items as $bag=>$bag_qty)
             {
                 $qty += $bag_qty;
             }
