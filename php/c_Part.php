@@ -69,14 +69,11 @@ class Part {
         {
             $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
             
-            
-            foreach($data_array as $index => $item)
+            foreach($data_array as $index => $items)
             {
-                foreach($item as $key => $val) { // itterate through all fields
+                foreach($items as $key => $val) { // itterate through all fields
                     $this->$key = $val;
-                    echo "$key => $val\n";
                 }
-                echo "\n";
             }
             
         }
@@ -94,7 +91,7 @@ class Part {
         
         if(isset($this->part_id))
         {
-            $this->barcodes[] = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
+            $this->barcodes = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
         }
         
         var_dump($this->barcodes);
@@ -147,7 +144,6 @@ class Part {
        
         $results = array();
         while ($query->fetch()) {   // fetch the results for every field
-            
             $results[] = $row[$field_name];
         }
 
