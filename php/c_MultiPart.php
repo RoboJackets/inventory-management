@@ -13,7 +13,6 @@ class MultiPart
     public $parts;
     public $user_input;
     public $num_results;
-    public $result_pane;
     
     
     public function __construct($input)
