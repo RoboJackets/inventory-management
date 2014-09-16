@@ -46,7 +46,7 @@ $(document).ready(function(){
 
                     if (index === "parts")
                     {
-                        $.each(container_count, function(part_index, part_vals){
+                        $.each(container_count, function(part_vals){
                             
                             $.get("/php/populate-result-panes.php", function(container) {
                             
@@ -60,7 +60,7 @@ $(document).ready(function(){
                                 
                             
                             
-                            console.log(part_index + " => " + part_vals);
+                            console.log(" => " + part_vals);
 
 
 
