@@ -41,6 +41,48 @@ class Part {
     
     
     
+    public function getPart_num() {
+        return $this->part_num;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getCategory() {
+        return $this->category;
+    }
+
+    public function getDescription() {
+        return $this->description;
+    }
+
+    public function getDatasheet() {
+        return $this->datasheet;
+    }
+
+    public function getLocation() {
+        return $this->location;
+    }
+
+    public function getBags() {
+        return $this->bags;
+    }
+
+    public function getAttributes() {
+        return $this->attributes;
+    }
+
+    public function getNum_bags() {
+        return $this->num_bags;
+    }
+
+    public function getTotal_qty() {
+        return $this->total_qty;
+    }
+    
+    
+    
     public function showResults()
     {
         echo "\nPart::showResults:\n";
