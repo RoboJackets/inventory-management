@@ -23,13 +23,13 @@ class Part {
     protected $location;
     
     protected $bags;
-    protected $barcodes;
-    protected $quantity;
+    //protected $barcodes;
+    //protected $quantity;
     
     protected $attributes;
-    protected $attribute;
-    protected $value;
-    protected $priority;
+    //protected $attribute;
+    //protected $value;
+    //protected $priority;
     
     protected $num_bags;
     
