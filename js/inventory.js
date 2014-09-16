@@ -78,7 +78,7 @@ $(document).ready(function(){
                         });
                         
                     }*/
-                });
+               // });
                     
                     // fll in data
                     $.each(data.parts, function(arg, obj){
