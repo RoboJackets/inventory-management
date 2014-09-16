@@ -63,43 +63,9 @@
     </div>
 </nav>
 <body>
-    
-    <!--
-    
-    <div id="results-pane" class="container">
-        <div class="row">
-            <div class="col-xs-12 space"></div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <div id="part-location-data" class="part-location">
-                            
-                        </div>
-                        <div class="part">
-                            <div id="part-name-data" class="part-name">
-                                
-                            </div>
-                            <div id="part-num-data" class="part-num">
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <dl class="dl-horizontal">
-                            <dt>Value</dt>
-                            <dd>24uf</dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    -->
-    <?php readfile('templates/result-pane.html'); ?>
-    
+
+<!--    <?php readfile('templates/result-pane.html'); ?> -->
+   
     
 </body>
 </html>
