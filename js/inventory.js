@@ -47,7 +47,7 @@ $(document).ready(function(){
                     {
                         console.log(index + " => " + container_count);
                         
-                    $.get("php/populate-result-panes.php", { "items": container_count }, function (containers) {
+                    $.get("/php/populate-result-panes.php", { "items": container_count }, function (containers) {
                         
                         $( 'body' ).append( containers );
                         
