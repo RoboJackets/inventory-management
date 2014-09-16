@@ -13,6 +13,8 @@
 class Part {
     
     private $part_id;
+    private $barcode;
+    
     protected $part_num;
     protected $name;
     protected $category;
@@ -23,8 +25,6 @@ class Part {
     protected $bags;
     protected $barcodes;
     protected $quantity;
-    
-    private $barcode;
     
     protected $attributes;
     protected $attribute;
@@ -43,7 +43,7 @@ class Part {
     }
     
     // prepares the object when a new one is created
-    function __construct($barcode)
+    private function __construct($barcode)
     {
         
         $this->bags = array();
@@ -54,7 +54,7 @@ class Part {
    
 
     // searches the database for a partnumber when given a barcode
-    function findPartInfo()
+    public function findPartInfo()
     {
         if(empty($this->part_id))
         {
@@ -79,7 +79,7 @@ class Part {
     }   // function getPartNum
     
     
-    function findAllBarcodes()
+    public function findAllBarcodes()
     {
         
         if(empty($this->part_id))
@@ -96,7 +96,7 @@ class Part {
         
     }
     
-    function findPartID()
+    public function findPartID()
     {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
@@ -106,7 +106,7 @@ class Part {
     }
     
     
-    function queryDB($sql, $user_input)
+    private function queryDB($sql, $user_input)
     {
         global $CONN;   // let function know about the global declared connection
         
@@ -128,7 +128,7 @@ class Part {
     
     
     // filters a queries results
-    function filterSingle($query, $field_name)
+    private function filterSingle($query, $field_name)
     {
         $meta = $query->result_metadata();  // get the metadata from the results
 
