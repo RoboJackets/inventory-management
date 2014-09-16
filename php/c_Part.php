@@ -256,6 +256,57 @@ class Part {
     }
     
     
+    public function outputResultBox()
+    {
+        echo '<div id="results-pane" class="container">';
+        echo '<div class="row">';
+        echo '<div class="col-xs-12 space"></div>';
+        echo '</div>';
+        echo '<div class="row">';
+        echo '<div class="col-xs-12">';
+        echo '<div class="panel panel-primary">';
+        echo '<div class="panel-heading">';
+        echo '<div id="part-location-data" class="part-location">';
+        
+        echo $this->location;
+        
+        echo '</div>';
+        echo '<div class="part">';
+        echo '<div id="part-name-data" class="part-name">';
+        
+        echo $this->name;
+        
+        echo '</div>';
+        echo '<div id="part-num-data" class="part-num">';
+        
+        echo $this->part_num;
+        
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '<div class="panel-body">';
+        echo '<dl class="dl-horizontal">';
+        
+        $this->outputAttributeBox();
+        
+        echo '</dl>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+    }
+    
+    public function outputAttributeBox()
+    {
+        foreach($this->attributes as $attrib => $val)
+        {
+            echo '<dt>' . $attrib . '</dt>';
+            echo '<dd>' . $val . '</dd>';   
+        }
+        
+    }
+    
     public function showExample()
     {
         

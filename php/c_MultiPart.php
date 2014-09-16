@@ -50,6 +50,14 @@ class MultiPart
         echo json_encode($this);
     }
     
+    public function outputParts()
+    {
+        foreach($this->parts as $index => $vals)
+        {
+            $vals->outputResultBox();
+        }
+    }
+    
     private function queryDB($sql, $user_input)
     {
         global $CONN;   // let function know about the global declared connection
