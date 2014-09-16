@@ -52,21 +52,21 @@ $(document).ready(function(){
                     
                 });
 
-                $.each(data.parts, function (index, value) {
+                $.each(data.parts, function (arg) {
                     
-                    console.log(index + " => " + value + "\n");                        
+                    //console.log(index + " => " + value + "\n");                        
                             
-                        console.log(index + " => " + value + "\n");     
-                        console.log(data.parts[0].name + "<- name");
+                      //  console.log(index + " => " + value + "\n");     
+                        console.log(arg.name + "<- name");
                         if (index === "parts") {
 
                             $('#part-location-data').each( function(value){
-                                $(item).html(data.parts.location);
+                                $(item).html(arg.location);
                             });
                             $('#part-name-data').each( function(value){
-                                $(item).html(data.parts.name);
+                                $(item).html(arg.name);
                             });
-                            ('#part-num-data').html("PN: " + data.parts.part_num + "  | Bags: " + data.parts.num_bags + "  | Qty: " + data.parts.total_qty);
+                            ('#part-num-data').html("PN: " + arg.part_num + "  | Bags: " + arg.num_bags + "  | Qty: " + arg.total_qty);
                         
                         }
                 });
