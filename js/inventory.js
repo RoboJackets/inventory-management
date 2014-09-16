@@ -32,9 +32,16 @@ $(document).ready(function(){
             success: function(result){
                 
                 // data comes back in json format
-                var json = jQuery.parseJSON(result);
-                console.log(json);
-                var data = json.parts[0]; // get the first search result returned
+                //var json = jQuery.parseJSON(result);
+                //console.log(json);
+                //var data = json.parts[0]; // get the first search result returned
+                
+                $.each($.parseJSON(result), function (i, object) {
+                    console.log(i);
+                    console.log(object);
+                    
+                })
+                
                 
                 $('#part-location-data').html(data.location);
                 $('#part-name-data').html(data.name);
