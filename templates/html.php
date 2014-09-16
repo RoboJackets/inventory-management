@@ -63,6 +63,8 @@
     </div>
 </nav>
 <body>
-    <?php // readfile('templates/result-pane.html'); ?>
+    <div class='results-placeholder'>
+        
+    </div>
 </body>
 </html>
