@@ -53,7 +53,7 @@ $(document).ready(function(){
                 
                 $('#part-location-data').html(part.location);
                 $('#part-name-data').html(part.name);
-                $('#part-num-data').html(part.part_num);
+                $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
             }
         });
         
