@@ -23,15 +23,10 @@ class Part {
     protected $location;
     
     protected $bags;
-    //protected $barcodes;
-    //protected $quantity;
-    
     protected $attributes;
-    //protected $attribute;
-    //protected $value;
-    //protected $priority;
-    
+
     protected $num_bags;
+    protected $total_qty;
     
     
     
@@ -105,6 +100,7 @@ class Part {
         {
             $this->bags = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
             $this->num_bags = count($this->bags);
+            $this->getQty();    // add up all the quantities for a grand total
         }
     }
     
@@ -207,6 +203,23 @@ class Part {
 
         return $results;
     }   // function filterMany
+    
+    
+    
+    private function getQty()
+    {
+        $qty;
+        
+        foreach ($this->bags as $index->$items)
+        {
+            foreach ($iteams as $bag->$bag_qty)
+            {
+                $qty += $bag_qty;
+            }
+        }
+        
+        $this->total_qty = $qty;
+    }
     
     
     public function showExample()
