@@ -1,15 +1,11 @@
 <?php
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- * Description of c_PartSearch
+ * Description of Part Class
  *
- * @author Jonathan
+ * @author Jonathan Jones
  */
+
 class Part {
     
     private $part_id;
@@ -96,7 +92,19 @@ class Part {
         {
             $temp = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?)", $this->barcode ), 'part_id');
             $this->part_id = array_shift($temp);
-        }  
+        } 
+        
+        // if no result was found, assume the user input was a part number
+        if (empty($this->part_id))
+        {
+            // move user's input to part number field and remove from barcode field
+            $this->part_num = $this->barcode;
+            unset($this->barcode);
+            
+            // search again for the part's id number
+            $temp = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num), 'part_id');
+            $this->part_id = array_shift($temp);
+        }
     }
     
     
