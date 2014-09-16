@@ -46,7 +46,10 @@ $(document).ready(function(){
                         
                     $.get("/php/populate-result-panes.php", { "items": container_count }, function (containers) {
                         
-                        $( 'body' ).append( containers );
+                        for ($i = 0; $i<$container_count; $i++)
+                        {
+                            $( 'body' ).append( containers );
+                        }
                         
                     });
                     }
