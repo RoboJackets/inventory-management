@@ -33,7 +33,7 @@ $(document).ready(function(){
                 // data comes back in json format
 
                 // Create placeholder containers
-                /*
+                
                 $.each($.parseJSON(result), function (index, container_count) {
                     
                     if (index === "num_results")
@@ -47,7 +47,7 @@ $(document).ready(function(){
                     });
                     }
                     
-                }); */
+                });
 
                 
                 $.each($.parseJSON(result), function (index, object) {
@@ -55,28 +55,14 @@ $(document).ready(function(){
                     console.log(index + " => " + object + "\n");
                     
                     $.each(object, function(key, value){
-                        // log the values of the part to the console (for debugging
-                        // purposes only)
+                        
                             
-                        console.log(key + " => " + value);    
-                            
-                            
-                            console.log(value.name);
-                        // Update the information on the current page
-                        if (key === "location")
-                        {
-                            $('#part-location-data').html(part.location);
-                        }
+                        console.log(key + " => " + value);     
+                        console.log(value.name);
 
-                        if (key === "name")
-                        {
-                            $('#part-name-data').html(part.name);
-                        }
-
-                        if (key === "part_num")
-                        {
-                            $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
-                        }
+                        $('#part-location-data').html(key.location);
+                        $('#part-name-data').html(key.name);
+                        $('#part-num-data').html("PN: " + key.part_num + "  | Bags: " + key.num_bags + "  | Qty: " + key.total_qty);
 
                     });
 
