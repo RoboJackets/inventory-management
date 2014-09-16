@@ -195,7 +195,7 @@ class Part {
         
         echo "\n\n\n";
         echo "Example of Data Model:\n==============\n\n";
-        echo json_encode('{"parts":[
+        var_dump( json_decode('{"parts":[
     {"part_num":"11593lgy",
     "name":"My Cool Part",
     "category":"ic",
@@ -243,7 +243,7 @@ class Part {
         }]
     }
 ]
-}');
+}'));
         
     }
     
