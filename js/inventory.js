@@ -44,38 +44,29 @@ $(document).ready(function(){
                     {
                         console.log(index + " => " + container_count + "\n\n\n");
                         
-                        $.get("/php/populate-result-panes.php", function(containers) {
-                            $('#results-placeholder').append(containers);                      
+                        $.get("/php/populate-result-panes.php", function(container) {
+                            
+                            $('#results-placeholder').add("div").addClass("c-" + index);
+                            
+                            $('#results-placeholder').append(container, function(){
+                                $().addClass( "" );
+                            });
                         });
+                        
                     }
-                    
-                    $.each(data.parts, function(){
-                        $.get("/php/populate-result-panes.php", function(containers) {
-                            $('#results-placeholder').append(containers);                      
-                        });
-                    });
+                });
                     
                     // fll in data
                     $.each(data.parts, function(arg, obj){
-                        $('#part-location-data').each(function(){
-                                $(this).html(obj.location);
+                        $('#part-location-data').each(function( index ){
+                                //$(this).html(obj.location);
+                                $(this).addClass(index);
                     });
                         $('#part-name-data').html(obj.name);
                         $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
                     });
                     
-                });
-            },
-            
-            /*
-            complete: function(){
-
-                $.each(data.parts, function (arg, obj){
-                    $('#part-location-data').html(obj.location);
-                    $('#part-name-data').html(obj.name);
-                    $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
-                
-                }); },*/
+                }
         });
 
         $('#txtSubmitQuery').val('');
