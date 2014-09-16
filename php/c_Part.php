@@ -99,7 +99,7 @@ class Part {
         {
             // move user's input to part number field and remove from barcode field
             $this->part_num = $this->barcode;
-            unset($this->barcode);
+            //unset($this->barcode);
             
             // search again for the part's id number
             $temp = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num), 'part_id');
