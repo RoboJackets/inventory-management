@@ -292,11 +292,4 @@ class Part {
 }'));
     }
     
-    public function testTest()
-    {
-        echo $this->attributes;
-        echo "\n\n";
-        echo $this->bags;
-    }
-    
-}
+}   // end of Part class
