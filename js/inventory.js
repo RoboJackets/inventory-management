@@ -36,9 +36,11 @@ $(document).ready(function(){
                 //console.log(json);
                 //var data = json.parts[0]; // get the first search result returned
                 
+                var part;
+                
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    var part = object;
+                    part = object;
                     
                     console.log("\n\nPart\n==========\n");
                     
