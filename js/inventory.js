@@ -20,6 +20,7 @@ $(document).ready(function(){
     $('#BtnSubmitQuery').click(function(){
         var query = $('#txtSubmitQuery').val();
         console.log("query=" + query);
+        $('#results-placeholder').empty();
         
         var data;
         
@@ -35,9 +36,7 @@ $(document).ready(function(){
                 // data comes back in json format
 
                 // Create placeholder containers
-                data = $.parseJSON(result);         
-
-                $('#results-placeholder').empty();
+                data = $.parseJSON(result);
 
                 $.each(data, function (index, container_count) {
                     
