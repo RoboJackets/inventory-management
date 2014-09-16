@@ -189,4 +189,62 @@ class Part {
         return $results;
     }   // function filterMany
     
+    
+    public function showExample()
+    {
+        
+        echo "\n\n\n";
+        echo "Example of Data Model:\n==============\n\n";
+        echo json_encode('{"parts":[
+    {"part_num":"11593lgy",
+    "name":"My Cool Part",
+    "category":"ic",
+    "description":"A really cool part",
+    "datasheet":"www.sketchywebsite.com/datasheet.pdf",
+    "location":"A04",
+    "bags":[
+        {"barcode":"54345432",
+        "quantity":"175"
+        },
+        {"barcode":"1254865",
+         "quantity":"20"
+        }],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC8",
+        "priority":"2"
+        },
+        {"attribute":"Voltage",
+        "value":"6v",
+        "priority":"4"
+        }]
+    },
+    {"part_num":"14dgfy6",
+    "name":"My 2nd Cooler Part",
+    "category":"resistor",
+    "description":"My secod part. It Exists only in JSON",
+    "datasheet":"www.legitwebsite.com/datasheet2.pdf",
+    "location":"B06",
+     "bags":[
+         {"barcode":"943710",
+          "quantity":"34"
+         },
+         {"barcode":"684258",
+          "quantity":"1500"
+         }],
+    "attributes":[
+        {"attribute":"Package",
+        "value":"SOIC10",
+        "priority":"1"
+        },
+        {"attribute":"Voltage",
+        "value":"12v",
+        "priority":"3"
+        }]
+    }
+]
+}');
+        
+    }
+    
 }
