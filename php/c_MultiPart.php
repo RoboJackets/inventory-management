@@ -28,25 +28,15 @@ class MultiPart
         
         // Get an array of part_id numbers that all relate to the user-given location
         $part_ids = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE location=(?)", $this->user_input), 'part_id');
-
-        var_dump($part_ids);
-        
-        echo "\n\n\n\n\n\n\n";
         foreach ($part_ids as $index => $part)
         {
             $temp_part = new Part($part);
-            
-            echo "\n\n";
             
             $temp_part->locateAllInfo();
             
             $this->parts[] = $temp_part;
             
         }
-        
-        echo "\n\n\n\n\n\n\n\n";
-        
-        var_dump($this->parts);
     }
     
     
