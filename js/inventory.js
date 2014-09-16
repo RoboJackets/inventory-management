@@ -52,9 +52,9 @@ $(document).ready(function(){
                             
                             $('#results-placeholder').add("div").addClass("c-" + i);
                             
-                            $('#results-placeholder').append(container, function(){
-                                $(this).addClass( "test" + i );
-                            });
+                           // $('#results-placeholder').append(container, function(){
+                            //    .addClass( "test" + i );
+                            //});
                         });
                         
                     }
