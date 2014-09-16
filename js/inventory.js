@@ -61,10 +61,10 @@ $(document).ready(function(){
                         console.log(index.name);
                         if (index === "parts") {
 
-                            $('#part-location-data').each( function(item){
+                            $('#part-location-data').each( function(object){
                                 $(item).html(index.location);
                             });
-                            $('#part-name-data').each( function(item){
+                            $('#part-name-data').each( function(object){
                                 $(item).html(index.name);
                             });
                             //$('#part-num-data').html("PN: " + index.part_num + "  | Bags: " + index.num_bags + "  | Qty: " + index.total_qty);
