@@ -33,7 +33,12 @@ $(document).ready(function(){
                 // data comes back in json format
 
                 // Create placeholder containers
-                var data = $.parseJSON(result);                    
+                var data = $.parseJSON(result);         
+                
+                
+                $.each(data.parts, function (arg, obj) {     
+                
+                
                 $.each(data, function (index, container_count) {
                     
                     if (index === "num_results")
@@ -51,12 +56,7 @@ $(document).ready(function(){
                     }
                     
                 });
-
-                $.each(data.parts, function (arg, obj) {
-                    
-                    //console.log(index + " => " + value + "\n");                        
-                            
-                      //  console.log(index + " => " + value + "\n");     
+     
                         console.log(obj.name + "<- name");
                         //if (index === "parts") {
 
