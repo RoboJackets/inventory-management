@@ -41,8 +41,22 @@ $(document).ready(function(){
                 $.each(data, function (index, container_count) {
                     // only append data if results are found
                     
-                    var i = 0;
+
+                    $.each(index, function(part_attrib, attrib_val){
+                        
+                        $.get("/php/populate-result-panes.php", function(container) {
+                            
+                            $('#results-placeholder').append(container, function(){
+                                // nothing
+                            });
+                            
+                        });
+                        
+                    });
                     
+                    /*
+                    var i = 0;
+
                     if (container_count > 0)
                     {
                         console.log(index + " => " + container_count + "\n\n\n");
@@ -50,14 +64,14 @@ $(document).ready(function(){
                         
                         $.get("/php/populate-result-panes.php", function(container) {
                             
-                            $('#results-placeholder').add("div").addClass("c-" + i);
+                            $('#results-placeholder').addClass("c-" + i);
                             
-                           // $('#results-placeholder').append(container, function(){
-                            //    .addClass( "test" + i );
-                            //});
+                            $('#results-placeholder').append(container, function(){
+                                .addClass( "test" + i );
+                            });
                         });
                         
-                    }
+                    }*/
                 });
                     
                     // fll in data
