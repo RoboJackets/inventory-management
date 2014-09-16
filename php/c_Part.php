@@ -299,10 +299,13 @@ class Part {
     
     public function outputAttributeBox()
     {
-        foreach($this->attributes as $attrib => $val)
+        foreach($this->attributes as $index => $data)
         {
-            echo '<dt>' . $attrib . '</dt>';
-            echo '<dd>' . $val . '</dd>';   
+            foreach($data as $attrib => $val)
+            {
+                echo '<dt>' . $attrib . '</dt>';
+                echo '<dd>' . $val . '</dd>';   
+            }
         }
         
     }
