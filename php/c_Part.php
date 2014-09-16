@@ -58,7 +58,12 @@ class Part {
     
     public function sendPart()
     {
-        echo json_encode($this);
+        
+        $temp = array();
+        
+        $temp['parts'] = $this;
+        
+        echo json_encode($temp);
     }
 
     // searches the database for a partnumber when given a barcode
