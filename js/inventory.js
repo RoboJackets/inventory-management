@@ -40,7 +40,7 @@ $(document).ready(function(){
                 
                 
                 // Create placeholder containers
-                var num_r;
+                //var num_r;
                 $.each($.parseJSON(result), function (index, container_count) {
                     
                     if (index == "num_results")
@@ -58,22 +58,22 @@ $(document).ready(function(){
                 
                 //console.log(result);
                 
-                console.log("\n\n\n\========\n" + num_r + "\n\n================");
+                //console.log("\n\n\n\========\n" + num_r + "\n\n================");
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    part = object.parts;  // assign the object to a declared variable
+                    part = object;  // assign the object to a declared variable
                     
                     
                     // log the values of the part to the console (for debugging
                     // purposes only)
                     
                     
-                    $.each(object, function (key, value) { 
-                        console.log(key + " => " + value);
+                   //$.each(object, function (key, value) { 
+                     //   console.log(key + " => " + value);
                     
                     
-                   if (key = 'parts') 
+                   if (key = "parts") 
                    {
                    // Update the information on the current page
                    $('#part-location-data').html(part.location);
@@ -81,7 +81,7 @@ $(document).ready(function(){
                    $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
                    }
                    
-                   });
+                  // });
                    
                 });
                 
