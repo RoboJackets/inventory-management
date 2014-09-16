@@ -46,7 +46,7 @@ $(document).ready(function(){
                     {
                         
                     
-                    $.each(index, function(part_attrib, attrib_val){
+                    $.each(index, function(part_index, part_vals){
                         
                         $.get("/php/populate-result-panes.php", function(container) {
                             
