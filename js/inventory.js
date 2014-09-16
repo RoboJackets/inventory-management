@@ -40,17 +40,20 @@ $(document).ready(function(){
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    part = object;
+                    part = object;  // assign the object to a declared variable
                     
-                    console.log("\n\nPart\n==========\n");
                     
+                    // log the values of the part to the console (for debugging
+                    // purposes only)
+                    
+                    /*
                     $.each(object, function (key, value) { 
                         console.log(key + " => " + value);
                     });
-                    
+                    */
                 });
                 
-                
+                // Update the information on the current page
                 $('#part-location-data').html(part.location);
                 $('#part-name-data').html(part.name);
                 $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);

@@ -33,7 +33,7 @@
             <img src="img/robobuzz-header.svg" height="65px" width="65px">
         </div>
         <div class="col-xs-9 col-sm-11">
-            <h2>RoboJackets Inventory</h2>
+            <h2><?php echo $title; ?></h2>
         </div>
     </div>
 </nav>
@@ -63,6 +63,9 @@
     </div>
 </nav>
 <body>
+    
+    <!--
+    
     <div id="results-pane" class="container">
         <div class="row">
             <div class="col-xs-12 space"></div>
@@ -72,26 +75,31 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div id="part-location-data" class="part-location">
-                            <?php echo $partLocation; ?>
+                            
                         </div>
                         <div class="part">
                             <div id="part-name-data" class="part-name">
-                                <?php echo $partName; ?>
+                                
                             </div>
                             <div id="part-num-data" class="part-num">
-                                <?php echo $partNum; ?>
+                                
                             </div>
                         </div>
                     </div>
                     <div class="panel-body">
                         <dl class="dl-horizontal">
-                            <!--<dt>Value</dt>
-                            <dd>24uf</dd> -->
+                            <dt>Value</dt>
+                            <dd>24uf</dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    -->
+    <?php readfile(result-pane.html); ?>
+    
+    
 </body>
 </html>
