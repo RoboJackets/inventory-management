@@ -52,22 +52,22 @@ $(document).ready(function(){
                     
                 });
 
-                $.each(data.parts, function (arg) {
+                $.each(data.parts, function (arg, obj) {
                     
                     //console.log(index + " => " + value + "\n");                        
                             
                       //  console.log(index + " => " + value + "\n");     
-                        console.log(arg.name + "<- name");
+                        console.log(obj.name + "<- name");
                         //if (index === "parts") {
 
-                            $('#part-location-data').each( function(value){
-                                $(item).html(arg.location);
+                            $('#part-location-data').each( function(obj){
+                                $(item).html(obj.location);
                             });
-                            $('#part-name-data').each( function(value){
-                                $(item).html(arg.name);
+                            $('#part-name-data').each( function(obj){
+                                $(item).html(obj.name);
                             });
                             
-                            $('#part-num-data').html("PN: " + arg.part_num + "  | Bags: " + arg.num_bags + "  | Qty: " + arg.total_qty);
+                            $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
                         
                         //}
                 });
