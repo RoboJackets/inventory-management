@@ -98,7 +98,7 @@
     </div>
     
     -->
-    <?php readfile(result-pane.html); ?>
+    <?php readfile('templates/result-pane.html'); ?>
     
     
 </body>
