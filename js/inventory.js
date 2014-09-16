@@ -36,11 +36,14 @@ $(document).ready(function(){
                 //console.log(json);
                 //var data = json.parts[0]; // get the first search result returned
                 
-                $.each($.parseJSON(result), function (i, object) {
-                    console.log(i);
-                    console.log(object);
+                $.each($.parseJSON(result), function (index, object) {
+                    //console.log(object);
+                    $.each($object, function (key, value) { 
+                        console.log(key);
+                        console.log(value);
+                    });
                     
-                })
+                });
                 
                 
                 $('#part-location-data').html(data.location);
