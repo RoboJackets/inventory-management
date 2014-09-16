@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of Part Class
+ * Description of the Part Class
  *
  * @author Jonathan Jones
  */
@@ -241,6 +241,18 @@ class Part {
         }
         
         $this->total_qty = $qty['quantity'];
+    }
+    
+    
+    
+    // This function will perform the most common purpose of this Class - finding all
+    // informaion on a single given part number/barcode.
+    public function locateAllInfo()
+    {
+        $this->findPartID();
+        $this->findBarcodes();
+        $this->findAttributes();
+        $this->findPartInfo();
     }
     
     
