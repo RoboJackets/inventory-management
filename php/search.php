@@ -32,9 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     $part->findBarcodes();
     $part->findAttributes();
     $part->findPartInfo();
-    $part->testTest();
-    $part->showExample();
-    
+    //$part->testTest();
+    //$part->showExample();
+    echo "\n\nActual Data\n================\n";
     var_dump($part);
     
 }
