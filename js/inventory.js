@@ -38,7 +38,21 @@ $(document).ready(function(){
                 
                 //var part;
                 
-                var num_r = $.parseJSON(result);
+                
+                // Create placeholder containers
+                var num_r;
+                $.each($.parseJSON(result), function (index, container_count) {
+                    
+                    if (index == "num_results")
+                    {
+                    $.get("php/populate-result-panes.php", { "items": container_count }, function (containers) {
+                        
+                        $( 'body' ).append( containers );
+                        
+                    });
+                    }
+                    
+                });
                 
                 console.log(result);
                 
