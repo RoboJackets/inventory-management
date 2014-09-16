@@ -46,7 +46,7 @@ $(document).ready(function(){
                                     // nothing
                                 //});
 
-                                console.log(part_vals.part_num);
+                                //console.log(part_vals.part_num);
 
                             //});
 

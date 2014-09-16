@@ -279,7 +279,7 @@ class Part {
         echo '</div>';
         echo '<div id="part-num-data" class="part-num">';
         
-        echo $this->part_num;
+        echo 'PN: ' . $this->part_num . '  | Bags: ' . count($this->bags) . '  | Qty: ' . $this->total_qty;
         
         echo '</div>';
         echo '</div>';
