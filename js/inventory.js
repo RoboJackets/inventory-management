@@ -37,7 +37,11 @@ $(document).ready(function(){
                 //var data = json.parts[0]; // get the first search result returned
                 
                 $.each($.parseJSON(result), function (index, object) {
-                    //console.log(object);
+                    
+                    var part = object;
+                    
+                    console.log("\n\nPart\n==========\n");
+                    
                     $.each(object, function (key, value) { 
                         console.log(key + " => " + value);
                     });
@@ -45,9 +49,9 @@ $(document).ready(function(){
                 });
                 
                 
-                $('#part-location-data').html(data.location);
-                $('#part-name-data').html(data.name);
-                $('#part-num-data').html(data.part_num);
+                $('#part-location-data').html(part.location);
+                $('#part-name-data').html(part.name);
+                $('#part-num-data').html(part.part_num);
             }
         });
         
