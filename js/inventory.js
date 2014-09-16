@@ -37,14 +37,6 @@ $(document).ready(function(){
 
                 // Create placeholder containers
                 data = $.parseJSON(result);
-
-                //$.each(data, function (index, container_count) {
-                    // only append data if results are found
-
-                    //if (index === "parts")
-                    //{
-                        
-                        
                         $.each(data.parts, function(part_index, part_vals){
                             
                             $.get("/php/populate-result-panes.php", function(container) {
@@ -54,12 +46,11 @@ $(document).ready(function(){
                                     // nothing
                                 //});
 
-                                console.log(" => " + part_vals.part_num);
+                                console.log(part_vals.part_num);
 
                             });
 
                         });
-                   //}
                     /*
                     var i = 0;
 
@@ -78,7 +69,6 @@ $(document).ready(function(){
                         });
                         
                     }*/
-               // });
                     
                     // fll in data
                     $.each(data.parts, function(arg, obj){
