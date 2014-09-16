@@ -65,8 +65,8 @@ $(document).ready(function(){
                         console.log(key + " => " + value);     
                         console.log(value.name);
 
-                        $('#part-location-data').html(parts.location);
-                        $('#part-name-data').html(parts.name);
+                        $('#part-location-data').html(data.parts.location);
+                        $('#part-name-data').html(data.parts.name);
                        // $('#part-num-data').html("PN: " + key.part_num + "  | Bags: " + key.num_bags + "  | Qty: " + key.total_qty);
 
                     //});
