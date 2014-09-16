@@ -92,7 +92,7 @@ class Part {
     
     
     
-    public function findAllBarcodes()
+    public function findBarcodes()
     {
         // make sure we can search using the part_id
         if(empty($this->part_id))
