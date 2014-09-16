@@ -62,7 +62,7 @@ $(document).ready(function(){
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    part = object;  // assign the object to a declared variable
+                    part = object.parts;  // assign the object to a declared variable
                     
                     
                     // log the values of the part to the console (for debugging
