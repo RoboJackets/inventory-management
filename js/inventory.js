@@ -33,11 +33,7 @@ $(document).ready(function(){
                 // data comes back in json format
 
                 // Create placeholder containers
-                
-                var data = $.parseJSON(result);
-                
-                //$.each($.parseJSON(result), function (index, container_count) {
-                    
+                var data = $.parseJSON(result);                    
                 $.each(data, function (index, container_count) {
                     
                     if (index === "num_results")
@@ -65,12 +61,12 @@ $(document).ready(function(){
                         if (index === "parts") {
 
                             $('#part-location-data').each( function(object){
-                                $(item).html(data.location);
+                                $(item).html(data.parts.location);
                             });
                             $('#part-name-data').each( function(object){
-                                $(item).html(data.name);
+                                $(item).html(data.parts.name);
                             });
-                            ('#part-num-data').html("PN: " + data.part_num + "  | Bags: " + data.num_bags + "  | Qty: " + data.total_qty);
+                            ('#part-num-data').html("PN: " + data.parts.part_num + "  | Bags: " + data.parts.num_bags + "  | Qty: " + data.parts.total_qty);
                         
                         }
                 });
