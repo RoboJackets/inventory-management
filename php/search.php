@@ -18,10 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
 }
 */
 
-
+/*
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);
+*/
 
 // testing some different methods of searching
 if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is given
@@ -33,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     $part->findAttributes();
     $part->findPartInfo();
     //$part->testTest();
-    $part->showExample();
-    echo "\n\nActual Data\n================\n";
-    var_dump($part);
+    //$part->showExample();
+    //echo "\n\nActual Data\n================\n";
+    //var_dump($part);
     
 }
