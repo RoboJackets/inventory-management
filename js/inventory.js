@@ -42,6 +42,8 @@ $(document).ready(function(){
                     // only append data if results are found
                     
 
+                    console.log(index + " => " + container_count)
+
                     if (index === "part")
                     {
                         
