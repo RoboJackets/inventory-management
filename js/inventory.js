@@ -33,7 +33,7 @@ $(document).ready(function(){
                 
                 // data comes back in json format
                 var json = jQuery.parseJSON(result);
-                console.log(JSON.stringify(json[0]));
+                console.log(json);
                 var data = json.parts[0]; // get the first search result returned
                 
                 $('#part-location-data').html(data.location);
