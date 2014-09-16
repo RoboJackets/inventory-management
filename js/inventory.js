@@ -48,6 +48,10 @@ $(document).ready(function(){
                     {
                         $.each(container_count, function(part_index, part_vals){
                             
+                            $.each(parts_vals, function(){
+                                
+                            
+                            
                             console.log(part_index + " => " + part_vals);
                             
                             $.get("/php/populate-result-panes.php", function(container) {
@@ -56,6 +60,7 @@ $(document).ready(function(){
                                     // nothing
                                 });
 
+                            });
                             });
 
                         });
