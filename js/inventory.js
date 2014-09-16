@@ -49,7 +49,11 @@ $(document).ready(function(){
                         });
                     }
                     
-                    
+                    $.each(data.parts, function(arg, obj){
+                        $.get("/php/populate-result-panes.php", function(containers) {
+                            $('#results-placeholder').append(containers);                      
+                        });
+                    });
                     
                     // fll in data
                     $.each(data.parts, function(arg, obj){
