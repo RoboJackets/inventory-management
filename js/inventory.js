@@ -58,7 +58,7 @@ $(document).ready(function(){
                     if (index === "parts")
                     {
                         console.log("\n");
-                    $.each(part, function(key, value){
+                    $.each(index, function(key, value){
                         // log the values of the part to the console (for debugging
                         // purposes only)
                             
