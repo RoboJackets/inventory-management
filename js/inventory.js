@@ -51,12 +51,8 @@ $(document).ready(function(){
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    var part = object;
-                    var temp = index;
+                    console.log(index + " => " + object + "\n");
                     
-                    console.log(index + " => " + part);
-                    
-                        console.log("\n");
                     $.each(object, function(key, value){
                         // log the values of the part to the console (for debugging
                         // purposes only)
