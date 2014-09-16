@@ -61,9 +61,9 @@ $(document).ready(function(){
                         console.log(index.name);
                         if (index === "parts") {
 
-                            $('#part-location-data').html(data.parts.location);
-                            $('#part-name-data').html(data.parts.name);
-                            $('#part-num-data').html("PN: " + data.parts.part_num + "  | Bags: " + data.parts.num_bags + "  | Qty: " + data.parts.total_qty);
+                            $('#part-location-data').html(index.location);
+                            $('#part-name-data').html(index.name);
+                            $('#part-num-data').html("PN: " + index.part_num + "  | Bags: " + index.num_bags + "  | Qty: " + index.total_qty);
                         
                         }
                 });
