@@ -46,7 +46,7 @@ $(document).ready(function(){
 
                     if (index === "parts")
                     {
-                        $.each(container_count, function(part_index, part_vals){
+                        $.each(container_count.parts, function(part_index, part_vals){
                             //$.each(part_vals, function(){
                                 
                             
@@ -57,12 +57,12 @@ $(document).ready(function(){
                                     // nothing
                                 //});
                             
-                            $.each(part_vals, function(){
+                            //$.each(part_vals, function(){
                                 
                             
                             
                             console.log(" => " + part_vals.part_num);
-});
+//});
 
 
                             });
