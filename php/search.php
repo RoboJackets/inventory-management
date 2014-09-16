@@ -27,11 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
         $part->findPartInfo();
         $part->outputResultBox();
     }
-    elseif ($_GET['mode'] == 'bin')
+    
+    if ($_GET['mode'] == 'bin')
     {
         $bin = new $MultiPart($_GET['input']);
         $bin->findBinData();
         $bin->outputParts();
     }
+    
     mysqli_close($CONN);
 }
