@@ -63,9 +63,6 @@
     </div>
 </nav>
 <body>
-
-<!--    <?php readfile('templates/result-pane.html'); ?> -->
-   
-    
+    <?php // readfile('templates/result-pane.html'); ?>
 </body>
 </html>
