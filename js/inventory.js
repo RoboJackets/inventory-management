@@ -65,12 +65,12 @@ $(document).ready(function(){
                         if (index === "parts") {
 
                             $('#part-location-data').each( function(object){
-                                $(item).html(index.location);
+                                $(item).html(data.location);
                             });
                             $('#part-name-data').each( function(object){
-                                $(item).html(index.name);
+                                $(item).html(data.name);
                             });
-                            //$('#part-num-data').html("PN: " + index.part_num + "  | Bags: " + index.num_bags + "  | Qty: " + index.total_qty);
+                            ('#part-num-data').html("PN: " + data.part_num + "  | Bags: " + data.num_bags + "  | Qty: " + data.total_qty);
                         
                         }
                 });
