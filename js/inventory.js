@@ -21,6 +21,8 @@ $(document).ready(function(){
         var query = $('#txtSubmitQuery').val();
         console.log("query=" + query);
         
+        var data;
+        
         // ajax communication for getting database results
         $.ajax({
             type: 'GET',
@@ -33,7 +35,7 @@ $(document).ready(function(){
                 // data comes back in json format
 
                 // Create placeholder containers
-                var data = $.parseJSON(result);         
+                data = $.parseJSON(result);         
 
                 $.each(data, function (index, container_count) {
                     
@@ -52,12 +54,13 @@ $(document).ready(function(){
                     }
                 });
                 
-                    $.each(data.parts, function (arg, obj){
-                        $('#part-location-data').html(obj.location);
-                        $('#part-name-data').html(obj.name);
-                        $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
-                    });
             }
+            
+            $.each(data.parts, function (arg, obj){
+                $('#part-location-data').html(obj.location);
+                $('#part-name-data').html(obj.name);
+                $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
+            });
             
         });
         
