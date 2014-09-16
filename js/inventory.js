@@ -19,7 +19,6 @@ $(document).ready(function(){
     
     $('#BtnSubmitQuery').click(function(){
         var query = $('#txtSubmitQuery').val();
-        console.log("query=" + query);
         $('#results-placeholder').empty();
         
         var data;

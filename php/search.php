@@ -18,7 +18,7 @@ error_reporting(-1);
 if ($_SERVER["REQUEST_METHOD"] == "GET")
 {
     
-    if($_GET['mode'] = 'barcode')
+    if($_GET['mode'] == 'barcode')
     {
         $part = new Part($_GET['input']);
         $part->findPartID();
