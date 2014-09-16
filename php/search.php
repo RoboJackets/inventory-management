@@ -30,21 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     $part = new Part($_GET['input']);
     
     $part->findPartID();
-    
-    
-    echo "\n\nPart Number => ";
-    var_dump($part->part_num);
-    
-    echo "\n\nPart ID => ";
-    var_dump($part->part_id);
-    
-    echo "\n\n Part Barcode => ";
-    var_dump($part->barcode);
-    
     $part->findBarcodes();
     $part->findAttributes();
     $part->findPartInfo();
-    
     $part->sendPart();
     
     mysqli_close($CONN);
