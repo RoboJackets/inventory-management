@@ -62,11 +62,11 @@ $(document).ready(function(){
                 
                 $.each($.parseJSON(result), function (index, object) {
                     
-                    
+                    var part = object;
                     //part = object;  // assign the object to a declared variable
                     if (index == "parts")
                     {
-                    $.each(object, function(key, value){
+                    $.each(part, function(key, value){
                     // log the values of the part to the console (for debugging
                     // purposes only)
                     
@@ -76,17 +76,17 @@ $(document).ready(function(){
                     // Update the information on the current page
                     if (key == "location")
                     {
-                        $('#part-location-data').html(object.location);
+                        $('#part-location-data').html(part.location);
                     }
                     
                     if (key == "name")
                     {
-                        $('#part-name-data').html(object.name);
+                        $('#part-name-data').html(part.name);
                     }
                 
                     if (key == "part_num")
                     {
-                        $('#part-num-data').html("PN: " + object.part_num + "  | Bags: " + object.num_bags + "  | Qty: " + object.total_qty);
+                        $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
                     }
 
                });
