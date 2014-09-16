@@ -58,9 +58,11 @@ $(document).ready(function(){
             complete: function(){
 
                 $.each(data.parts, function (arg, obj){
-                $('#part-location-data').html(obj.location);
-                $('#part-name-data').html(obj.name);
-                $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
+                    $('#part-location-data').each(function($this){
+                        $($this).html(obj.location);
+                    });
+                    $('#part-name-data').html(obj.name);
+                    $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
                 
                 }); },
         });
