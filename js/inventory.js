@@ -40,13 +40,10 @@ $(document).ready(function(){
 
                 $.each(data, function (index, container_count) {
                     // only append data if results are found
-                    
-
-                    console.log(index + " => " + container_count)
 
                     if (index === "parts")
                     {
-                        $.each(container_count.parts, function(part_index, part_vals){
+                        $.each(container_count, function(part_index, part_vals){
                             //$.each(part_vals, function(){
                                 
                             
