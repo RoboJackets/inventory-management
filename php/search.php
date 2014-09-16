@@ -33,7 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     $part->findBarcodes();
     $part->findAttributes();
     $part->findPartInfo();
-    $part->sendPart();
+    
+    $results['parts'] = $part;  // add part to array
+    
+    echo json_encode($results);
+    
     //$part->testTest();
     //$part->showExample();
     //echo "\n\nActual Data\n================\n";
