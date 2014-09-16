@@ -47,7 +47,7 @@ $(document).ready(function(){
                         
                     
                     $.each(index, function(part_index, part_vals){
-                        
+                        console.log(part_index + " => " + part_vals);
                         $.get("/php/populate-result-panes.php", function(container) {
                             
                             $('#results-placeholder').append(container, function(){
