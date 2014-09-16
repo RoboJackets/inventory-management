@@ -34,5 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {   // begin searching if user input is
     $part->findAllBarcodes();
     $part->findPartInfo();
     $part->showResults();
+    $part->showExample();
     
 }
