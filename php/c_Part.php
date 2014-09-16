@@ -302,9 +302,15 @@ class Part {
         foreach($this->attributes as $index => $data)
         {
             foreach($data as $attrib => $val)
-            {   
-                echo '<dt>' . $attrib . '</dt>';
-                echo '<dd>' . $val . '</dd>';   
+            {
+                if ($attrib == 'attribute')
+                {
+                    echo '<dt>' . $val . '</dt>';
+                }
+                if ($attrib == 'value')
+                {
+                    echo '<dd>' . $val . '</dd>';   
+                }
             }
         }
         
