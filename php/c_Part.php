@@ -208,13 +208,13 @@ class Part {
     
     private function getQty()
     {
-        $qty = 0;
+        $qty = array();
         
         foreach ($this->bags as $index=>$items)
         {
             foreach ($items as $bag=>$bag_qty)
             {
-                $qty += $bag_qty;
+                $qty[$bag] += $bag_qty;
             }
         }
         
