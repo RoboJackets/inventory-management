@@ -30,17 +30,9 @@ $(document).ready(function(){
                 input:  $('#txtSubmitQuery').val()
             },
             success: function(result){
-                
                 // data comes back in json format
-                //var json = jQuery.parseJSON(result);
-                //console.log(json);
-                //var data = json.parts[0]; // get the first search result returned
-                
-                //var part;
-                
-                
+
                 // Create placeholder containers
-                //var num_r;
                 $.each($.parseJSON(result), function (index, container_count) {
                     
                     if (index === "num_results")
@@ -55,49 +47,42 @@ $(document).ready(function(){
                     }
                     
                 });
-                
-                //console.log(result);
-                
-                //console.log("\n\n\n\========\n" + num_r + "\n\n================");
+
                 
                 $.each($.parseJSON(result), function (index, object) {
-                    
-                    console.log("made it!");
                     
                     var part = object;
 
                     if (index === "parts")
                     {
-                        console.log(index + " => " + object);
                         
                     $.each(part, function(key, value){
-                    // log the values of the part to the console (for debugging
-                    // purposes only)
+                        // log the values of the part to the console (for debugging
+                        // purposes only)
 
-                    // Update the information on the current page
-                    if (key === "location")
-                    {
-                        $('#part-location-data').html(part.location);
+                        // Update the information on the current page
+                        if (key === "location")
+                        {
+                            $('#part-location-data').html(part.location);
+                        }
+
+                        if (key === "name")
+                        {
+                            $('#part-name-data').html(part.name);
+                        }
+
+                        if (key === "part_num")
+                        {
+                            $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                        }
+
+                    });
                     }
                     
-                    if (key === "name")
-                    {
-                        $('#part-name-data').html(part.name);
-                    }
-                
-                    if (key === "part_num")
-                    {
-                        $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
-                    }
-
-               });
-           }
-                  // });
-                   
                 });
                 
-                
             }
+            
         });
         
         
