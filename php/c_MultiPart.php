@@ -12,6 +12,7 @@ class MultiPart
     // property declaration
     public $parts;
     public $user_input;
+    public $num_results;
     
     
     public function __construct($input)
@@ -37,6 +38,8 @@ class MultiPart
             $this->parts[] = $temp_part;
             
         }
+        
+        $this->num_results = count($this->parts);
     }
     
     
