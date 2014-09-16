@@ -15,20 +15,18 @@ class Part {
     private $part_id;
     private $barcode;
     
-    protected $part_num;
-    protected $name;
-    protected $category;
-    protected $description;
-    protected $datasheet;
-    protected $location;
+    public $part_num;
+    public $name;
+    public $category;
+    public $description;
+    public $datasheet;
+    public $location;
     
-    protected $bags;
-    protected $attributes;
+    public $bags;
+    public $attributes;
 
-    protected $num_bags;
-    protected $total_qty;
-    
-    
+    public $num_bags;
+    public $total_qty;
     
     // prepares the object when a new one is created
     public function __construct($barcode)
@@ -41,47 +39,13 @@ class Part {
     
     
     
-    public function getPart_num() {
-        return $this->part_num;
+    public function get_part_id() {
+        return $this->part_id;
     }
 
-    public function getName() {
-        return $this->name;
+    public function get_barcode() {
+        return $this->barcode;
     }
-
-    public function getCategory() {
-        return $this->category;
-    }
-
-    public function getDescription() {
-        return $this->description;
-    }
-
-    public function getDatasheet() {
-        return $this->datasheet;
-    }
-
-    public function getLocation() {
-        return $this->location;
-    }
-
-    public function getBags() {
-        return $this->bags;
-    }
-
-    public function getAttributes() {
-        return $this->attributes;
-    }
-
-    public function getNum_bags() {
-        return $this->num_bags;
-    }
-
-    public function getTotal_qty() {
-        return $this->total_qty;
-    }
-    
-    
     
     public function showResults()
     {
