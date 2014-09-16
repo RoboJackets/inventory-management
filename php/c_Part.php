@@ -12,7 +12,7 @@
  */
 class Part {
     
-    public $part_id;
+    private $part_id;
     protected $part_num;
     protected $name;
     protected $category;
@@ -24,7 +24,7 @@ class Part {
     protected $barcodes;
     protected $quantity;
     
-    public $barcode;
+    private $barcode;
     
     protected $attributes;
     protected $attribute;
