@@ -43,9 +43,11 @@ $(document).ready(function(){
 
                     if (index === "parts")
                     {
+                        $.get("/php/populate-result-panes.php", function(container) {
+                        
                         $.each(container_count, function(part_index, part_vals){
                             
-                            $.get("/php/populate-result-panes.php", function(container) {
+                            
                             
                                 $('#results-placeholder').append(container);
                                 //, function(){
