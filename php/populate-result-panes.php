@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
 
     for ( $i=0 ; $i<$count ; $i++ )
     {
-      readfile('templates/result-pane.html');
+      readfile($path . 'templates/result-pane.html');
     }
 }
         
