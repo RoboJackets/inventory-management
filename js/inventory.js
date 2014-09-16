@@ -77,8 +77,8 @@ $(document).ready(function(){
                     // fll in data
                     $.each(data.parts, function(arg, obj){
                         $('#part-location-data').each(function( index ){
-                                //$(this).html(obj.location);
-                                $(this).addClass(index);
+                                $(this).html(obj.location);
+                                //$(this).addClass(index);
                     });
                         $('#part-name-data').html(obj.name);
                         $('#part-num-data').html("PN: " + obj.part_num + "  | Bags: " + obj.num_bags + "  | Qty: " + obj.total_qty);
