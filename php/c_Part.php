@@ -264,6 +264,12 @@ class Part {
     }
     
     
+    public function sendPart()
+    {
+        echo json_encode($this);
+    }
+    
+    
     public function showExample()
     {
         
