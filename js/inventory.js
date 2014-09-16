@@ -63,24 +63,33 @@ $(document).ready(function(){
                 $.each($.parseJSON(result), function (index, object) {
                     
                     part = object.parts;  // assign the object to a declared variable
-                    
-                    $.each(part, function(){
+                    if (index == "parts")
+                    {
+                    $.each(part, function(index, value){
                     // log the values of the part to the console (for debugging
                     // purposes only)
                     
-                    
                    //$.each(object, function (key, value) { 
                      //   console.log(key + " => " + value);
+
+                    // Update the information on the current page
+                    if (index == "location")
+                    {
+                        $('#part-location-data').html(part.location);
+                    }
                     
-                    
-                   if (key = "parts") 
-                   {
-                   // Update the information on the current page
-                   $('#part-location-data').html(part.location);
-                   $('#part-name-data').html(part.name);
-                   $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
-                   }
+                    if (index == "name")
+                    {
+                        $('#part-name-data').html(part.name);
+                    }
+                
+                    if (index == "part_num")
+                    {
+                        $('#part-num-data').html("PN: " + part.part_num + "  | Bags: " + part.num_bags + "  | Qty: " + part.total_qty);
+                    }
+
                });
+           }
                   // });
                    
                 });
