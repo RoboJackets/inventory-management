@@ -42,6 +42,10 @@ $(document).ready(function(){
                     // only append data if results are found
                     
 
+                    if (index === "part")
+                    {
+                        
+                    
                     $.each(index, function(part_attrib, attrib_val){
                         
                         $.get("/php/populate-result-panes.php", function(container) {
@@ -53,7 +57,7 @@ $(document).ready(function(){
                         });
                         
                     });
-                    
+                    }
                     /*
                     var i = 0;
 
