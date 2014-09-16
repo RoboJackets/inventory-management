@@ -40,13 +40,17 @@ $(document).ready(function(){
 
                 $.each(data, function (index, container_count) {
                     // only append data if results are found
+                    
+                    var i = 0;
+                    
                     if (container_count > 0)
                     {
                         console.log(index + " => " + container_count + "\n\n\n");
+                        i++;
                         
                         $.get("/php/populate-result-panes.php", function(container) {
                             
-                            $('#results-placeholder').add("div").addClass("c-" + index);
+                            $('#results-placeholder').add("div").addClass("c-" + i);
                             
                             $('#results-placeholder').append(container, function(){
                                 $().addClass( "" );
