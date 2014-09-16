@@ -130,7 +130,7 @@ class Part {
         // make sure part_id was found if not before
         if(isset($this->part_id))
         {
-            $this->attributes = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?)", $this->part_id));
+            $this->attributes = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?) ORDER by priority", $this->part_id));
         }
     }   // function findAttributes
     
