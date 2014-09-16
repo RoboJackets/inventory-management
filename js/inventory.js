@@ -61,7 +61,7 @@ $(document).ready(function(){
                                 
                             
                             
-                            console.log(" => " + part_vals);
+                            console.log(" => " + part_vals.part_num);
 });
 
 
