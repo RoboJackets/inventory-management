@@ -33,7 +33,21 @@ class Part {
     
     protected $num_results;
     
-    function showResults()
+    
+    
+    // prepares the object when a new one is created
+    public function __construct($barcode)
+    {
+        
+        $this->bags = array();
+        $this->attributes = array();
+        $this->barcode = $barcode;
+        
+    }   // function __construct
+    
+    
+    
+    public function showResults()
     {
         echo "\nPart::showResults:\n";
         foreach($this as $key => $val)
@@ -42,16 +56,7 @@ class Part {
         }
     }
     
-    // prepares the object when a new one is created
-    private function __construct($barcode)
-    {
-        
-        $this->bags = array();
-        $this->attributes = array();
-        $this->barcode = $barcode;
-        
-    }   // function __construct
-   
+    
 
     // searches the database for a partnumber when given a barcode
     public function findPartInfo()
