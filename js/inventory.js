@@ -47,7 +47,7 @@ $(document).ready(function(){
                         
                         $.get("/php/populate-result-panes.php", function(containers) {
 
-                        $('body').append(containers);
+                        $('#results-placeholder').append(containers);
 
                             $.each(data.parts, function(arg, obj){
                                 $('#part-location-data').html(obj.location);
