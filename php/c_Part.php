@@ -8,8 +8,8 @@
 
 class Part {
     
-    private $part_id;
-    private $barcode;
+    public $part_id;
+    public $barcode;
     
     public $part_num;
     public $name;
