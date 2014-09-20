@@ -50,6 +50,18 @@ class Part {
         
         echo json_encode($temp);
     }   // function sendPart
+    
+    
+    
+    // This function will perform the most common purpose of this Class - finding all
+    // informaion on a single given part number/barcode.
+    public function locateAllInfo()
+    {
+        $this->findPartID();
+        $this->findBarcodes();
+        $this->findAttributes();
+        $this->findPartInfo();
+    }   //  function locateAllInfo
 
     
     
@@ -134,7 +146,140 @@ class Part {
         }
     }   // function findAttributes
     
+    
+    
+    public function outputResultBox()
+    {
+        if (isset($this->total_qty))
+        {
+            echo '<div id="results-pane" class="container">';
+            echo '<div class="row">';
+            echo '<div class="col-xs-12 space"></div>';
+            echo '</div>';
+            echo '<div class="row">';
+            echo '<div class="col-xs-12">';
+            echo '<div class="panel panel-primary">';
+            echo '<div class="panel-heading">';
+            echo '<div id="part-location-data" class="part-location">';
 
+            echo $this->location;
+
+            echo '</div>';
+            echo '<div class="part">';
+            echo '<div id="part-name-data" class="part-name">';
+
+            echo $this->name;
+
+            echo '</div>';
+            echo '<div id="part-num-data" class="part-num">';
+
+            echo 'PN: ' . $this->part_num . '  | Bags: ' . $this->num_bags . '  | Qty: ' . $this->total_qty;
+
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            echo '<div class="panel-body">';
+            echo '<dl class="dl-horizontal">';
+
+            $this->outputAttributeBox();
+
+            echo '</dl>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+        }
+        else    // let user know if no results were found
+        {
+            noResults();
+        }
+    }
+    
+    
+    
+    private function outputAttributeBox()
+    {
+        foreach($this->attributes as $index => $data)
+        {
+            foreach($data as $attrib => $val)
+            {
+                if ($attrib == 'attribute')
+                {
+                    echo '<dt>' . $val . '</dt>';
+                }
+                if ($attrib == 'value')
+                {
+                    echo '<dd>' . $val . '</dd>';   
+                }
+            }
+        }  
+    }   // function outputAttributeBox
+    
+    
+    
+    private function noResults()
+    {
+        echo '<div id="results-pane" class="container">';
+        echo '<div class="row">';
+        echo '<div class="col-xs-12 space"></div>';
+        echo '</div>';
+        echo '<div class="row">';
+        echo '<div class="col-xs-12">';
+        echo '<div class="panel panel-primary">';
+        echo '<div class="panel-heading">';
+        echo '<div id="part-location-data" class="part-location">';
+        
+        // location field
+        
+        echo '</div>';
+        echo '<div class="part">';
+        echo '<div id="part-name-data" class="part-name">';
+        
+        // name field
+        
+        echo '</div>';
+        echo '<div id="part-num-data" class="part-num">';
+        
+        echo 'No Results Found :(';
+        
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '<div class="panel-body">';
+        echo '<dl class="dl-horizontal">';
+        // attributes area
+        echo '</dl>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+    }
+    
+    
+    private function getQty()
+    {
+        $qty = array();
+        
+        foreach ($this->bags as $index=>$items)
+        {
+            foreach ($items as $bag=>$bag_qty)
+            {
+                $qty[$bag] += $bag_qty;
+            }
+        }
+        
+        $this->total_qty = $qty['quantity'];
+    }   // function getQty
+    
+    
+    /* =====================================================
+     *      Everything below here should eventually
+     *      be moved into a database connection class.
+     * =================================================== */
+    
+    
     
     private function queryDB($sql, $user_input)
     {
@@ -218,148 +363,5 @@ class Part {
     }   // function filterMany
     
     
-    
-    private function getQty()
-    {
-        $qty = array();
-        
-        foreach ($this->bags as $index=>$items)
-        {
-            foreach ($items as $bag=>$bag_qty)
-            {
-                $qty[$bag] += $bag_qty;
-            }
-        }
-        
-        $this->total_qty = $qty['quantity'];
-    }   // function getQty
-    
-    
-    
-    // This function will perform the most common purpose of this Class - finding all
-    // informaion on a single given part number/barcode.
-    public function locateAllInfo()
-    {
-        $this->findPartID();
-        $this->findBarcodes();
-        $this->findAttributes();
-        $this->findPartInfo();
-    }   //  function locateAllInfo
-    
-    
-    public function outputResultBox()
-    {
-        echo '<div id="results-pane" class="container">';
-        echo '<div class="row">';
-        echo '<div class="col-xs-12 space"></div>';
-        echo '</div>';
-        echo '<div class="row">';
-        echo '<div class="col-xs-12">';
-        echo '<div class="panel panel-primary">';
-        echo '<div class="panel-heading">';
-        echo '<div id="part-location-data" class="part-location">';
-        
-        echo $this->location;
-        
-        echo '</div>';
-        echo '<div class="part">';
-        echo '<div id="part-name-data" class="part-name">';
-        
-        echo $this->name;
-        
-        echo '</div>';
-        echo '<div id="part-num-data" class="part-num">';
-        
-        echo 'PN: ' . $this->part_num . '  | Bags: ' . $this->num_bags . '  | Qty: ' . $this->total_qty;
-        
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="panel-body">';
-        echo '<dl class="dl-horizontal">';
-        
-        $this->outputAttributeBox();
-        
-        echo '</dl>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-    }
-    
-    public function outputAttributeBox()
-    {
-        foreach($this->attributes as $index => $data)
-        {
-            foreach($data as $attrib => $val)
-            {
-                if ($attrib == 'attribute')
-                {
-                    echo '<dt>' . $val . '</dt>';
-                }
-                if ($attrib == 'value')
-                {
-                    echo '<dd>' . $val . '</dd>';   
-                }
-            }
-        }  
-    }   // function outputAttributeBox
-    
-    public function showExample()
-    {
-        
-        echo "\n\n\n";
-        echo "Example of Data Model:\n==============\n";
-        var_dump( json_decode('{"parts":[
-    {"part_num":"11593lgy",
-    "name":"My Cool Part",
-    "category":"ic",
-    "description":"A really cool part",
-    "datasheet":"www.sketchywebsite.com/datasheet.pdf",
-    "location":"A04",
-    "bags":[
-        {"barcode":"54345432",
-        "quantity":"175"
-        },
-        {"barcode":"1254865",
-         "quantity":"20"
-        }],
-    "attributes":[
-        {"attribute":"Package",
-        "value":"SOIC8",
-        "priority":"2"
-        },
-        {"attribute":"Voltage",
-        "value":"6v",
-        "priority":"4"
-        }]
-    },
-    {"part_num":"14dgfy6",
-    "name":"My 2nd Cooler Part",
-    "category":"resistor",
-    "description":"My secod part. It Exists only in JSON",
-    "datasheet":"www.legitwebsite.com/datasheet2.pdf",
-    "location":"B06",
-     "bags":[
-         {"barcode":"943710",
-          "quantity":"34"
-         },
-         {"barcode":"684258",
-          "quantity":"1500"
-         }],
-    "attributes":[
-        {"attribute":"Package",
-        "value":"SOIC10",
-        "priority":"1"
-        },
-        {"attribute":"Voltage",
-        "value":"12v",
-        "priority":"3"
-        }]
-    }
-]
-}'));
-    }
     
 }   // end of Part class

@@ -27,8 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
         $part->findPartInfo();
         $part->outputResultBox();
     }
-    
-    if ($_GET['mode'] == 'bin')
+    elseif ($_GET['mode'] == 'bin')
     {
         $bin = new MultiPart($_GET['input']);
         $bin->findBinData();
