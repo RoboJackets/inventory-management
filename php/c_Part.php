@@ -192,7 +192,7 @@ class Part {
         }
         else    // let user know if no results were found
         {
-            noResults();
+            $this->noResults();
         }
     }
     
@@ -229,20 +229,14 @@ class Part {
         echo '<div class="panel panel-primary">';
         echo '<div class="panel-heading">';
         echo '<div id="part-location-data" class="part-location">';
-        
         // location field
-        
         echo '</div>';
         echo '<div class="part">';
         echo '<div id="part-name-data" class="part-name">';
-        
         // name field
-        
         echo '</div>';
         echo '<div id="part-num-data" class="part-num">';
-        
         echo 'No Results Found :(';
-        
         echo '</div>';
         echo '</div>';
         echo '</div>';
