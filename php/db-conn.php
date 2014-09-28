@@ -11,4 +11,5 @@ $CONN = new mysqli(HOST, USER, PASSWORD, DATABASE);
 // Check for errors
 if ($CONN->connect_error) {
     echo "Database connection failed: " . $CONN->connect_error, E_USER_ERROR . "\n";
+    exit();
 }
