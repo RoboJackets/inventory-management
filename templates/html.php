@@ -30,9 +30,7 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="col-sm-1 col-xs-3">
-            <a href="/">
-                <img src="img/robobuzz-header.svg" height="65px" width="65px">
-            </a>
+            <img src="img/robobuzz-header.svg" height="65px" width="65px">
         </div>
         <div class="col-xs-9 col-sm-11">
             <h2><?php echo $title; ?></h2>
