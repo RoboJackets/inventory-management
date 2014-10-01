@@ -1,5 +1,7 @@
 $(document).ready(function(){
     
+    $('#txtSubmitQuery').focus();
+    
     $('#barcode').click(function(){
         if(!$('#barcode').hasClass('mode-selected')){
             $('.mode-selected').removeClass('mode-selected');
