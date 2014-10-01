@@ -362,7 +362,7 @@ $(document).ready(function() {
         $(this).parents("tr").prev().find("td:nth-child(" + index + ") input").focus();
     });
 
-    $("#edit-details input, #edit-details select").on("change keyup paste", function() {
+    $("#edit-details input, #edit-details select, #edit-details textarea").on("change keyup paste", function() {
         if (validateEditDetails()) {
             enableCard($("#add-attributes"));
         } else {
