@@ -1,6 +1,6 @@
 <?php
 /* 
- * Contains all functions and subroutines used for accessing the db.
+ * THIS FILE SHOULD BE TESTED FOR REMOVAL AND REMOVED ONCE CONFIRED
  */
 
 // ensure that an open connection can be used to access the database

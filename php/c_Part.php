@@ -24,16 +24,36 @@ class Part {
     public $num_bags;
     public $total_qty;
     
-    // prepares the object when a new one is created
-    public function __construct($barcode)
+    
+    
+    // Prepares the object when a new one is created.
+    public function __construct($input)
     {
         $this->bags = array();
         $this->attributes = array();
-        $this->barcode = $barcode;
-        
+        $this->barcode = $input;
     }   // function __construct
     
+
+    // This function will perform the most common purpose of this Class - finding all
+    // informaion on a single given part number/barcode.
+    public function findPart()
+    {
+        $this->findPartID();
+        $this->findBarcodes();
+        $this->findAttributes();
+        $this->findPartInfo();
+    }   //  function locateAllInfo
     
+    
+    public function sendPart()
+    {
+        $this->generateResults();
+    }
+    
+    
+    
+    // Standard 'get' functions for private variables.
     public function get_part_id() {
         return $this->part_id;
     }
@@ -41,8 +61,10 @@ class Part {
     public function get_barcode() {
         return $this->barcode;
     }
+ 
     
-    public function sendPart()
+    // Function that echos json-encoded data about the part.
+    public function sendJSON()
     {
         $temp = array();
         
@@ -52,21 +74,15 @@ class Part {
     }   // function sendPart
     
     
-    
-    // This function will perform the most common purpose of this Class - finding all
-    // informaion on a single given part number/barcode.
-    public function locateAllInfo()
+    private function validate()
     {
-        $this->findPartID();
-        $this->findBarcodes();
-        $this->findAttributes();
-        $this->findPartInfo();
-    }   //  function locateAllInfo
-
+        // will check for validation of fields when adding parts
+    }
     
     
-    // searches the database for a partnumber when given a barcode
-    public function findPartInfo()
+    
+    // Function that searches the database for a partnumber when given a barcode.
+    private function findPartInfo()
     {
         if(empty($this->part_id))
         {
@@ -84,12 +100,12 @@ class Part {
             }
             
         }
-        
     }   // function findPartNum
     
     
     
-    public function findPartID()
+    // Function that locates the part's ID number from the given input.
+    private function findPartID()
     {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
@@ -102,7 +118,7 @@ class Part {
         {
             // move user's input to part number field and remove from barcode field
             $this->part_num = $this->barcode;
-            $this->barcode = "None";
+            unset($this->barcode);
             
             // search again for the part's id number
             $temp = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num), 'part_id');
@@ -112,7 +128,8 @@ class Part {
     
     
     
-    public function findBarcodes()
+    // Function that locates all the barcdoes and quantities for the respective part number.
+    private function findBarcodes()
     {
         // make sure we can search using the part_id
         if(empty($this->part_id))
@@ -125,13 +142,14 @@ class Part {
         {
             $this->bags = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
             $this->num_bags = count($this->bags);
-            $this->getQty();    // add up all the quantities for a grand total
+            $this->calcQty();    // add up all the quantities for a grand total
         }
     }   // function findBarcodes
     
     
     
-    public function findAttributes()
+    // Function that locates all the attributes of a given part.
+    private function findAttributes()
     {
         // make sure we can search using the part_id
         if(empty($this->part_id))
@@ -148,7 +166,8 @@ class Part {
     
     
     
-    public function outputResultBox()
+    // This function will echo the HTML text that is brought in via Ajax on the client side.
+    public function generateResults()
     {
         if (isset($this->total_qty))
         {
@@ -181,7 +200,7 @@ class Part {
             echo '<div class="panel-body">';
             echo '<dl class="dl-horizontal">';
 
-            $this->outputAttributeBox();
+            $this->generateAttributes();
 
             echo '</dl>';
             echo '</div>';
@@ -194,11 +213,12 @@ class Part {
         {
             $this->noResults();
         }
-    }
+    }   // function outputResultsBox
     
     
     
-    private function outputAttributeBox()
+    // This function will echo the HTML text used for the attributes section of the output.
+    private function generateAttributes()
     {
         foreach($this->attributes as $index => $data)
         {
@@ -218,6 +238,7 @@ class Part {
     
     
     
+    // This is the function that returns the HTML text used when no results are found.
     private function noResults()
     {
         echo '<div id="results-pane" class="container">';
@@ -229,30 +250,33 @@ class Part {
         echo '<div class="panel panel-primary">';
         echo '<div class="panel-heading">';
         echo '<div id="part-location-data" class="part-location">';
-        // location field
+            // location field
         echo '</div>';
         echo '<div class="part">';
         echo '<div id="part-name-data" class="part-name">';
-        // name field
+            // name field
         echo '</div>';
         echo '<div id="part-num-data" class="part-num">';
-        echo 'No Results Found :(';
+        echo 'No results were found';
         echo '</div>';
         echo '</div>';
         echo '</div>';
         echo '<div class="panel-body">';
         echo '<dl class="dl-horizontal">';
-        // attributes area
+            // attributes area
         echo '</dl>';
         echo '</div>';
         echo '</div>';
         echo '</div>';
         echo '</div>';
         echo '</div>';
-    }
+    }   // function noResults
     
     
-    private function getQty()
+    
+    // This function can be called after all bags of a given part are found to
+    // sum the total quantity for that part.
+    private function calcQty()
     {
         $qty = array();
         
@@ -265,97 +289,7 @@ class Part {
         }
         
         $this->total_qty = $qty['quantity'];
-    }   // function getQty
-    
-    
-    /* =====================================================
-     *      Everything below here should eventually
-     *      be moved into a database connection class.
-     * =================================================== */
-    
-    
-    
-    private function queryDB($sql, $user_input)
-    {
-        global $CONN;   // let function know about the global declared connection
-        
-        $input = (string)$user_input;
-
-        if(!$query = $CONN->prepare($sql)){
-            echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
-        }
-        if (!$query->bind_param("s", $input)) {
-            echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
-        }
-        if (!$query->execute()) {
-            echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
-        }
-        
-        return $query;   // return the results after formatting to an arry of php objects
-    }   // function queryDB
-    
-    
-    
-    // filters a queries results
-    private function filterSingle($query, $field_name)
-    {
-        $meta = $query->result_metadata();  // get the metadata from the results
-
-        // store the field heading names into an array, pass by reference
-        while ($field = $meta->fetch_field()) {
-            $params[] = &$row[$field->name];
-        }
-
-        // callback function; same as: $query->bind_result($params)
-        call_user_func_array(array($query, 'bind_result'), $params);
-       
-        $results = array();
-        while ($query->fetch()) {   // fetch the results for every field
-            $results[] = $row[$field_name];
-        }
-
-        // close the open database/query information
-        $meta->close();
-        $query->close();
-
-        return $results;
-    }   // function filterSingle
-    
-    
-    
-    private function filterMany($query)
-    {
-        $meta = $query->result_metadata();  // get the metadata from the results
-
-        // store the field heading names into an array, pass by reference
-        while ($field = $meta->fetch_field()) {
-            $params[] = &$row[$field->name];
-        }
-
-        // callback function; same as: $query->bind_result($params)
-        call_user_func_array(array($query, 'bind_result'), $params);
-
-        $results = array();
-        
-        while ($query->fetch()) {   // fetch the results for every field
-
-            $tmpObj = new stdClass();
-
-            foreach($row as $key => $val) { // itterate through all fields
-                $tmpObj->$key = $val; 
-            }
-
-            // add row (now as object) to the array of results
-            $results[] = $tmpObj;
-        }
-
-        // close the open database/query information
-        $meta->close();
-        $query->close();
-
-        return $results;
-    }   // function filterMany
-    
+    }   // function calcQty
     
     
 }   // end of Part class

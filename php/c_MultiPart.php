@@ -8,7 +8,6 @@
 
 class MultiPart
 {
-  
     // property declaration
     public $parts;
     public $user_input;
@@ -19,15 +18,13 @@ class MultiPart
     {
         $this->parts = array();
         $this->user_input = $input;
-        //$this->$result_pane = readfile("/php/result-pane.html"");
     }
     
     
     // Performs database searches and attempts to locate all part
-    // information that are in a specific location.
-    public function findBinData()
+    // information that is in a specific location.
+    public function findBin()
     {
-        
         // Get an array of part_id numbers that all relate to the user-given location
         $part_ids = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE location=(?)", $this->user_input), 'part_id');
         foreach ($part_ids as $index => $part)
@@ -45,19 +42,22 @@ class MultiPart
     
     
     // Sends results to client as JSON encoded data.
-    public function sendMultiParts()
+    public function sendBinJSON()
     {
         echo json_encode($this);
     }
     
-    public function outputParts()
+    public function sendBin()
     {
         foreach($this->parts as $index => $vals)
         {
-            $vals->outputResultBox();
+            $vals->sendPart();
         }
     }
     
+    
+    // remove once confirmed not needed
+    /*
     private function queryDB($sql, $user_input)
     {
         global $CONN;   // let function know about the global declared connection
@@ -103,6 +103,6 @@ class MultiPart
 
         return $results;
     }   // function filterSingle
-    
+    */
 }   // end of Bin Class
 ?>
