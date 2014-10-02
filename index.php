@@ -1,29 +1,16 @@
 <?php
 
-
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader(); //Req'd since not using Composer
-
 
 
 $app = new \Slim\Slim(array(
     // Configuration parameters
     'templates.path' => './templates',
     'log.enabled' => true,
-    'log.level' => '\SLim\Log::INFO'
+    'log.level' => \Slim\Log::INFO
 ));
-
-
-
-// Enable logging
-$app->log->setEnabled(true);
-
-
-
-// Set path to templates
-$app->config('templates.path', './templates');
-
-
+    
 
 $app->get('/', function() use ($app) {
     $app->view();
@@ -37,10 +24,11 @@ $app->get('/', function() use ($app) {
 });
 
 
-
 $app->get('/add', function() use ($app) {
     $app->view();
-    $app->render('add.html');
+    $app->render('add.html', array(
+        'title' =>'Add a Component'
+    ));
 });
 
 
