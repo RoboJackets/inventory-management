@@ -245,7 +245,7 @@ function showToast(alertType, title, message) {
     alertType = "alert-" + alertType;
     var $toast = $("#toast-alert")
     .addClass(alertType);
-    $toast.append("<strong>" + title + "</strong> " + message);
+    $toast.append("<strong>" + title + ':</strong><p style="display:inline">' + message + "</p>");
     $toast.children(".hide-toast").click(function(){
         $toast.removeClass(alertType);
         $toast.children(":not(button)").remove();
@@ -287,7 +287,7 @@ function submitData() {
         $('#categoryInput').val(),
         $('#descriptionInput').val(),
         $('#datasheetInput').val(),
-        $('#locationInput').val(),
+        toUpperCase($('#locationInput').val()),
         bags,
         attributes
     );
@@ -299,7 +299,6 @@ function submitData() {
     var data = JSON.stringify(parts);
     $.post("add/submit", data, "json")
     .done(function(xhr){
-        // //This should be replaced with a more generic toast function
         showToast("success", "Bin " + part.location, "Part added successfully!");
         resetPage();
     })
