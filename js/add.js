@@ -241,6 +241,23 @@ function Part(partNum, name, category, description, datasheet, location, bags, a
     this.attributes = attributes;
 }
 
+function showToast(alertType, title, message) {
+    alertType = "alert-" + alertType;
+    var $toast = $("#toast-alert")
+    .addClass(alertType);
+    $toast.append("<strong>" + title + "</strong>" + message);
+    $toast.children(".hide-toast").click(function(){
+        $toast.removeClass(alertType);
+        $toast.children(":not(button)").remove();
+        $toast.hide();
+    });
+    $toast.show();
+}
+
+function hideToast() {
+    $("#toast-alert > button").click();
+}
+
 function submitData() {
     var attributes = [];
     var bags = [];
@@ -282,7 +299,8 @@ function submitData() {
     var data = JSON.stringify(parts);
     $.post("add/submit", data, "json")
     .done(function(xhr){
-        $("#toast-alert").show(); //This should be replaced with a more generic toast function
+        // //This should be replaced with a more generic toast function
+        showToast("success", "Bin " + part.location, "Part added successfully!");
         resetPage();
     })
     .fail(function(xhr){
