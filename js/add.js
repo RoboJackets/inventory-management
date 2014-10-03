@@ -287,7 +287,7 @@ function submitData() {
         $('#categoryInput').val(),
         $('#descriptionInput').val(),
         $('#datasheetInput').val(),
-        toUpperCase($('#locationInput').val()),
+        $('#locationInput').val().toUpperCase(),
         bags,
         attributes
     );
