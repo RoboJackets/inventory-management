@@ -85,6 +85,19 @@ function addInputField(id, readOnly, key, value) {
             $(id + " table tbody tr").each(function(idx){
                 $(this).children().first().text(idx + 1);
             });
+            if (id == "#add-attributes") {
+                if (validateAddAttributes()) {
+                    enableCard($("#barcode"));
+                } else {
+                    disableCard($("#barcode"));
+                }
+            } else if (id == "#barcode") {
+                if (validateBarcode()) {
+                    $(".submit").addClass("btn-enabled");
+                } else {
+                    $(".submit").removeClass("btn-enabled");
+                }
+            }
         });
     });
 
@@ -443,14 +456,6 @@ $(document).ready(function() {
             $(this).parents(".card").find(".next").click();
             event.preventDefault();
             return false;
-        }
-    });
-
-    $("#barcodeInput").on("change keyup paste", function() {
-        if (allowedChars.test($(this).val())) {
-            $(".submit").addClass("btn-enabled");
-        } else {
-            $(".submit").removeClass("btn-enabled");
         }
     });
     
