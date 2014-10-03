@@ -245,7 +245,7 @@ function showToast(alertType, title, message) {
     alertType = "alert-" + alertType;
     var $toast = $("#toast-alert")
     .addClass(alertType);
-    $toast.append("<strong>" + title + "</strong>" + message);
+    $toast.append("<strong>" + title + "</strong> " + message);
     $toast.children(".hide-toast").click(function(){
         $toast.removeClass(alertType);
         $toast.children(":not(button)").remove();
