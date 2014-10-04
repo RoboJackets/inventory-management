@@ -7,7 +7,7 @@ require 'Slim/Slim.php';
 $app = new \Slim\Slim(array(
     // Configuration parameters
     'templates.path' => './templates',
-    'log.enabled' => true,
+    'log.enabled' => false,
     'log.level' => \Slim\Log::INFO
 ));
     
@@ -17,16 +17,13 @@ $app->get('/', function() use ($app) {
     $app->render('html.php', array(
         'title'=>'RoboJackets Inventory',
         'mode'=>'barcode',
-        //'partLocation'=>null,
-        //'partName'=>null,
-        //'partNum'=>null
         ));
 });
 
 
 $app->get('/add', function() use ($app) {
     $app->view();
-    $app->render('add.html', array(
+    $app->render('add.php', array(
         'title' =>'Add a Component'
     ));
 });
@@ -40,9 +37,6 @@ $app->get('/:mode', function($mode) use ($app) {
     $app->render('html.php', array(
         'title'=>'RoboJackets Inventory',
         'mode'=>$mode,
-        //'partLocation'=>null,
-        //'partName'=>null,
-        //'partNum'=>null
     ));
 });
 

@@ -8,56 +8,62 @@
 
 // Set Database credentials
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-
-// this is where the default query rights are found
 if (!defined('HOST')) { require $path . 'config.php'; }
-//require $path . 'db-conn.php';
+
 
 class Database {
     
     private $connection;
-    
+    private $dbResults;
+    private $results;
+    public $query;
     
     // Constructor function to initialize the database connection
     public function __construct()
     {
-        createConnection();
+        $this->createConnection();
     }
-    
     
     // Create a connection to the database
     private function createConnection()
     {
-        $this->connection = new mysqli(HOST, USER, PASSWORD, DATABASE);    
+        $this->connection = New mysqli(HOST, USER, NULL, DATABASE);
         
         // Check for errors
         if ($this->connection->connect_error) {
             echo "Database connection failed: " . $this->connection->connect_error, E_USER_ERROR . "\n";
             exit();
         }
+
+        $this->dbResults = New mysqli();
+        $this->query = New mysqli();
+
     }   // function connect
 
     
     public function searchQuery($sql, $user_input)
-    {        
+    {
+        // cast input to a string for consistency
         $input = (string)$user_input;
 
-        if(!$query = $CONN->prepare($sql)){
+        if(!$this->query = $this->connection->prepare($sql)){
             echo "Error: Could not prepare query statement. (" . $query->errno . ") " . $query->error . "\n";
         }
-        if (!$query->bind_param("s", $input)) {
+        if (!$this->query->bind_param("s", $input)) {
             echo "Error: Failed to bind parameters to statement. (" . $query->errno . ") " . $query->error . "\n";
         }
-        if (!$query->execute()) {
+        if (!$this->query->execute()) {
             echo "Error: Failed to execute query. (" . $query->errno . ") " . $query->error . "\n";
         }
-        
-        return $query;   // return the results after formatting to an arry of php objects
+
+        $this->dbResults = $this->query;
+
     }   // function searchQuery
     
     
     
     // filters a queries results
+    /*
     public function filterSingle($query, $field_name)
     {
         $meta = $query->result_metadata();  // get the metadata from the results
@@ -81,12 +87,13 @@ class Database {
 
         return $results;
     }   // function filterSingle
+    */
     
     
     
-    private function filterMany($query)
+    private function sortQuery()
     {
-        $meta = $query->result_metadata();  // get the metadata from the results
+        $meta = $this->query->result_metadata();  // get the metadata from the results
 
         // store the field heading names into an array, pass by reference
         while ($field = $meta->fetch_field()) {
@@ -94,11 +101,11 @@ class Database {
         }
 
         // callback function; same as: $query->bind_result($params)
-        call_user_func_array(array($query, 'bind_result'), $params);
+        call_user_func_array(array($this->query, 'bind_result'), $params);
 
         $results = array();
         
-        while ($query->fetch()) {   // fetch the results for every field
+        while ($this->query->fetch()) {   // fetch the results for every field
 
             $tmpObj = new stdClass();
 
@@ -112,9 +119,11 @@ class Database {
 
         // close the open database/query information
         $meta->close();
-        $query->close();
+        $this->query->close();
 
-        return $results;
+        $this->results = $results;
+
+        //return $results;
     }   // function filterMany
     
     

@@ -6,10 +6,14 @@
  * @author Jonathan Jones
  */
 
+if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
+require $path . 'c_Database.php';
+
 class Part {
     
     private $part_id;
-    private $barcode;
+    public $barcode;
+    private $connection;
     
     public $part_num;
     public $name;
@@ -23,20 +27,19 @@ class Part {
 
     public $num_bags;
     public $total_qty;
-    
-    
-    
+
     // Prepares the object when a new one is created.
-    public function __construct($input)
+    public function __construct(Database $db, $input)
     {
         $this->bags = array();
         $this->attributes = array();
         $this->barcode = $input;
+        $this->connection = $db;
     }   // function __construct
     
 
     // This function will perform the most common purpose of this Class - finding all
-    // informaion on a single given part number/barcode.
+    // information on a single given part number/barcode.
     public function findPart()
     {
         $this->findPartID();
@@ -50,9 +53,8 @@ class Part {
     {
         $this->generateResults();
     }
-    
-    
-    
+
+
     // Standard 'get' functions for private variables.
     public function get_part_id() {
         return $this->part_id;
@@ -79,8 +81,7 @@ class Part {
         // will check for validation of fields when adding parts
     }
     
-    
-    
+
     // Function that searches the database for a partnumber when given a barcode.
     private function findPartInfo()
     {
@@ -90,12 +91,13 @@ class Part {
         }
         if(empty($this->part_num) | empty($this->location))
         {
-            $data_array = $this->filterMany($this->queryDB("SELECT * FROM parts WHERE part_id=(?)", $this->part_id));
-            
-            foreach($data_array as $index => $items)
-            {
-                foreach($items as $key => $val) { // itterate through all fields
-                    $this->$key = $val;
+            $data_array = $this->connection->searchQuery("SELECT * FROM parts WHERE part_id=(?)", $this->part_id);
+
+            if ($data_array) {
+                foreach ($data_array as $index => $items) {
+                    foreach ($items as $key => $val) { // itterate through all fields
+                        $this->$key = $val;
+                    }
                 }
             }
             
@@ -109,10 +111,12 @@ class Part {
     {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
-            $temp = $this->filterSingle($this->queryDB("SELECT * FROM barcode_lookup WHERE barcode=(?) LIMIT 1", $this->barcode ), 'part_id');
-            $this->part_id = array_shift($temp);
-        } 
-        
+            $temp = $this->connection->searchQuery("SELECT * FROM barcode_lookup WHERE barcode=(?) LIMIT 1", $this->barcode);
+            if ($temp) {
+                $this->part_id = array_shift($temp);
+            }
+        }
+
         // if no result was found, assume the user input was a part number
         if (empty($this->part_id))
         {
@@ -121,8 +125,10 @@ class Part {
             unset($this->barcode);
             
             // search again for the part's id number
-            $temp = $this->filterSingle($this->queryDB("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num), 'part_id');
-            $this->part_id = array_shift($temp);
+            $temp = $this->connection->searchQuery("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num);
+            if ($temp) {
+                $this->part_id = array_shift($temp);
+            }
         }
     }   // function findPartID
     
@@ -140,7 +146,7 @@ class Part {
         // make sure part_id was found if not before
         if(isset($this->part_id))
         {
-            $this->bags = $this->filterMany($this->queryDB("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
+            $this->bags = $this->connection->searchQuery("SELECT barcode, quantity, added FROM barcode_lookup WHERE part_id=(?)", $this->part_id);
             $this->num_bags = count($this->bags);
             $this->calcQty();    // add up all the quantities for a grand total
         }
@@ -160,7 +166,7 @@ class Part {
         // make sure part_id was found if not before
         if(isset($this->part_id))
         {
-            $this->attributes = $this->filterMany($this->queryDB("SELECT attribute, value, priority FROM attributes WHERE part_id=(?) ORDER by priority", $this->part_id));
+            $this->attributes = $this->connection->searchQuery("SELECT attribute, value, priority FROM attributes WHERE part_id=(?) ORDER by priority", $this->part_id);
         }
     }   // function findAttributes
     
@@ -271,8 +277,7 @@ class Part {
         echo '</div>';
         echo '</div>';
     }   // function noResults
-    
-    
+
     
     // This function can be called after all bags of a given part are found to
     // sum the total quantity for that part.

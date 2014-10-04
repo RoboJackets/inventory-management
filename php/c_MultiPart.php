@@ -6,6 +6,9 @@
  * @author Jonathan Jones
  */
 
+if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
+require $path . 'c_Part.php';
+
 class MultiPart
 {
     // property declaration
