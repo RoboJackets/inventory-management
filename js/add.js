@@ -217,7 +217,7 @@ function validateBarcode() {
         }
     });
     
-    flag = flag && $("#barcode table tbody tr").length() <= 1
+    flag = flag && $("#barcode table tbody tr").length > 1;
     
     return flag;
 }
