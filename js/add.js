@@ -196,6 +196,9 @@ function validateAddAttributes() {
             flag = false;
         }
     });
+    
+    flag = flag && $("#add-attributes table tbody tr").length > 1;
+    
     return flag;
 }
 
@@ -317,6 +320,7 @@ function resetPage(){
     $("#categoryInput").val("");
     $(".card table tr:not(:last-child) td span").click();
     $("input, textarea").val("");
+    disableFastTrack();
     disableCard($(".card").slice(1));
 
 }
