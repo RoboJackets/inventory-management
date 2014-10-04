@@ -216,6 +216,9 @@ function validateBarcode() {
             flag = false;
         }
     });
+    
+    flag = flag && $("#barcode table tbody tr").length() <= 1
+    
     return flag;
 }
 
@@ -246,7 +249,7 @@ function showToast(alertType, title, message) {
     alertType = "alert-" + alertType;
     var $toast = $("#toast-alert")
     .addClass(alertType);
-    $toast.append("<strong>" + title + ':</strong><p style="display:inline"> ' + message + "</p>");
+    $toast.append("<strong>" + title + ': </strong><p style="display:inline">' + message + "</p>");
     $toast.children(".hide-toast").click(function(){
         $toast.removeClass(alertType);
         $toast.children(":not(button)").remove();
