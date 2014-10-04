@@ -242,10 +242,11 @@ function Part(partNum, name, category, description, datasheet, location, bags, a
 }
 
 function showToast(alertType, title, message) {
+    hideToast();
     alertType = "alert-" + alertType;
     var $toast = $("#toast-alert")
     .addClass(alertType);
-    $toast.append("<strong>" + title + ':</strong><p style="display:inline">' + message + "</p>");
+    $toast.append("<strong>" + title + ':</strong><p style="display:inline"> ' + message + "</p>");
     $toast.children(".hide-toast").click(function(){
         $toast.removeClass(alertType);
         $toast.children(":not(button)").remove();
@@ -303,17 +304,18 @@ function submitData() {
         resetPage();
     })
     .fail(function(xhr){
-        alert("Data could not be submitted. Error code: " + xhr.status);
+        showToast("error", "Error", "Could not submit part. Error code: " + xhr.status);
         console.log(result);
     });
 }
 
 function resetPage(){
+    currentCardID = toCard("#add-part","#barcode");
     $("#categoryInput").val("");
     $(".card table tr:not(:last-child) td span").click();
     $("input, textarea").val("");
     disableCard($(".card").slice(1));
-    currentCardID = toCard("#add-part","#barcode");
+
 }
 
 $(document).ready(function() {
