@@ -367,8 +367,8 @@ $(document).ready(function() {
 
             var query = {"partNumber":$(this).val()};
             $.post("add/validate-pn", query, function(result) {
-                result = $.parseJSON(result);
-                if (result) {
+                //result = $.parseJSON(result);
+                if (result>0) {
                     $("#partNumberInput").parent().addClass("has-success");
                     enableFastTrack();
                     $("#partNumberInput").tooltip();
