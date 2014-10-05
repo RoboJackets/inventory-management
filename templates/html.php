@@ -28,7 +28,7 @@
     <script src="js/inventory.js"></script>
 </header>
 <nav class="navbar navbar-default" role="navigation">
-    <?php include 'nav_bar.php'?>
+    <?php include 'nav_bar.php'; ?>
 </nav>
 <nav>
     <div class="container">
