@@ -9,21 +9,17 @@
     border-radius: 6px;
     font-size: 5rem;
     text-align: center;
-    
     border: 2px solid #fff;
     /*border: 2px solid #ccc;*/
-    
 }
 
 .nav-mode:hover {
     /*background-color: #ccc;*/
      border: 2px solid #ccc;
-    
 }
 
 .mode-selected {
     background-color: #428bca;
-
     border: 2px solid #428bca !important;
 }
 

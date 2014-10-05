@@ -4,35 +4,31 @@
  */
 
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; } // make sure path is known
-require $path.'db-conn.php';
-require $path.'c_Part.php';
-require $path.'c_MultiPart.php';
+require $path . 'c_MultiPart.php';
 
-/*
-ini_set('display_errors',1);
-ini_set('display_startup_errors',1);
-error_reporting(-1);
-*/
 
 // begin searching if user input is given
 if ($_SERVER["REQUEST_METHOD"] == "GET")
 {
     
-    if($_GET['mode'] == 'barcode')
+    $mode = $_GET['mode'];
+
+    $conn = New Database();
+
+    switch($mode)
     {
-        $part = new Part($_GET['input']);
-        $part->findPartID();
-        $part->findBarcodes();
-        $part->findAttributes();
-        $part->findPartInfo();
-        $part->outputResultBox();
+        case 'barcode':
+            $part = New Part($conn, $_GET['input']);
+            $part->findPart();
+            $part->sendPart();
+            break;
+        case 'bin':
+            $bin = New MultiPart($conn, $_GET['input']);
+            $bin->findBin();
+            $bin->sendBin();
+            break;
+        default:
+            // do nothing
     }
-    elseif ($_GET['mode'] == 'bin')
-    {
-        $bin = new MultiPart($_GET['input']);
-        $bin->findBinData();
-        $bin->outputParts();
-    }
-    
-    mysqli_close($CONN);
+
 }

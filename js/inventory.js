@@ -23,7 +23,6 @@ $(document).ready(function(){
     
     $('#BtnSubmitQuery').click(function(){
         var query = $('#txtSubmitQuery').val();
-        $('#results-placeholder').empty();
         
         // ajax communication for getting database results
         $.ajax({
@@ -33,7 +32,8 @@ $(document).ready(function(){
                 mode:   $('#mode-storage').val(),
                 input:  $('#txtSubmitQuery').val()
             },
-            success: function(result){     
+            success: function(result){
+                $('#results-placeholder').empty();
                 $('#results-placeholder').append(result);
             }
         });

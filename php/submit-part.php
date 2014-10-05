@@ -26,7 +26,7 @@ $app->post('/add/submit', function() use ($app) {
             return;
         }
 
-        if ($count == 0){ // If part isn't already in DB
+        if ($count == 0){ // If part is not in DB...
 
             $part->location = strtoupper($part->location);
             if($part->description == "") $part->description = null;

@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Add Component</title>
+        <title><?php echo $title; ?></title>
 
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -31,16 +31,7 @@
         <script src="js/add.js"></script>
     </header>
     <nav class="navbar navbar-default" role="navigation">
-        <div class="container">
-            <div class="col-sm-1 col-xs-3">
-                <a href="/">
-                    <img src="img/robobuzz-header.svg" height="65px" width="65px">
-                </a>
-            </div>
-            <div class="col-xs-9 col-sm-11">
-                <h2>RoboJackets Inventory</h2>
-            </div>
-        </div>
+        <?php include 'nav_bar.php'?>
     </nav>
     <section>
         <div id="steps-containter" class="container">
@@ -115,7 +106,8 @@
                                 <option value="" disabled selected style='display:none;'></option>
                                 <option value="capacitor">Capacitor</option>
                                 <option value="connector">Connector</option>
-                                <option value="diode">Diode</option>
+                                <option value="diode">Diode/LED</option>
+                                <option value="discrete">Discrete</option>
                                 <option value="ic">Integrated Circuit</option>
                                 <option value="inductor">Inductor</option>
                                 <option value="oscillator">Oscillator</option>
@@ -225,4 +217,7 @@
 
         </div>
     </section>
+<footer>
+    <?php include 'footer.php'; ?>
+</footer>
 </html>
