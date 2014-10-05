@@ -7,12 +7,11 @@
  */
 
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-require $path . 'c_Database.php';
 
 class Part {
     
     private $part_id;
-    public $barcode;
+    private $barcode;
     private $connection;
     
     public $part_num;
@@ -28,6 +27,7 @@ class Part {
     public $num_bags;
     public $total_qty;
 
+
     // Prepares the object when a new one is created.
     public function __construct(Database $db, $input)
     {
@@ -36,7 +36,8 @@ class Part {
         $this->barcode = $input;
         $this->connection = $db;
     }   // function __construct
-    
+
+
 
     // This function will perform the most common purpose of this Class - finding all
     // information on a single given part number/barcode.
@@ -48,11 +49,13 @@ class Part {
         $this->findPartInfo();
     }   //  function locateAllInfo
     
-    
+
+
     public function sendPart()
     {
         $this->generateResults();
     }
+
 
 
     // Standard 'get' functions for private variables.
@@ -60,11 +63,13 @@ class Part {
         return $this->part_id;
     }
 
+
     public function get_barcode() {
         return $this->barcode;
     }
  
-    
+
+
     // Function that echos json-encoded data about the part.
     public function sendJSON()
     {
@@ -111,10 +116,14 @@ class Part {
     {
         if(isset($this->barcode))   // this should never be empty since assigned in the constructor
         {
-            $temp = $this->connection->searchQuery("SELECT * FROM barcode_lookup WHERE barcode=(?) LIMIT 1", $this->barcode);
+            $temp = $this->connection->searchQuery("SELECT part_id FROM barcode_lookup WHERE barcode=(?) LIMIT 1", $this->barcode);
+
+            // if part_id was successfully found
             if ($temp) {
-                $this->part_id = array_shift($temp);
+                // the returned info is always a 2D array formatted as $data[index#][field_name]
+                $this->part_id = array_shift(array_shift($temp));
             }
+
         }
 
         // if no result was found, assume the user input was a part number
@@ -122,12 +131,12 @@ class Part {
         {
             // move user's input to part number field and remove from barcode field
             $this->part_num = $this->barcode;
-            unset($this->barcode);
+            $this->barcode = NULL;
             
             // search again for the part's id number
             $temp = $this->connection->searchQuery("SELECT part_id FROM parts WHERE part_num=(?) LIMIT 1", $this->part_num);
             if ($temp) {
-                $this->part_id = array_shift($temp);
+                $this->part_id = array_shift(array_shift($temp));
             }
         }
     }   // function findPartID
@@ -241,8 +250,7 @@ class Part {
             }
         }  
     }   // function outputAttributeBox
-    
-    
+
     
     // This is the function that returns the HTML text used when no results are found.
     private function noResults()
@@ -292,7 +300,7 @@ class Part {
                 $qty[$bag] += $bag_qty;
             }
         }
-        
+        // set the quantity
         $this->total_qty = $qty['quantity'];
     }   // function calcQty
     
