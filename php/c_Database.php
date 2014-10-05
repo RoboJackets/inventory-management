@@ -27,6 +27,7 @@ class Database {
     private function createConnection()
     {
         $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
+        //$this->connection = New mysqli(HOST, USER, NULL, DATABASE);
 
         // Check for errors
         if ($this->connection->connect_error) {
@@ -47,9 +48,6 @@ class Database {
     {
         // cast input to a string for consistency
         $input = (string)$user_input;
-
-        //$this->query = $this->connection->prepare($sql);
-        //var_dump($this->query);
 
         if(!$this->query = $this->connection->prepare($sql)){
             echo "Error: Could not prepare query statement. (" . $this->query->errno . ") " . $this->query->error . "\n";
