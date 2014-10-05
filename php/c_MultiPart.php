@@ -36,7 +36,7 @@ class MultiPart
         {
             $temp_part = New Part($this->connection, $part['part_id']);
             
-            $temp_part->findPart();
+            $temp_part->findPartbyID();
             
             $this->parts[] = $temp_part;
         }
