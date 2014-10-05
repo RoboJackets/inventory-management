@@ -48,7 +48,15 @@ class Part {
         $this->findAttributes();
         $this->findPartInfo();
     }   //  function locateAllInfo
-    
+
+
+    // Locate all the information about a part when given it's part_id number as the initial input
+    public function findPartbyID()
+    {
+        $this->part_id = $this->barcode;
+        unset($this->barcode);
+        $this->findPart();
+    }
 
 
     public function sendPart()
