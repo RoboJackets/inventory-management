@@ -107,7 +107,7 @@
                                 <option value="" disabled selected style='display:none;'></option>
                                 <option value="capacitor">Capacitor</option>
                                 <option value="connector">Connector</option>
-                                <option value="diode">Diode</option>
+                                <option value="diode">Diode/LED</option>
                                 <option value="discrete">Discrete</option>
                                 <option value="ic">Integrated Circuit</option>
                                 <option value="inductor">Inductor</option>
