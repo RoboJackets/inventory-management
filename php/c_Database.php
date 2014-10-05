@@ -100,43 +100,5 @@ class Database {
         $this->dbresults = $results;
     }   // function filterSingle
 
-
-    /*
-    private function sortQuery()
-    {
-        $meta = $this->query->result_metadata();  // get the metadata from the results
-
-        // store the field heading names into an array, pass by reference
-        while ($field = $meta->fetch_field()) {
-            $params[] = &$row[$field->name];
-        }
-
-        // callback function; same as: $query->bind_result($params)
-        call_user_func_array(array($this->query, 'bind_result'), $params);
-
-        $results = array();
-        
-        while ($this->query->fetch()) {   // fetch the results for every field
-
-            $tmpObj = new stdClass();
-
-            foreach($row as $key => $val) { // itterate through all fields
-                $tmpObj->$key = $val; 
-            }
-
-            // add row (now as object) to the array of results
-            $results[] = $tmpObj;
-        }
-
-        // close the open database/query information
-        $meta->close();
-        $this->query->close();
-
-        $this->dbresults = $results;
-
-    }   // function filterMany
     
-    
-    */
-    
-}
+}   // end of Database Class
