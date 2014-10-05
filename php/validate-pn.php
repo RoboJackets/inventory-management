@@ -7,8 +7,8 @@ $app->post('/add/validate-pn', function() use ($app) {
 
     $connection = New Database();
 
-    $count = $connection->searchQuery("SELECT COUNT(*) FROM parts WHERE part_num=(?)", $_POST['partNumber']);
+    $count = array_shift($connection->searchQuery("SELECT COUNT(*) FROM parts WHERE part_num=(?)", $_POST['partNumber']));
 
-    echo array_shift($count)['COUNT(*)'];
+    echo $count['COUNT(*)'];
 
 });
