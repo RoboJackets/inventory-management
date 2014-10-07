@@ -6,7 +6,6 @@
 if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; } // make sure path is known
 require $path . 'c_MultiPart.php';
 
-
 // begin searching if user input is given
 if ($_SERVER["REQUEST_METHOD"] == "GET")
 {
@@ -18,8 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
     switch($mode)
     {
         case 'barcode':
-            $part = New Part($conn, $_GET['input']);
-            $part->findPart();
+            $part = New Part($conn, array('barcode' => $_GET['input']));
             $part->sendPart();
             break;
         case 'bin':
@@ -30,5 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
         default:
             // do nothing
     }
+
+    //$conn->closeConnection();
 
 }
