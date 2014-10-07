@@ -1,33 +1,38 @@
 <?php
-
 /**
- * Description of Database Class
- *
- * @author Jonathan
+ * Created by PhpStorm.
+ * User: Jonathan
+ * Date: 10/6/2014
+ * Time: 5:20 PM
  */
 
 // Set Database credentials
-if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
-if (!defined('HOST')) { require $path . 'config.php'; }
+if (!isset($path)) {
+    $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
+}
+if (!defined('HOST')) {
+    require $path . 'config.php';
+}
 
 
-class Database {
-    
+class Database
+{
+
     private $connection;
     private $dbresults;
     private $query;
-    
+
     // Constructor function to initialize the database connection
     public function __construct()
     {
         $this->createConnection();
     }
-    
+
     // Create a connection to the database
     private function createConnection()
     {
-        $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
-        //$this->connection = New mysqli(HOST, USER, NULL, DATABASE);
+        //$this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
+        $this->connection = New mysqli(HOST, USER, NULL, DATABASE);
 
         // Check for errors
         if ($this->connection->connect_error) {
@@ -49,7 +54,7 @@ class Database {
         // cast input to a string for consistency
         $input = (string)$user_input;
 
-        if(!$this->query = $this->connection->prepare($sql)){
+        if (!$this->query = $this->connection->prepare($sql)) {
             echo "Error: Could not prepare query statement. (" . $this->query->errno . ") " . $this->query->error . "\n";
         }
         if (!$this->query->bind_param("s", $input)) {
@@ -64,7 +69,7 @@ class Database {
 
     }   // function searchQuery
 
-    
+
     // filters a queries results
     private function sortQuery()
     {
@@ -77,13 +82,13 @@ class Database {
 
         // callback function; same as: $query->bind_result($params)
         call_user_func_array(array($this->query, 'bind_result'), $params);
-       
+
         $results = array();
         while ($this->query->fetch()) {   // fetch the results for every field
 
             $temp = array();
 
-            foreach($row as $key => $val) { // itterate through all fields
+            foreach ($row as $key => $val) { // itterate through all fields
                 $temp[$key] = $val;
             }
 
@@ -98,5 +103,23 @@ class Database {
         $this->dbresults = $results;
     }   // function filterSingle
 
-    
+
+    public function addBags($partID, $bag_input)    {
+        if ($stmt = $this->connection->prepare("INSERT INTO barcode_lookup (part_id, barcode, quantity) VALUES (?,?,?);")) {
+            foreach ($bag_input->bags as $bag) {
+                $stmt->bind_param('sss', $partID, $bag->barcode, $bag->quantity);
+                if (!$stmt->execute()) {
+                    echo "Error: Failed to execute query. (" . $stmt->errno . ") " . $stmt->error . "\n";
+                }
+            }
+            $stmt->close();
+        }
+
+    }
+
+    public function addAttributes()
+    {
+
+    }
+
 }   // end of Database Class
