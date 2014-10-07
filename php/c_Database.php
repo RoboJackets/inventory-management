@@ -31,8 +31,8 @@ class Database
     // Create a connection to the database
     private function createConnection()
     {
-        //$this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
-        $this->connection = New mysqli(HOST, USER, NULL, DATABASE);
+        $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
+        //$this->connection = New mysqli(HOST, USER, NULL, DATABASE);
 
         // Check for errors
         if ($this->connection->connect_error) {
