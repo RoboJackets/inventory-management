@@ -1,3 +1,18 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#wrapper {
+    min-height: 100%;
+    position: relative;
+}
+
+#results-pane{
+    display: visible;
+}
+
 .nav-mode {
     display: inline-block;
     width: 10rem;
@@ -27,29 +42,30 @@
     background-color: #428bca;
 }
 
-.part-location {
-    display: inline-block;
-    padding-right: 0px;
-    width: 200px;
-    border-right: 2px solid white;
-    font-size: 6em;
-    text-align: center;
-    /* animation-direction: ; */
-}
-
 .part {
     display: inline-block;
     vertical-align: top;
     padding: 0px 15px;
 }
 
-.part-name {
+.part-location {
+    display: inline-block;
+    padding-right: 0px;
+    width: 140px;
+    border-right: 2px solid white;
     font-size: 4em;
-    line-height: 1.4em;
+    text-align: center;
+    /* animation-direction: ; */
+}
+
+.part-name {
+    font-size: 3em;
+    font-weight: bold;
+    line-height: 1.2em;
 }
 
 .part-num {
-    font-size: 2em;
+    font-size: 1.5em;
     line-height: 1.2em;
 }
 
@@ -59,6 +75,10 @@
 
 .space {
     margin: 1em 0;
+}
+
+.footer-padding {
+    padding: 38px 0px;
 }
 
 .txt-lg {
@@ -71,6 +91,29 @@
     margin: -0px -5px;
 }
 
-#results-pane{
-    display: visible;
+.footer {
+    position: absolute;
+    height: 70px;   /* minimum size for proper display on smaller screens */
+    width: 100%;
+    /*margin-bottom: -70px; /* negative value of footer height */
+    bottom: 0;
+    left: 0;
+    color:#ffffff;
+    background-color: #3c3c3c;
+}
+
+a.footer.link {
+    color: #2aabd2;
+}
+
+a.footer.hover {
+    color: #269abc;
+}
+
+a.footer.active {
+    color: #843534;
+}
+
+a.footer.visited {
+    color: #245269;
 }
