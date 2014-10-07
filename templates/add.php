@@ -1,28 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title><?php echo $title; ?></title>
+    <title><?php echo $title; ?></title>
 
-        <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-        <link href="css/add.css" rel="stylesheet">
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/add.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css"/>
 
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-    </head>
+</head>
+<body>
+<div id="wrapper">
     <header>
         <!-- Scripts are place here to improve page loading time -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -31,7 +34,7 @@
         <script src="js/add.js"></script>
     </header>
     <nav class="navbar navbar-default" role="navigation">
-        <?php include 'nav_bar.php'?>
+        <?php include 'nav_bar.php' ?>
     </nav>
     <section>
         <div id="steps-containter" class="container">
@@ -54,7 +57,8 @@
                 </div>
                 <div class="col-lg-8 col-md-6 col-xs-12">
                     <div id="toast-alert" class="alert alert-dismissible collapse" role="alert">
-                        <button type="button" class="close hide-toast" ><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <button type="button" class="close hide-toast"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span></button>
                     </div>
                 </div>
             </div>
@@ -71,9 +75,12 @@
                 </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label for="partNumberInput" class="col-md-3 col-sm-4 control-label">Manufacturer Part Number</label>
+                        <label for="partNumberInput" class="col-md-3 col-sm-4 control-label">Manufacturer Part
+                            Number</label>
+
                         <div class="col-sm-5">
-                            <input type="text" class="form-control focus" id="partNumberInput" maxlength="32" autofocus data-toggle="tooltip" data-placement="bottom" title="Existing&nbsp;part&nbsp;found">
+                            <input type="text" class="form-control focus" id="partNumberInput" maxlength="32" autofocus
+                                   data-toggle="tooltip" data-placement="bottom" title="Existing&nbsp;part&nbsp;found">
                         </div>
                     </div>
                     <div class="form-group">
@@ -95,12 +102,14 @@
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label for="partNameInput" class="col-sm-2 control-label">Part Name</label>
+
                         <div class="col-sm-10">
                             <input type="text" class="form-control focus" id="partNameInput" maxLength="32">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="categoryInput" class="col-sm-2 control-label">Category</label>
+
                         <div class="col-sm-10">
                             <select class="form-control" id="categoryInput">
                                 <option value="" disabled selected style='display:none;'></option>
@@ -118,18 +127,22 @@
                     </div>
                     <div class="form-group">
                         <label for="descriptionInput" class="col-sm-2 control-label">Description</label>
+
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="descriptionInput" maxLength="65535" style="resize:none;" placeholder="(Optional)"></textarea>
+                            <textarea class="form-control" id="descriptionInput" maxLength="65535" style="resize:none;"
+                                      placeholder="(Optional)"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="datasheetInput" class="col-sm-2 control-label">Datasheet URL</label>
+
                         <div class="col-sm-10">
                             <input type="url" class="form-control" id="datasheetInput" maxLength="65535">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="locationInput" class="col-sm-2 control-label">Storage Location</label>
+
                         <div class="col-sm-10">
                             <input type="text" class="form-control uppercase" id="locationInput" maxLength="4">
                         </div>
@@ -152,23 +165,24 @@
                 </div>
                 <table class="table">
                     <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Attribute</td>
-                            <td>Value</td>
-                        </tr>
+                    <tr>
+                        <td>#</td>
+                        <td>Attribute</td>
+                        <td>Value</td>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <input class="form-control attribute" type="text" placeholder="Add Attribute" maxLength="32">
-                            </td>
-                            <td>
-                                <input class="form-control attribute" type="text" maxLength="32">
-                            </td>
-                            <td></td>
-                        </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <input class="form-control attribute" type="text" placeholder="Add Attribute"
+                                   maxLength="32">
+                        </td>
+                        <td>
+                            <input class="form-control attribute" type="text" maxLength="32">
+                        </td>
+                        <td></td>
+                    </tr>
                     </tbody>
                 </table>
                 <div id="btn-add-back" class="round-icon pull-left btn-enabled back">
@@ -188,23 +202,23 @@
                 </div>
                 <table class="table">
                     <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Barcode</td>
-                            <td>Quantity</td>
-                        </tr>
+                    <tr>
+                        <td>#</td>
+                        <td>Barcode</td>
+                        <td>Quantity</td>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <input class="form-control attribute" type="text" placeholder="Barcode" maxLength="32">
-                            </td>
-                            <td>
-                                <input class="form-control attribute" type="text" placeholder="Quantity" maxLength="32">
-                            </td>
-                            <td></td>
-                        </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <input class="form-control attribute" type="text" placeholder="Barcode" maxLength="32">
+                        </td>
+                        <td>
+                            <input class="form-control attribute" type="text" placeholder="Quantity" maxLength="32">
+                        </td>
+                        <td></td>
+                    </tr>
                     </tbody>
                 </table>
                 <div id="btn-confirm-back" class="round-icon pull-left back btn-enabled">
@@ -217,7 +231,9 @@
 
         </div>
     </section>
-<footer>
-    <?php include 'footer.php'; ?>
-</footer>
+    <footer class="footer">
+        <?php include 'footer.php'; ?>
+    </footer>
+</div>
+</body>
 </html>
