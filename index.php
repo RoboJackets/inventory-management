@@ -15,32 +15,29 @@ $app->get('/', function() use ($app) {
     $app->view();
     $app->render('html.php', array(
         'title' => 'RoboJackets Inventory',
-        'mode' => 'barcode'
+        'mode' => 'barcode',
+        'tab' => 'default'
     ));
 });
-
 
 $app->get('/add', function() use ($app) {
     $app->view();
     $app->render('add.php', array(
-        'title' => 'Add a Component'
+        'title' => 'Add a Component',
+        'tab' => 'add'
     ));
 });
-
-
-require 'php/validate-pn.php'; //Test of new code layout system
-
 
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
     $app->render('html.php', array(
         'title' => 'RoboJackets Inventory',
         'mode' => $mode,
+        'tab' => 'default'
     ));
 });
 
-
-require 'php/submit-part.php';
-
+require 'php/validate-pn.php';
+require 'php/send-part.php';
 
 $app->run();
