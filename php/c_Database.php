@@ -10,9 +10,7 @@
 if (!isset($path)) {
     $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
 }
-if (!defined('HOST')) {
-    require $path . 'config.php';
-}
+require $path . 'config.php';
 
 
 class Database
@@ -34,9 +32,14 @@ class Database
         $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
         //$this->connection = New mysqli(HOST, USER, NULL, DATABASE);
 
+
+        if (!$this->connection) {
+            echo "Could not create connection to the database.\n";
+        }
+
         // Check for errors
         if ($this->connection->connect_error) {
-            echo "Database connection failed: " . $this->connection->connect_error, E_USER_ERROR . "\n";
+            echo "Database connection failed: " . "<b>" . $this->connection->connect_error . "</b> \n";
             exit();
         }
 
@@ -45,7 +48,7 @@ class Database
 
     public function closeConnection()
     {
-        mysql_close($this->connection);
+        mysqli_close($this->connection);
     }
 
 
@@ -55,13 +58,13 @@ class Database
         $input = (string)$user_input;
 
         if (!$this->query = $this->connection->prepare($sql)) {
-            echo "Error: Could not prepare query statement. (" . $this->query->errno . ") " . $this->query->error . "\n";
+            echo "Error: Could not prepare query statement. (" . $this->connection->errno . ") " . $this->connection->error . "\n";
         }
         if (!$this->query->bind_param("s", $input)) {
-            echo "Error: Failed to bind parameters to statement. (" . $this->query->errno . ") " . $this->query->error . "\n";
+            echo "Error: Failed to bind parameters to statement. (" . $this->connection->errno . ") " . $this->connection->error . "\n";
         }
         if (!$this->query->execute()) {
-            echo "Error: Failed to execute query. (" . $this->query->errno . ") " . $this->query->error . "\n";
+            echo "Error: Failed to execute query. (" . $this->connection->errno . ") " . $this->connection->error . "\n";
         }
 
         $this->sortQuery();
@@ -104,12 +107,13 @@ class Database
     }   // function filterSingle
 
 
-    public function addBags($partID, $bag_input)    {
+    public function addBags($partID, $bag_input)
+    {
         if ($stmt = $this->connection->prepare("INSERT INTO barcode_lookup (part_id, barcode, quantity) VALUES (?,?,?);")) {
-            foreach ($bag_input->bags as $bag) {
+            foreach ($bag_input as $index => $bag) {
                 $stmt->bind_param('sss', $partID, $bag->barcode, $bag->quantity);
                 if (!$stmt->execute()) {
-                    echo "Error: Failed to execute query. (" . $stmt->errno . ") " . $stmt->error . "\n";
+                    echo "<b>Error: Failed to execute query.</b> (" . $stmt->errno . ") " . $stmt->error . "\n";
                 }
             }
             $stmt->close();
@@ -117,9 +121,17 @@ class Database
 
     }
 
-    public function addAttributes()
+    public function addAttributes($partID, $attrib_input)
     {
-
+        if ($stmt = $this->connection->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value), priority=VALUES(priority);")) {
+            foreach ($attrib_input as $index => $attribute) {
+                $stmt->bind_param('ssss', $partID, $attribute->attribute, $attribute->value, $attribute->priority);
+                if (!$stmt->execute()) {
+                    echo "<b>Error: Failed to execute query.</b> (" . $stmt->errno . ") " . $stmt->error . "\n";
+                }
+            }
+            $stmt->close();
+        }
     }
 
 }   // end of Database Class
