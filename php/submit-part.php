@@ -1,5 +1,5 @@
 <?php
-
+/*
 $app->post('/add/submit', function() use ($app) {
     // Set Database credentials
     if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
@@ -65,3 +65,4 @@ $app->post('/add/submit', function() use ($app) {
         }
     }
 });
+*/
