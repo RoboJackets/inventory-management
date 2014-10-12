@@ -35,14 +35,14 @@ class Part
     public $attributes;
 
     /*
-     *  These 2 variables are calculated from the found database results
+     *  These are variables are calculated from the found database results
      */
     public $num_bags;
     public $total_qty;
     public $in_db;
 
     /*      ======== PRIVATE ========
-     *  These 3 private variables are used for searching the database
+     *  These are private variables are used for searching/adding information regarding database
      */
     private $part_id;
     private $barcode;
@@ -66,7 +66,7 @@ class Part
         $this->connection = $db;
 
         if (isset($input)) {
-            if (isset($input['part']) or isset($input['barcode']) or isset($input['part_id'])) {
+            if (isset($input['part']) || isset($input['barcode']) || isset($input['part_id'])) {
                 if (isset($input['part'])) {
                     $this->input = $input['part'];
                     $this->new_bags = array();
@@ -77,6 +77,10 @@ class Part
                     $this->findbyBarcode();
                 } elseif (isset($input['part_id'])) {
                     $this->part_id = $input['part_id'];
+                    $this->checkID();
+                    if (empty($this->in_db)) {
+                        $this->in_db = 0;
+                    }
                     $this->findbyID();
                 } elseif (isset($input['part_num'])) {
                     $this->part_num = $input['part_num'];
@@ -208,6 +212,7 @@ class Part
         if ($temp) {
             // the returned info is always a 2D array formatted as $data[index#][field_name]
             $this->part_id = array_shift(array_shift($temp));
+            $this->checkID();   // validate the in_db boolean value - invalid is set within findBarcode() method
         }
 
     }   // end of findPartID
@@ -305,15 +310,18 @@ class Part
      */
     private function calcQty()
     {
-        $qty = array();
+        if ($this->bags) {  // only count bags if we have at least 1
+            // decalre the array to prevent php from yelling at you
+            $qty = array('part_id' => 0, 'barcode' => 0, 'quantity' => 0);
 
-        foreach ($this->bags as $index => $items) {
-            foreach ($items as $bag => $bag_qty) {
-                $qty[$bag] += $bag_qty;
+            foreach ($this->bags as $index => $items) {
+                foreach ($items as $bag => $bag_qty) {
+                    $qty[$bag] += $bag_qty;
+                }
             }
+            // set the quantity
+            $this->total_qty = $qty['quantity'];
         }
-        // set the quantity
-        $this->total_qty = $qty['quantity'];
     }   // end of calcQty
 
 
@@ -333,101 +341,168 @@ class Part
      */
     private function filterInput()
     {
+        if (isset($this->input)) {
+            // Set the user-submitted part number into the data structure
+            $this->part_num = $this->input->part_num;
 
-        // Set the part number
-        $this->part_num = $this->input->part_num;
+            // Check the database and see if the part number is already in the 'parts' table
+            $this->checkPart();
 
-        // Check the database and see if the part number is already there
-        $this->checkDatabase();
+            // If part is already in the database, only append the extra barcodes and quantities
+            if ($this->in_db) {
+                // Find all the part information current stored in the database
+                $this->findbyPartNum();
 
-        // If part is already in the database, only append the extra barcodes and quantities
-        if ($this->in_db) {
-            // Find all the part information current stored in the database
-            $this->findbyPartNum();
+                // create temporary array of new bags
+                $temp_bags = array();
+                foreach ($this->input->bags as $bag) {
+                    $temp_bags[] = New Bag($bag->barcode, $bag->quantity);
+                }
+                // create temporary array of new attributes
+                $temp_attributes = array();
+                foreach ($this->input->attributes as $attrib) {
+                    $temp_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
+                }
 
-            // Add the aditional barcodes and quantities to the class structure
-            foreach ($this->input->bags as $bag) {
-                $this->new_bags[] = New Bag($bag->barcode, $bag->quantity);
+                // find the values within the user-submitted input that's not already in the database.
+                $this->new_attributes = $this->compareAttributes($temp_attributes);
+                $this->new_bags = $this->compareBags($temp_bags);
+
+            } else {
+                // Set the location as upper case
+                $this->location = strtoupper($this->input->location);
+
+                // Set the description to nothing if no description given
+                if ($this->input->description == "") {
+                    $this->description = null;
+                } else {
+                    // always store the description as lower case
+                    $this->description = strtolower($this->input->description);
+                }
+
+                // Set the name
+                $this->name = $this->input->name;
+
+                // Set the category as lower case
+                $this->category = strtolower($this->input->category);
+
+                // Set datasheet - do not modify case of letters, some server routing services are case sensitive
+                $this->datasheet = $this->input->datasheet;
+
+                foreach ($this->input->bags as $bag) {
+                    $this->new_bags[] = New Bag($bag->barcode, $bag->quantity);
+                }
+
+                foreach ($this->input->attributes as $attrib) {
+                    $this->new_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
+                }
             }
-
-            // Add the additional attributes and their values to the class structure
-            foreach ($this->input->attributes as $attrib) {
-                $this->new_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
-            }
-
-            // Check the new barcode and attribute values against what was already in the database
-            $this->checkValues();
-
-        } else {
-
-
-            // Set the location
-            $this->location = strtoupper($this->input->location);
-
-            // Set the description
-            if ($this->input->description == "") {
-                $this->description = null;
-            }
-
-            // Set the name
-            $this->name = $this->input->name;
-
-            // Set the category
-            $this->category = $this->input->category;
-
-
-            // Set datasheet
-            $this->datasheet = $this->input->datasheet;
-
         }
-
     }   // end of filterInput
 
 
     /*
-     *  This function checks the database for a part by its part number and set/unsets the $in_db boolean value accordingly
-     */
-    private function checkDatabase()
+    *  This function finds new bags that should be added/updated into the database
+    */
+    private function compareAttributes($raw_attribs)
     {
-        if (isset($this->part_id)) {
-            $count = array_shift($this->$connection->searchQuery("SELECT COUNT(*) FROM parts WHERE part_num=(?)", $this->part_num));
-            $this->in_db = $count['COUNT(*)'];
-            var_dump($this->in_db);
+        // create a temporary array for storing the attributes that should be added
+        $returnAttribs = array();
+
+        // loop through every attribute passed into the function
+        foreach ($raw_attribs as $new_index => $new_attrib) {
+            // temporary variable that is set if the attribute is already known
+            $found = 0;
+
+            // loop through all of the known attributes and compare each one with the new attribute in question
+            foreach ($this->attributes as $known_index => $know_attrib) {
+                // if the attribute's name was already found to be in the database...
+                if ($new_attrib->attribute == $know_attrib->attribute && $new_attrib->value == $know_attrib->value) {
+                    // set the temporary variable to 1 and break out of the foreach loop
+                    $found = 1;
+                    break;
+                }
+            }
+            // the loop will break and continue here if the attribute was found
+            // however, if the attribute was not found, add it to the array that will be returned
+            if (!$found) {
+                $returnAttribs[] = $new_attrib;
+            }
         }
-    }
+        // return the array of attributes that were found to not be in the database
+        return $returnAttribs;
+    }   // end of compareAttributes
+
 
     /*
-     *  This function adds data to the database from a part that already exists
+     *  This function finds new bags that should be added/updated into the database
      */
-    private function checkValues()
+    private function compareBags($raw_bags)
     {
-        // Check for barcodes that already exist
-        foreach($this->new_bags as $add_bag)
-        {
-            var_dump($add_bag);
-            if(in_array($add_bag, $this->bags))
-            {
-                unset($add_bag);
+        // create a temporary array for storing the bags that should be added
+        $returnBags = array();
+
+        // loop through every bag passed into the function
+        foreach ($raw_bags as $new_index => $new_bag) {
+            // temporary variable that is set if the attribute is already known
+            $found = 0;
+
+            // loop through all of the known attributes and compare each one with the new attribute in question
+            foreach ($this->bags as $known_index => $know_bag) {
+                // if the attribute's name was already found to be in the database...
+                if ($new_bag->barcode == $know_bag->barcode) {
+                    // set the temporary variable to 1 and break out of the foreach loop
+                    $found = 1;
+                    break;
+                }
+            }
+            // the loop will break and continue here if the attribute was found
+            // however, if the attribute was not found, add it to the array that will be returned
+            if (!$found) {
+                $returnBags[] = $new_bag;
             }
         }
+        return $returnBags;
+    }   // end of compareBags
 
-        // Check for attributes that already exist
-        foreach($this->new_attributes as $add_attrib)
-        {
-            if(in_array($add_attrib, $this->bags))
-            {
-                unset($add_attrib);
-            }
+
+    /*
+     *  This function checks the database for the existence of a part by its ID number and sets $in_db boolean value accordingly
+     */
+    private function checkID()
+    {
+        if (isset($this->part_id)) {
+            $count = array_shift($this->connection->searchQuery("SELECT COUNT(*) FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
+            $this->in_db = $count['COUNT(*)'];
         }
+    }   // end of checkID
 
-    }   // end of addOld
+
+    /*
+     *  This function checks the database for a part by its part number and sets the $in_db boolean value accordingly
+     */
+    private function checkPart()
+    {
+        if (isset($this->part_num)) {
+            $count = array_shift($this->connection->searchQuery("SELECT COUNT(*) FROM parts WHERE part_num=(?)", $this->part_num));
+            $this->in_db = $count['COUNT(*)'];
+        }
+    }   // end of checkPart
 
 
-    public function addNewBags()
+    public function addBags()
     {
         // Add the new bags into the database
         $this->connection->addBags($this->part_id, $this->new_bags);
-    }
+    }   // end of addBags
+
+
+    public function addAttributes()
+    {
+        // Add the new attributes into the database
+        $this->connection->addAttributes($this->part_id, $this->new_attributes);
+    }   // end of addAttributes
+
 
     /*
      *  This function is used for validating the content sent from the client before it is added into the database
