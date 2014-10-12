@@ -304,7 +304,7 @@ function submitData() {
     };
     
     var data = JSON.stringify(parts);
-    $.post("add/submit", data, "json")
+    $.post("/add/submit", data, "json")
     .done(function(xhr){
         showToast("success", "Bin " + part.location, "Part added successfully!");
         resetPage();
