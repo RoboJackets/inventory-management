@@ -14,8 +14,8 @@ class Bag
 
     public function __construct($barcode, $quantity)
     {
-        $this->barcode = $barcode;
-        $this->quantity = $quantity;
+        $this->barcode = (string)$barcode;
+        $this->quantity = (string)$quantity;
     }   // end of Constructor function
 
 }   // end of Bag Class
