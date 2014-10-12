@@ -29,6 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
             // do nothing
     }
 
-    //$conn->closeConnection();
+    $conn->closeConnection();
 
 }
