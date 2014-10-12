@@ -13,6 +13,5 @@ $app->post('/php/add-part.php', function () use ($app) {
 
     foreach ($data->parts as $part) {
         $entry = New Part($db, array('part', $part));
-        $entry->addNewBags();
     }
 });
