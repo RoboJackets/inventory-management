@@ -14,9 +14,9 @@ class Attribute {
 
     public function __construct($attribute, $value, $priority)
     {
-        $this->attribute = $attribute;
-        $this->value = $value;
-        $this->priority = $priority;
+        $this->attribute = strtolower($attribute);
+        $this->value = strtolower($value);
+        $this->priority = (string)$priority;
     }   // end of Constructor function
 
 
