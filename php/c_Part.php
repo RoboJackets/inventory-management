@@ -40,6 +40,7 @@ class Part
     public $num_bags;
     public $total_qty;
     public $in_db;
+    public $error_code;
 
     /*      ======== PRIVATE ========
      *  These are private variables are used for searching/adding information regarding database
@@ -65,8 +66,10 @@ class Part
     {
         $this->connection = $db;
 
+        $this->error_code = 0;  // set error code to 0 before beginning any operations
+
         if (isset($input)) {
-            if (isset($input['part']) || isset($input['barcode']) || isset($input['part_id'])) {
+            if (isset($input['part']) || isset($input['barcode']) || isset($input['part_id']) || isset($input['part_num'])) {
                 if (isset($input['part'])) {
                     $this->input = $input['part'];
                     $this->new_bags = array();
@@ -397,6 +400,7 @@ class Part
                     $this->new_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
                 }
             }
+            $this->validate();
         }
     }   // end of filterInput
 
@@ -492,28 +496,70 @@ class Part
 
     public function addBags()
     {
-        // Add the new bags into the database
-        $this->connection->addBags($this->part_id, $this->new_bags);
+        // if there are no errors for the user's input
+        if ($this->error_code) {
+            // Add the new bags into the database
+            $this->connection->addBags($this->part_id, $this->new_bags);
+        }
     }   // end of addBags
 
 
     public function addAttributes()
     {
-        // Add the new attributes into the database
-        $this->connection->addAttributes($this->part_id, $this->new_attributes);
+        // if there are no errors for the user's input
+        if (!$this->error_code) {
+            // Add the new attributes into the database
+            $this->connection->addAttributes($this->part_id, $this->new_attributes);
+        }
     }   // end of addAttributes
 
 
     /*
      *  This function is used for validating the content sent from the client before it is added into the database
      */
-    private function validate()
+    public function validate()
     {
-
-        // PUT STUFF HERE
-
+        $this->validateLocation();
+        $this->validateBarcode();
+        $this->validateCategory();
     }   // end of validate
 
+
+    public function validateLocation()
+    {
+        // typical location names
+        preg_match('/[A-I]0[1-6]/i', $this->location, $match);
+        if (!$match) {
+            $this->error_code = $this->error_code | 0x01;
+        }
+    }
+
+
+    public function validateBarcode()
+    {
+        foreach ($this->new_bags as $index => $bag) {
+            // 8 digits, first is always 0, next 6 are any digit in [0-9], last is checksum digit
+            preg_match('/(?:(?!(?<!\d)\d{7}(?!\d)))+/', $bag->barcode, $match);
+            if (!$match) {
+                $this->error_code = $this->error_code | 0x02;
+            }
+        }
+    }
+
+
+    public function validateCategory()
+    {
+        $categories = array('resistor','capacitor','inductor','diode','discrete','ic','oscillator','connector','other');
+        if (!in_array($this->category, $categories)) {
+            $this->error_code = $this->error_code | 0x04;
+        }
+    }
+
+
+    public function sendJSON() {
+        $part_data = json_encode(array('parts' => $this));
+        echo $part_data;
+    }
 
     /*
     *  The methods in this section are used for generating the client-side return information
