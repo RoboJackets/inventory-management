@@ -19,11 +19,19 @@ $app->post('/add/submit', function () use ($app) {
     foreach ($data as $index => $part) {
         foreach ($part as $index2 => $partObj) {
             $entry = New Part($db, array('part' => $partObj));
+
+            // Open a new database transaction that is set to NOT autocommit
             $db->startInput();
-            //$entry->addPart();
-            //$entry->addBags();
-            //$entry->addAttributes();
+
+            // Add the info
+            $entry->addPart();
+            $entry->addBags();
+            $entry->addAttributes();
+
+            // Commit the changes into the database
             $entry->storeData();
+
+            // Send the status via JSON back to the client
             $entry->sendStatus();
         }
     }
