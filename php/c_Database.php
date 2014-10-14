@@ -24,32 +24,39 @@ class Database
     public function __construct()
     {
         $this->createConnection();
-    }
+    }   // end of Constructor function
+
 
     // Create a connection to the database
     private function createConnection()
     {
-        $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
-        //$this->connection = New mysqli(HOST, USER, NULL, DATABASE);
-
-
-        if (!$this->connection) {
-            echo "Could not create connection to the database.\n";
-        }
-
-        // Check for errors
-        if ($this->connection->connect_error) {
-            echo "Database connection failed: " . "<b>" . $this->connection->connect_error . "</b> \n";
+        try {
+            $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
+            //$this->connection = New mysqli(HOST, USER, NULL, DATABASE);
+        } catch (Exception $e) {
+            echo "<b>ERROR:</b> Unable to create a connection to the database. " . USER . "@" . DATABASE . "</br>";
             exit();
         }
-
-    }   // function connect
+    }   // end of createConnection
 
 
     public function closeConnection()
     {
         mysqli_close($this->connection);
-    }
+    }   // end of closeConnection
+
+
+    public function startInput()
+    {
+        $this->connection->autocommit(false);
+        $this->connection->begin_transaction();
+    }   // end of startInput
+
+
+    public function endInput()
+    {
+        $this->connection->commit();
+    }   // end of endInput
 
 
     public function searchQuery($sql, $user_input)
@@ -58,13 +65,13 @@ class Database
         $input = (string)$user_input;
 
         if (!$this->query = $this->connection->prepare($sql)) {
-            echo "Error: Could not prepare query statement. (" . $this->connection->errno . ") " . $this->connection->error . "\n";
+            echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
         }
         if (!$this->query->bind_param("s", $input)) {
-            echo "Error: Failed to bind parameters to statement. (" . $this->connection->errno . ") " . $this->connection->error . "\n";
+            echo "<b>ERROR: Failed to bind parameters to statement.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
         }
         if (!$this->query->execute()) {
-            echo "Error: Failed to execute query. (" . $this->connection->errno . ") " . $this->connection->error . "\n";
+            echo "<b>ERROR: Failed to execute query.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
         }
 
         $this->sortQuery();
@@ -107,19 +114,40 @@ class Database
     }   // function filterSingle
 
 
+    public function addPart($part_input)
+    {
+        if ($stmt = $this->connection->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description), datasheet=VALUES(datasheet), location=VALUES(location);")) {
+            $stmt->bind_param("ssssss", $part_input->part_num, $part_input->name, $part_input->category, $part_input->description, $part_input->datasheet, $part_input->location);
+            if (!$stmt->execute()) {
+                echo "<b>ERROR: Failed to execute query in <i>addPart</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+            }
+            $stmt->close();
+        } else {
+            echo "<b>ERROR: Prepare failed in <i>addPart</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "<br>";
+        }
+
+        // return the part's id number and any errors (no errors will return 00000)
+        return array('part_id' => $this->connection->insert_id, 'status' => (int)$this->connection->sqlstate);
+    }   // end of addPart
+
+
     public function addBags($partID, $bag_input)
     {
         if ($stmt = $this->connection->prepare("INSERT INTO barcode_lookup (part_id, barcode, quantity) VALUES (?,?,?);")) {
             foreach ($bag_input as $index => $bag) {
                 $stmt->bind_param('sss', $partID, $bag->barcode, $bag->quantity);
                 if (!$stmt->execute()) {
-                    echo "<b>Error: Failed to execute query.</b> (" . $stmt->errno . ") " . $stmt->error . "\n";
+                    echo "<b>ERROR: Failed to execute query in <i>addBags</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
                 }
             }
             $stmt->close();
+        } else {
+            echo "<b>ERROR: Prepare failed in <i>addBags</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "<br>";
         }
 
-    }
+        return array('status' => (int)$this->connection->sqlstate);
+    }   // end of addBags
+
 
     public function addAttributes($partID, $attrib_input)
     {
@@ -127,11 +155,15 @@ class Database
             foreach ($attrib_input as $index => $attribute) {
                 $stmt->bind_param('ssss', $partID, $attribute->attribute, $attribute->value, $attribute->priority);
                 if (!$stmt->execute()) {
-                    echo "<b>Error: Failed to execute query.</b> (" . $stmt->errno . ") " . $stmt->error . "\n";
+                    echo "<b>ERROR: Failed to execute query in <i>addAttributes</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
                 }
             }
             $stmt->close();
+        } else {
+            echo "<b>ERROR: Prepare failed in <i>addAttributes</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "<br>";
         }
-    }
+
+        return array('status' => (int)$this->connection->sqlstate);
+    }   // end of addAttributes
 
 }   // end of Database Class
