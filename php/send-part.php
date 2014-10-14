@@ -16,6 +16,7 @@ $app->post('/add/submit', function () use ($app) {
     $data = json_decode(file_get_contents('php://input'));
     $db = New Database();
 
+
     foreach ($data as $index => $part) {
         foreach ($part as $index2 => $partObj) {
             $entry = New Part($db, array('part' => $partObj));
@@ -24,9 +25,9 @@ $app->post('/add/submit', function () use ($app) {
             $db->startInput();
 
             // Add the info
-            $entry->addPart();
-            $entry->addBags();
-            $entry->addAttributes();
+           // $entry->addPart();
+            //$entry->addBags();
+            //$entry->addAttributes();
 
             // Commit the changes into the database
             $entry->storeData();

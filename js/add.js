@@ -322,7 +322,6 @@ function submitData() {
                 showToast("success", result.title, result.message);
                 resetPage();
             }
-
         })
         .fail(function (xhr) {
             showToast("danger", "Error", "Could not submit part. Error code: " + xhr.status);
