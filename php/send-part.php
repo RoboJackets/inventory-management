@@ -22,7 +22,7 @@ $app->post('/add/submit', function () use ($app) {
             $entry = New Part($db, array('part' => $partObj));
 
             // Open a new database transaction that is set to NOT autocommit
-            $db->startInput();
+            $entry->startInput();
 
             // Add the info
            // $entry->addPart();

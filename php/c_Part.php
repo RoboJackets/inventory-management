@@ -436,6 +436,10 @@ class Part
     }   // end of filterInput
 
 
+    public function startInput(){
+        $this->connection->startInput();
+    }
+
     /*
     *  This function finds new bags that should be added/updated into the database
     */
