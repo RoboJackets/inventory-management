@@ -1,6 +1,11 @@
 <?php
 
+
+/*
+ *
+ */
 $app->post('/add/submit', function () use ($app) {
+
 // Set Database credentials
     if (!isset($path)) {
         $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
@@ -14,8 +19,12 @@ $app->post('/add/submit', function () use ($app) {
     foreach ($data as $index => $part) {
         foreach ($part as $index2 => $partObj) {
             $entry = New Part($db, array('part' => $partObj));
-            $entry->addBags();
-            $entry->addAttributes();
+            $db->startInput();
+            //$entry->addPart();
+            //$entry->addBags();
+            //$entry->addAttributes();
+            $entry->storeData();
+            $entry->sendStatus();
         }
     }
 });
