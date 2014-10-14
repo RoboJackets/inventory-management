@@ -50,6 +50,14 @@ class Part
     private $input;
     private $new_bags;
     private $new_attributes;
+    private $commit_code;
+    private $send_status;
+
+    private $part_added;
+    private $bags_added;
+    private $attributes_added;
+    private $barcode_can_add;
+    private $part_can_add;
 
     /*
      *  This private object is the connection to the database (from c_Database.php)
@@ -65,8 +73,14 @@ class Part
     public function __construct(Database $db, array $input = null)
     {
         $this->connection = $db;
-
+        $this->commit_code = 0;
         $this->error_code = 0;  // set error code to 0 before beginning any operations
+
+        $this->part_added = false;
+        $this->bags_added = false;
+        $this->attributes_added = false;
+        $this->barcode_can_add = false;
+        $this->part_can_add = false;
 
         if (isset($input)) {
             if (isset($input['part']) || isset($input['barcode']) || isset($input['part_id']) || isset($input['part_num'])) {
@@ -187,6 +201,19 @@ class Part
         $this->generateResults();
     }
 
+
+    /*
+     *  This function is used to send a part's information encoded in a JSON format
+     */
+    public function sendJSON()
+    {
+        if ($this->in_db) {
+            $part_data = json_encode(array('parts' => $this));
+            echo $part_data;
+        } else {
+            echo 0;
+        }
+    }
 
     /*
     *  The functions listed below are user-callable methods that assist in searching for parts in the database
@@ -400,6 +427,10 @@ class Part
                     $this->new_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
                 }
             }
+
+            // unset the client side input so this method will not run again if accidently called
+            unset($this->input);
+
             $this->validate();
         }
     }   // end of filterInput
@@ -410,31 +441,33 @@ class Part
     */
     private function compareAttributes($raw_attribs)
     {
-        // create a temporary array for storing the attributes that should be added
-        $returnAttribs = array();
+        if (!$this->new_attributes) {
+            // create a temporary array for storing the attributes that should be added
+            $returnAttribs = array();
 
-        // loop through every attribute passed into the function
-        foreach ($raw_attribs as $new_index => $new_attrib) {
-            // temporary variable that is set if the attribute is already known
-            $found = 0;
+            // loop through every attribute passed into the function
+            foreach ($raw_attribs as $new_index => $new_attrib) {
+                // temporary variable that is set if the attribute is already known
+                $found = 0;
 
-            // loop through all of the known attributes and compare each one with the new attribute in question
-            foreach ($this->attributes as $known_index => $know_attrib) {
-                // if the attribute's name was already found to be in the database...
-                if ($new_attrib->attribute == $know_attrib->attribute && $new_attrib->value == $know_attrib->value) {
-                    // set the temporary variable to 1 and break out of the foreach loop
-                    $found = 1;
-                    break;
+                // loop through all of the known attributes and compare each one with the new attribute in question
+                foreach ($this->attributes as $known_index => $know_attrib) {
+                    // if the attribute's name was already found to be in the database...
+                    if ($new_attrib->attribute == $know_attrib->attribute && $new_attrib->value == $know_attrib->value) {
+                        // set the temporary variable to 1 and break out of the foreach loop
+                        $found = 1;
+                        break;
+                    }
+                }
+                // the loop will break and continue here if the attribute was found
+                // however, if the attribute was not found, add it to the array that will be returned
+                if (!$found) {
+                    $returnAttribs[] = $new_attrib;
                 }
             }
-            // the loop will break and continue here if the attribute was found
-            // however, if the attribute was not found, add it to the array that will be returned
-            if (!$found) {
-                $returnAttribs[] = $new_attrib;
-            }
+            // return the array of attributes that were found to not be in the database
+            return $returnAttribs;
         }
-        // return the array of attributes that were found to not be in the database
-        return $returnAttribs;
     }   // end of compareAttributes
 
 
@@ -443,30 +476,32 @@ class Part
      */
     private function compareBags($raw_bags)
     {
-        // create a temporary array for storing the bags that should be added
-        $returnBags = array();
+        if (!$this->new_bags) {
+            // create a temporary array for storing the bags that should be added
+            $returnBags = array();
 
-        // loop through every bag passed into the function
-        foreach ($raw_bags as $new_index => $new_bag) {
-            // temporary variable that is set if the attribute is already known
-            $found = 0;
+            // loop through every bag passed into the function
+            foreach ($raw_bags as $new_index => $new_bag) {
+                // temporary variable that is set if the attribute is already known
+                $found = 0;
 
-            // loop through all of the known attributes and compare each one with the new attribute in question
-            foreach ($this->bags as $known_index => $know_bag) {
-                // if the attribute's name was already found to be in the database...
-                if ($new_bag->barcode == $know_bag->barcode) {
-                    // set the temporary variable to 1 and break out of the foreach loop
-                    $found = 1;
-                    break;
+                // loop through all of the known attributes and compare each one with the new attribute in question
+                foreach ($this->bags as $known_index => $know_bag) {
+                    // if the attribute's name was already found to be in the database...
+                    if ($new_bag->barcode == $know_bag->barcode) {
+                        // set the temporary variable to 1 and break out of the foreach loop
+                        $found = 1;
+                        break;
+                    }
+                }
+                // the loop will break and continue here if the attribute was found
+                // however, if the attribute was not found, add it to the array that will be returned
+                if (!$found) {
+                    $returnBags[] = $new_bag;
                 }
             }
-            // the loop will break and continue here if the attribute was found
-            // however, if the attribute was not found, add it to the array that will be returned
-            if (!$found) {
-                $returnBags[] = $new_bag;
-            }
+            return $returnBags;
         }
-        return $returnBags;
     }   // end of compareBags
 
 
@@ -494,24 +529,97 @@ class Part
     }   // end of checkPart
 
 
+    /*
+     *  This function add a part's information into the database and returns the part's ID number that was assigned
+     */
+    public function addPart()
+    {
+        if (!$this->in_db) {    // only run if not in the database already
+            if (!$this->error_code) {
+                $results = $this->connection->addPart($this);
+                $error = $results['status'];
+                if ($error) {
+                    $this->commit_code = $error;
+                    $this->abort();
+                } else {
+                    $this->part_id = $results['part_id'];
+                    $this->part_added = true;
+                }
+            }
+        }
+    }   // end of addPart
+
+
+    /*
+     *  This method adds new bags (barcode/qty) into the database
+     */
     public function addBags()
     {
-        // if there are no errors for the user's input
-        if ($this->error_code) {
-            // Add the new bags into the database
-            $this->connection->addBags($this->part_id, $this->new_bags);
+        if (isset($this->new_bags)) {
+            // if there are no errors for the user's input
+            if (!$this->error_code) {
+                // Add the new bags into the database
+                $results = $this->connection->addBags($this->part_id, $this->new_bags);
+                $error = $results['status'];
+                if ($error) {
+                    $this->commit_code = $error;
+                    $this->abort();
+                }
+            }
         }
     }   // end of addBags
 
 
+    /*
+     *  This method adds new attributes (attribute/value) into the database
+     */
     public function addAttributes()
     {
-        // if there are no errors for the user's input
-        if (!$this->error_code) {
-            // Add the new attributes into the database
-            $this->connection->addAttributes($this->part_id, $this->new_attributes);
+        if (isset($this->new_attributes)) {
+            // if there are no errors for the user's input
+            if (!$this->error_code) {
+                // Add the new attributes into the database
+                $results = $this->connection->addAttributes($this->part_id, $this->new_attributes);
+                $error = $results['status'];
+                if ($error) {
+                    $this->commit_code = $error;
+                    $this->abort();
+                }
+            }
         }
     }   // end of addAttributes
+
+    /*
+     *  This function will ensure that any database changes are valid before making the modifications/additions finalized
+     */
+    public function storeData(){
+        if (empty($this->send_status) && empty($this->error_code) && empty($this->commit_code)){
+            // commit the database changes
+            $this->connection->endInput();
+            $this->send_status = "Please place <i> " . $this->part_num . "</i> in bin <i>" . $this->location . "</i>.</br>";
+        }
+    }
+
+    public function sendStatus(){
+
+        $temp = 'Success ';
+        if ($this->error_code) {
+            $temp = 'Error ';
+        }
+
+        echo json_encode(array('title' => $temp,'message' => $this->send_status, 'validation_code' => $this->error_code));
+    }
+
+    /*
+     *  ** THIS METHOD ENDS THE RUNNING PHP PROCESS - ONLY CALL IN LAST RESORT SITUATIONS **
+     *  This method will call the php function, exit(), and terminate any future php lines from
+     *  running. This method is exclusively used to return the error code for failed database statements.
+     */
+    private function abort()
+    {
+        echo '<b>DATABASE ERROR: </b>' . $this->commit_code;
+        exit();
+    }
 
 
     /*
@@ -519,47 +627,81 @@ class Part
      */
     public function validate()
     {
-        $this->validateLocation();
-        $this->validateBarcode();
-        $this->validateCategory();
+        $temp1 = $this->validateBarcode();
+        if ($temp1) {
+            $this->barcode_can_add = true;
+        }
+
+        $temp2 = $this->validateLocation();
+        $temp3 = $this->validateCategory();
+        if ($temp2 && $temp3) {
+            $this->part_can_add = true;
+        }
     }   // end of validate
 
 
+    /*
+     *  This method is used for validating the client's location input.
+     */
     public function validateLocation()
     {
         // typical location names
         preg_match('/[A-I]0[1-6]/i', $this->location, $match);
         if (!$match) {
             $this->error_code = $this->error_code | 0x01;
+            $this->send_status = "Location <i>" . $this->location . "</i> is an invalid location.</br>";
+            return 0;   // invalid
+        } else {
+            return 1;   // validation approved
         }
-    }
+    }   // end of validateLocation
 
 
+    /*
+     *  This method is used for validating the client's barcode input. This will ensure that all a barcode does not
+     *  already exist in the database before being entered.
+     */
     public function validateBarcode()
     {
-        foreach ($this->new_bags as $index => $bag) {
-            // 8 digits, first is always 0, next 6 are any digit in [0-9], last is checksum digit
-            preg_match('/(?:(?!(?<!\d)\d{7}(?!\d)))+/', $bag->barcode, $match);
-            if (!$match) {
-                $this->error_code = $this->error_code | 0x02;
+        if (isset($this->new_bags)) {
+            foreach ($this->new_bags as $index => $bag) {
+                // 8 digits, first is always 0, next 6 are any digit in [0-9], last is checksum digit
+                preg_match('/^\d{2,8}$/', (int)$bag->barcode, $match);
+                if (!$match) {
+                    $this->error_code = $this->error_code | 0x02;
+                    $this->send_status = "<i>" . $bag->barcode . "</i> is an invalid barcode.</br>";
+                    return 0;   // invalid
+                }
+
+                $temp = $this->connection->searchQuery("SELECT COUNT(*) FROM barcode_lookup WHERE barcode=(?)", $bag->barcode);
+                $temp = $temp = array_shift($temp);
+                $count = $temp['COUNT(*)'];
+                if ($count) {
+                    $this->error_code = $this->error_code | 0x04;
+                    $this->send_status = "Barcode <i>" . $bag->barcode . "</i> is already in the database.</br>";
+                    return 0;   // invalid
+                }
             }
+            return 1;   // validation approved
         }
-    }
+    }   // end of validateBarcode
 
 
+    /*
+     *  This method is used for validating the client's category input
+     */
     public function validateCategory()
     {
-        $categories = array('resistor','capacitor','inductor','diode','discrete','ic','oscillator','connector','other');
+        $categories = array('resistor', 'capacitor', 'inductor', 'diode', 'discrete', 'ic', 'oscillator', 'connector', 'other');
         if (!in_array($this->category, $categories)) {
-            $this->error_code = $this->error_code | 0x04;
+            $this->error_code = $this->error_code | 0x08;
+            $this->send_status = "Category <i>" . $this->category . "</i> is an invalid category.</br>";
+            return 0;   // invalid
+        } else {
+            return 1;   // validation approved
         }
-    }
+    }   // end of validateCategory
 
-
-    public function sendJSON() {
-        $part_data = json_encode(array('parts' => $this));
-        echo $part_data;
-    }
 
     /*
     *  The methods in this section are used for generating the client-side return information
