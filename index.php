@@ -39,6 +39,5 @@ $app->get('/:mode', function($mode) use ($app) {
 
 require 'php/validate-pn.php';
 require 'php/send-part.php';
-require 'php/get-fields.php';
 
 $app->run();
