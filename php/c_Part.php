@@ -611,7 +611,7 @@ class Part
             $temp = 'Error ';
         }
 
-        echo json_encode(array('title' => $temp,'message' => $this->send_status, 'validation_code' => $this->error_code));
+        echo json_encode(array('title' => $temp, 'message' => $this->send_status, 'validation_code' => $this->error_code));
     }
 
     /*

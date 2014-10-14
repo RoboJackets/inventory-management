@@ -22,7 +22,7 @@ $app->post('/add/submit', function () use ($app) {
             $entry = New Part($db, array('part' => $partObj));
 
             // Open a new database transaction that is set to NOT autocommit
-            $entry->startInput();
+            //$entry->startInput();
 
             // Add the info
            // $entry->addPart();
@@ -30,10 +30,10 @@ $app->post('/add/submit', function () use ($app) {
             //$entry->addAttributes();
 
             // Commit the changes into the database
-            $entry->storeData();
+            //$entry->storeData();
 
             // Send the status via JSON back to the client
-            $entry->sendStatus();
+           // $entry->sendStatus();
         }
     }
 });
