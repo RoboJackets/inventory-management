@@ -622,7 +622,7 @@ class Part
     private function abort()
     {
         echo '<b>DATABASE ERROR: </b>' . $this->commit_code;
-        exit();
+       // exit();
     }
 
 
