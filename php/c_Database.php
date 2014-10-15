@@ -41,7 +41,7 @@ class Database
 
     public function closeConnection()
     {
-        $this->connection->close;
+        $this->connection->close();
     }   // end of closeConnection
 
 
