@@ -44,7 +44,7 @@ $app->get('/livesearch', function () {
     $return = array();
     foreach ($results as $index => $part_num) {
         $return[]['part'] = $part_num['part_num'];
-        $return[]['name'] = $part_num['name'];
+        //$return[]['name'] = $part_num['name'];
     }
 
     $return = json_encode($return);
