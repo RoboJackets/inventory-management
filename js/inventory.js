@@ -1,45 +1,38 @@
-$(document).ready(function(){
-    
+$(document).ready(function () {
+
     $('#txtSubmitQuery').focus();
 
-    $("#txtSubmitQuery").on("change keyup paste", function () {
+    var engine = new Bloodhound({
+        name: 'parts',
+        remote: 'http://rj.localhost/livesearch?q=%QUERY',
+        datumTokenizer: function(d) {
+            return Bloodhound.tokenizers.whitespace(d.val);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+    });
+    var promise = engine.initialize();
 
-        var query = {"input": $(this).val()};
-
-        $.post("livesearch", query, function (data) {
-
-            var result = $.parseJSON(data);
-
-            $('#results-placeholder').empty();
-
-            //console.log(result);
-
-           // if (result > 0) {
-              //  console.log('results');
-                for (var i in result) {
-                    console.log(result[i]);
-                    $('#results-placeholder').append(result[i]);
-                    $('#results-placeholder').append('</br>');
-                }
-            //} else {
-
-           // }
-        });
-
-
+    $('#txtSubmitQuery').typeahead({
+        // limit typeahead results from searching query until a few characters are known
+        // minLength: 2,
+        highlight: true
+    }, {
+        displayKey: 'part',
+        source: engine.ttAdapter()
     });
 
-    $('#barcode').click(function(){
-        if(!$('#barcode').hasClass('mode-selected')){
+
+    $('#barcode').click(function () {
+        if (!$('#barcode').hasClass('mode-selected')) {
             $('.mode-selected').removeClass('mode-selected');
             $('#barcode').addClass('mode-selected');
             $('#mode-storage').val('barcode');
         }
         $('#txtSubmitQuery').focus();
     });
-    
-    $('#bin').click(function(){
-        if(!$('#bin').hasClass('mode-selected')){
+
+    $('#bin').click(function () {
+        if (!$('#bin').hasClass('mode-selected')) {
             $('.mode-selected').removeClass('mode-selected');
             $('#bin').addClass('mode-selected');
             $('#mode-storage').val('bin');
@@ -47,18 +40,18 @@ $(document).ready(function(){
         $('#txtSubmitQuery').focus();
     });
 
-    $('#BtnSubmitQuery').click(function(){
+    $('#BtnSubmitQuery').click(function () {
         var query = $('#txtSubmitQuery').val();
-        
+
         // ajax communication for getting database results
         $.ajax({
             type: 'GET',
             url: '/php/search.php',
             data: {
-                mode:   $('#mode-storage').val(),
-                input:  $('#txtSubmitQuery').val()
+                mode: $('#mode-storage').val(),
+                input: $('#txtSubmitQuery').val()
             },
-            success: function(result){
+            success: function (result) {
                 $('#results-placeholder').empty();
                 $('#results-placeholder').append(result);
             }
@@ -66,14 +59,12 @@ $(document).ready(function(){
 
         $('#txtSubmitQuery').val('');
     });
-    
-    $('#txtSubmitQuery').keypress(function(e){
-        if(e.which === 13){//Enter key pressed
+
+    $('#txtSubmitQuery').keypress(function (e) {
+        if (e.which === 13) {//Enter key pressed
             $('#BtnSubmitQuery').click();//Trigger search button click event
         }
     });
-    
-    
-    
-    
+
+
 });
