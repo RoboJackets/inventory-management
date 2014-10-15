@@ -41,7 +41,7 @@ class Database
 
     public function closeConnection()
     {
-        mysqli_close($this->connection);
+        $this->connection->close;
     }   // end of closeConnection
 
 
