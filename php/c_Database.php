@@ -32,7 +32,6 @@ class Database
     {
         try {
             $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
-            //$this->connection = New mysqli(HOST, USER, NULL, DATABASE);
         } catch (Exception $e) {
             echo "<b>ERROR:</b> Unable to create a connection to the database. " . USER . "@" . DATABASE . "</br>";
             exit();
@@ -49,7 +48,7 @@ class Database
     public function startInput()
     {
         $this->connection->autocommit(false);
-        $this->connection->begin_transaction();
+        //$this->connection->begin_transaction();
     }   // end of startInput
 
 
@@ -58,6 +57,33 @@ class Database
         $this->connection->commit();
     }   // end of endInput
 
+    public function rollBack() {
+        $this->connection->rollback();
+    }   // end of rollBack
+
+    public function serverInfo() {
+        return $this->connection->server_info;
+    }   // end of serverInfo
+
+    public function hostInfo() {
+        return $this->connection->host_info;
+    }   // end of hostInfo
+
+    public function protocolVersion() {
+        return $this->connection->protocol_version;
+    }   // end of protocolVersion
+
+    public function clientInfo() {
+        return $this->connection->client_info;
+    }   // end of clientInfo
+
+    public function clientVersion() {
+        return $this->connection->client_version;
+    }   // end of ClientVersion
+
+    public function threadID() {
+        return $this->connection->thread_id;
+    }   // end of threadID
 
     public function searchQuery($sql, $user_input)
     {
