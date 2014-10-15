@@ -48,8 +48,8 @@ class Part
     private $part_id;
     private $barcode;
     private $input;
-    private $new_bags;
-    private $new_attributes;
+    public $new_bags;
+    public $new_attributes;
     private $commit_code;
     private $send_status;
 

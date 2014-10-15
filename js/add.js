@@ -379,14 +379,17 @@ $(document).ready(function () {
             enableCard($("#edit-details"));
 
             var query = {"partNumber": $(this).val()};
-            $.post("add/validate-pn", query, function (result) {
-                //result = $.parseJSON(result);
-                if (result > 0) {
+            $.post("/validate/partNumber", query, function (result) {
+
+                if (result != 0) {
+                    result = $.parseJSON(result);
+                    data = result.parts;
+                    console.log(data);
                     $("#partNumberInput").parent().addClass("has-success");
                     enableFastTrack();
                     $("#partNumberInput").tooltip();
 
-                } else {
+                } else if (result == 0) {
                     $("#partNumberInput").parent().removeClass("has-success");
                     disableFastTrack();
                     $("#partNumberInput").tooltip('destroy');
@@ -400,6 +403,41 @@ $(document).ready(function () {
                 $("#partNumberInput").parent().addClass("has-error");
             }
         }
+    });
+
+    $('#locationInput').on("change keyup paste", function () {
+        var location = allowedChars.test($("#locationInput").val());
+        if (location) {
+            var query = {"location": $(this).val()};
+            $.post("validate/location", query, function (result) {
+                if (result == 1) {
+                    $("#locationInput").parent().removeClass("has-error");
+                    $("#locationInput").parent().addClass("has-success");
+                } else {
+                    $("#locationInput").parent().addClass("has-error");
+                }
+            });
+        }
+    });
+
+    $("#barcode table tbody").on("change keyup paste focus", function () {
+        bags = $("#barcode table tr:not(:last-child)");
+
+        bags.each(function (index) {
+            barcode = $(this).find("td:nth-child(2) input");
+            //console.log(barcode);
+            var query = {"barcode": barcode.val()};
+            $.post("validate/barcode", query, function (result) {
+                console.log(result);
+                if (result == 1) {
+                    barcode.parent().removeClass("has-error");
+                    barcode.parent().addClass("has-success");
+                } else {
+                    barcode.parent().removeClass("has-success");
+                    barcode.parent().addClass("has-error");
+                }
+            });
+        });
     });
 
     $("#add-attributes tbody tr:last-child input").on("focus", function () {
