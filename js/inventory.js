@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     var engine = new Bloodhound({
         name: 'parts',
-        remote: 'http://rj.localhost/livesearch?q=%QUERY',
+        remote: 'http://dev.rj.str.at/livesearch?q=%QUERY',
         datumTokenizer: function(d) {
             return Bloodhound.tokenizers.whitespace(d.val);
         },
