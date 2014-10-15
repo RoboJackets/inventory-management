@@ -19,7 +19,7 @@ $app->post('/livesearch', function () {
     $results = array();
 
     if (strlen($input) > 0) {
-        $results = $db->searchQuery('SELECT part_num FROM PARTS WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
+        $results = $db->searchQuery('SELECT part_num FROM parts WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
     }
 
     $return = array();
