@@ -625,6 +625,7 @@ class Part
     {
         $this->connection->rollBack();
         $this->send_status = "Database error (<i> " . $this->commit_code . "</i>). Please contact the system administrator.</br>No database changes.</br>";
+        $this->error_code = 0xFF;
         $this->sendStatus();
         exit();
     }
