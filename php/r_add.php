@@ -6,12 +6,8 @@
 
 $app->post('/submit/part', function () use ($app) {
 
-// Set Database credentials
-    if (!isset($path)) {
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
-    }
-    require $path . 'c_Part.php';
-    require $path . 'c_Database.php';
+    require 'c_Part.php';
+    require 'c_Database.php';
 
     $data = json_decode(file_get_contents('php://input'));
     $db = New Database();

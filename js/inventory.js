@@ -4,18 +4,14 @@ $(document).ready(function () {
 
     var engine = new Bloodhound({
         name: 'parts',
-        //remote: 'http://dev.rj.str.at/livesearch?q=%QUERY',
-        remote: 'http://rj.localhost/livesearch?q=%QUERY',
+        remote: 'http://dev.rj.str.at/livesearch?q=%QUERY',
+        //remote: 'http://rj.localhost/livesearch?q=%QUERY',
         datumTokenizer: function(d) {
             return Bloodhound.tokenizers.whitespace(d.val);
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace
     });
     var promise = engine.initialize();
-
-    typeahead="item as item.part + ' (' + item.name + ')' for item in parts | filter:{part:$viewValue}"
-
-    //typeahead="item as label(item) for item in titles | filter:{title:$viewValue}"
 
     $('#txtSubmitQuery').typeahead({
         // limit typeahead results from searching query until a few characters are known
@@ -25,8 +21,6 @@ $(document).ready(function () {
         displayKey: 'part',
         source: engine.ttAdapter()
     });
-
-
 
 
     $('#barcode').click(function () {
@@ -53,7 +47,7 @@ $(document).ready(function () {
         // ajax communication for getting database results
         $.ajax({
             type: 'GET',
-            url: '/php/search.php',
+            url: '/search',
             data: {
                 mode: $('#mode-storage').val(),
                 input: $('#txtSubmitQuery').val()

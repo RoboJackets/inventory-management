@@ -7,7 +7,6 @@
  */
 
 $app->get('/info', function () use ($app) {
-
     $app->view();
     $app->render('server_info.php', array(
         'title' => 'Server Information',
