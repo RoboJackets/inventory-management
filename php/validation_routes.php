@@ -1,11 +1,10 @@
 <?php
-
 /*
- *
- */
-$app->post('/add/validate-pn', function() use ($app) {
+$app->post('/add/validate-pn', function () use ($app) {
     // Set Database credentials
-    if(!isset($path)){ $path = $_SERVER['DOCUMENT_ROOT'].'/php/'; }
+    if (!isset($path)) {
+        $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
+    }
     require $path . 'c_Database.php';
 
     $connection = New Database();
@@ -13,13 +12,14 @@ $app->post('/add/validate-pn', function() use ($app) {
     $count = array_shift($count);
     echo $count['COUNT(*)'];
 });
+ */
 
 /*
  *  Send a http POST method with a 'partNumber' field and its value. The response will be one of the following:
  *  - The number zero '0', meaning the part number is not in the database
  *  - JSON encoded information about part numbers that were found to be within the database
  */
-$app->post('/validate/partNumber', function () use ($app) {
+$app->post('/validate/partNumber', function () {
 
     if (!isset($path)) { // make sure path is known
         $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
@@ -34,7 +34,7 @@ $app->post('/validate/partNumber', function () use ($app) {
     $conn->closeConnection();
 });
 
-$app->post('/validate/location', function (){
+$app->post('/validate/location', function () {
     if (!isset($path)) { // make sure path is known
         $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
     }
@@ -49,7 +49,7 @@ $app->post('/validate/location', function (){
     $conn->closeConnection();
 });
 
-$app->post('/validate/barcode', function (){
+$app->post('/validate/barcode', function () {
     if (!isset($path)) { // make sure path is known
         $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
     }
@@ -60,7 +60,7 @@ $app->post('/validate/barcode', function (){
     $part = New Part($conn);
     $container = New Bag($_POST['barcode'], 1);
 
-    $part->new_bags = $container;
+    $part->new_bags[] = $container;
     echo $part->validateBarcode();
     $conn->closeConnection();
 });
