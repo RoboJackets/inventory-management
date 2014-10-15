@@ -224,7 +224,6 @@ class Part
     *  =======================================================================================================
     */
 
-
     /*
      *  This function will find the part_id from the database when either a barcode or part number was
      *  passed into the initial object's constructor function.
@@ -241,7 +240,8 @@ class Part
         // If part_id was successfully found
         if ($temp) {
             // the returned info is always a 2D array formatted as $data[index#][field_name]
-            $this->part_id = array_shift(array_shift($temp));
+            $temp2 = array_shift($temp);
+            $this->part_id  = array_shift($temp2);
             $this->checkID();   // validate the in_db boolean value - invalid is set within findBarcode() method
         }
 
@@ -515,7 +515,8 @@ class Part
     private function checkID()
     {
         if (isset($this->part_id)) {
-            $count = array_shift($this->connection->searchQuery("SELECT COUNT(*) FROM barcode_lookup WHERE part_id=(?)", $this->part_id));
+            $count = $this->connection->searchQuery("SELECT COUNT(*) FROM barcode_lookup WHERE part_id=(?)", $this->part_id);
+            $count = array_shift($count);
             $this->in_db = $count['COUNT(*)'];
         }
     }   // end of checkID
@@ -527,7 +528,8 @@ class Part
     private function checkPart()
     {
         if (isset($this->part_num)) {
-            $count = array_shift($this->connection->searchQuery("SELECT COUNT(*) FROM parts WHERE part_num=(?)", $this->part_num));
+            $count = $this->connection->searchQuery("SELECT COUNT(*) FROM parts WHERE part_num=(?)", $this->part_num);
+            $count = array_shift($count);
             $this->in_db = $count['COUNT(*)'];
         }
     }   // end of checkPart
@@ -616,13 +618,13 @@ class Part
 
     /*
      *  ** THIS METHOD ENDS THE RUNNING PHP PROCESS - ONLY CALL IN LAST RESORT SITUATIONS **
-     *  This method will call the php function, exit(), and terminate any future php lines from
-     *  running. This method is exclusively used to return the error code for failed database statements.
+     *  This method will call the "rollback()" method of the mysqli class. This will cause any database
+     *  changes that have yet to be committed from being permentately written into the database structure.
      */
     private function abort()
     {
         echo '<b>DATABASE ERROR: </b>' . $this->commit_code;
-       // exit();
+        $this->connection->rollBack();
     }
 
 
