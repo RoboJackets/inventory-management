@@ -9,7 +9,10 @@ $app = new \Slim\Slim(array(
     'log.enabled' => true,
     'log.level' => \Slim\Log::INFO
 ));
-    
+
+require 'php/livesearch.php';
+
+include 'php/server_route.php';
 
 $app->get('/', function() use ($app) {
     $app->view();
@@ -28,7 +31,7 @@ $app->get('/add', function() use ($app) {
     ));
 });
 
-include 'php/server_route.php';
+
 
 $app->get('/:mode', function($mode) use ($app) {
     $app->view();
@@ -41,7 +44,7 @@ $app->get('/:mode', function($mode) use ($app) {
 
 require 'php/validate-pn.php';
 require 'php/send-part.php';
-require 'php/livesearch.php';
+
 
 
 $app->run();
