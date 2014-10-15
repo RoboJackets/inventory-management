@@ -609,7 +609,7 @@ class Part
     public function sendStatus(){
 
         $temp = 'Success ';
-        if ($this->error_code) {
+        if ($this->error_code || $this->commit_code) {
             $temp = 'Error ';
         }
 
