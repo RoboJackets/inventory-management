@@ -10,11 +10,11 @@ $app->post('/submit/part', function () use ($app) {
     require 'c_Database.php';
 
     $data = json_decode(file_get_contents('php://input'));
-    $db = New Database();
+    $conn = New Database();
 
     foreach ($data as $index => $part) {
         foreach ($part as $index2 => $partObj) {
-            $entry = New Part($db, array('part' => $partObj));
+            $entry = New Part($conn, array('part' => $partObj));
 
             // Open a new database transaction that is set to NOT autocommit
             $entry->startInput();
@@ -31,4 +31,5 @@ $app->post('/submit/part', function () use ($app) {
             $entry->sendStatus();
         }
     }
+    $conn->closeConnection();
 });

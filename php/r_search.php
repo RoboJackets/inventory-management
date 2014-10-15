@@ -34,11 +34,11 @@ $app->get('/livesearch', function () {
 
     $input = (string)$_GET['q'];
 
-    $db = new Database();
+    $conn = new Database();
     $results = array();
 
     if (strlen($input) > 0) {
-        $results = $db->searchQuery('SELECT part_num, name FROM parts WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
+        $results = $conn->searchQuery('SELECT part_num, name FROM parts WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
     }
 
     $return = array();
@@ -49,4 +49,5 @@ $app->get('/livesearch', function () {
 
     $return = json_encode($return);
     echo $return;
+    $conn->closeConnection();
 });
