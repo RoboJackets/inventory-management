@@ -18,6 +18,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET")
     {
         case 'barcode':
             $part = New Part($conn, array('barcode' => $_GET['input']));
+
+            // if no part was found by the barcode, assume user input was a part number and try again
+            if (!$part->in_db) {
+                $part = New Part($conn, array('part_num' => $_GET['input']));
+            }
+
             $part->sendPart();
             break;
         case 'bin':
