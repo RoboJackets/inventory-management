@@ -6,14 +6,14 @@
  * Time: 12:39 AM
  */
 
-$app->post('/livesearch', function () {
+$app->get('/livesearch', function () {
 
     if (!isset($path)) {
         $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
     }
     require $path . 'c_Database.php';
 
-    $input = (string)$_POST['input'];
+    $input = (string)$_GET['q'];
 
     $db = new Database();
     $results = array();
@@ -24,7 +24,7 @@ $app->post('/livesearch', function () {
 
     $return = array();
     foreach($results as $index => $part_num) {
-        $return[] = $part_num['part_num'];
+        $return[]['part'] = $part_num['part_num'];
     }
 
     $return = json_encode($return);
