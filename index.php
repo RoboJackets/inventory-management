@@ -41,6 +41,7 @@ $app->get('/:mode', function($mode) use ($app) {
 
 require 'php/validate-pn.php';
 require 'php/send-part.php';
+require 'php/livesearch.php';
 
 
 $app->run();

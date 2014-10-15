@@ -1,7 +1,34 @@
 $(document).ready(function(){
     
     $('#txtSubmitQuery').focus();
-    
+
+    $("#txtSubmitQuery").on("change keyup paste", function () {
+
+        var query = {"input": $(this).val()};
+
+        $.post("livesearch", query, function (data) {
+
+            var result = $.parseJSON(data);
+
+            $('#results-placeholder').empty();
+
+            //console.log(result);
+
+           // if (result > 0) {
+              //  console.log('results');
+                for (var i in result) {
+                    console.log(result[i]);
+                    $('#results-placeholder').append(result[i]);
+                    $('#results-placeholder').append('</br>');
+                }
+            //} else {
+
+           // }
+        });
+
+
+    });
+
     $('#barcode').click(function(){
         if(!$('#barcode').hasClass('mode-selected')){
             $('.mode-selected').removeClass('mode-selected');
@@ -19,8 +46,7 @@ $(document).ready(function(){
         }
         $('#txtSubmitQuery').focus();
     });
-    
-    
+
     $('#BtnSubmitQuery').click(function(){
         var query = $('#txtSubmitQuery').val();
         

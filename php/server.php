@@ -6,8 +6,6 @@
  * Time: 11:03 PM
  */
 
-
-
     // Set Database credentials
     if (!isset($path)) {
         $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
