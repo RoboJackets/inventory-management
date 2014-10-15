@@ -312,7 +312,7 @@ function submitData() {
     };
 
     var data = JSON.stringify(parts);
-    $.post("add/submit", data, "json")
+    $.post("/submit/part", data, "json")
         .done(function (xhr) {
             result = $.parseJSON(xhr);
 
