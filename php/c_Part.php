@@ -623,8 +623,9 @@ class Part
      */
     private function abort()
     {
-        echo '<b>DATABASE ERROR: </b>' . $this->commit_code;
         $this->connection->rollBack();
+        $this->send_status = "Database error (<i> " . $this->commit_code . "</i>). Please contact the system administrator.</br>No database changes.</br>";
+        $this->sendStatus();
     }
 
 

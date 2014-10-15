@@ -171,7 +171,8 @@ class Database
             echo "<b>ERROR: Prepare failed in <i>addBags</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "<br>";
         }
 
-        return array('status' => (int)$this->connection->sqlstate);
+        return array('status' => 1);
+       // return array('status' => (int)$this->connection->sqlstate);
     }   // end of addBags
 
 
