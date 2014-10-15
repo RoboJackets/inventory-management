@@ -27,6 +27,7 @@
                 <!-- Scripts are place here to improve page loading time -->
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
                 <script src="js/bootstrap.min.js"></script>
+                <script src="js/typeahead.js/typeahead.bundle.min.js"></script>
                 <script src="js/inventory.js"></script>
             </header>
             <nav class="navbar navbar-default" role="navigation">
@@ -46,7 +47,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="input-group">
+                            <div class="input-group twitter-typeahead">
                                 <input id="mode-storage" type="hidden" value="<?php echo $mode;?>">
                                 <input type="text" id="txtSubmitQuery" class="form-control txt-lg" autofocus>
                                 <span class="input-group-btn">
