@@ -381,13 +381,30 @@ $(document).ready(function () {
             var query = {"partNumber": $(this).val()};
             $.post("/validate/partNumber", query, function (result) {
 
+                is_updated = $(".card:first-child .next, .submit").hasClass("fast-track");
+
                 if (result != 0) {
                     result = $.parseJSON(result);
                     data = result.parts;
-                    console.log(data);
-                    $("#partNumberInput").parent().addClass("has-success");
-                    enableFastTrack();
-                    $("#partNumberInput").tooltip();
+
+                    if (!is_updated) {
+                        $("#partNumberInput").parent().addClass("has-success");
+                        enableFastTrack();
+                        $("#partNumberInput").tooltip();
+
+                        $('#partNameInput').val(data.name);
+                        $('#categoryInput').val(data.category);
+                        $('#descriptionInput').val(data.description);
+                        $('#datasheetInput').val(data.datasheet);
+                        $('#locationInput').val(data.location);
+
+                        $.each(data.attributes, function (index, value) {
+                            addInputField("#add-attributes", true, value.attribute, value.value);
+                        });
+                        $.each(data.bags, function (index, value) {
+                            addInputField("#barcode", true, value.barcode, value.quantity);
+                        });
+                    }
 
                 } else if (result == 0) {
                     $("#partNumberInput").parent().removeClass("has-success");
@@ -425,10 +442,9 @@ $(document).ready(function () {
 
         bags.each(function (index) {
             barcode = $(this).find("td:nth-child(2) input");
-            //console.log(barcode);
+
             var query = {"barcode": barcode.val()};
             $.post("validate/barcode", query, function (result) {
-                console.log(result);
                 if (result == 1) {
                     barcode.parent().removeClass("has-error");
                     barcode.parent().addClass("has-success");
