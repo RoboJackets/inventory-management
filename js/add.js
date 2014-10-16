@@ -2,30 +2,39 @@ var allowedChars = /^[\w-+=&' ]+$/;
 var currentCardID = "#add-part";
 
 function slideCard($card, direction, side) {
+
     if (direction === "in") {
+
         if (side === "right") {
-            $card.switchClass("off-left", "off-right", 0);
-            $card.removeClass("hidden");
-            $card.removeClass("off-right", 300, "swing", function () {
-                $card.find("input.focus").focus();
-            });
+            move_1 = "off-left";
+            move_2 = "off-" + side;
         } else {
-            $card.switchClass("off-right", "off-left", 0);
-            $card.removeClass("hidden");
-            $card.removeClass("off-left", 300, "swing", function () {
-                $card.find("input.focus").focus();
-            });
+            move_1 = "off-right";
+            move_2 = "off-left";
         }
+
+        $card.switchClass(move_1, move_2, 0);
+        $card.removeClass("hidden");
+        $card.addClass("card-unlock");
+        $card.removeClass(move_2, 300, "swing", function () {
+            $card.find("input.focus").focus();
+            $card.removeClass("card-unlock");
+        });
+
     } else {
+
         if (side === "right") {
-            $card.addClass("off-right", 300, "swing", function () {
-                $card.addClass("hidden");
-            });
+            move_direction = "off-" + side;
         } else {
-            $card.addClass("off-left", 300, "swing", function () {
-                $card.addClass("hidden");
-            });
+            move_direction = "off-left";
         }
+
+        $card.addClass("card-unlock");
+        $card.addClass(move_direction, 300, "swing", function () {
+            $card.addClass("hidden");
+            $card.addClass("card-unlock");
+        });
+
     }
 };
 

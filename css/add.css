@@ -8,13 +8,16 @@ html {
 }
 
 .card {
-    position: absolute;
     width: inherit;
     background-color: #fff;
     border-radius: 3px;
     box-shadow: 1px 2px 3px #ccc;
     padding: 0px 15px 15px;
     margin-left: -15px;
+}
+
+.card-unlock {
+    position: absolute;
 }
 
 @media (max-width: 768px) {
