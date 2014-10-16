@@ -68,8 +68,7 @@
 <div class="container card-container">
 
     <!-- Card 1: Add new component -->
-    <div class="panel card" id="add-part">
-        <div class="panel-body">
+    <div class="panel panel-body card" id="add-part">
             <!--<div class="card hidden" id="add-part">-->
             <div class="row">
                 <div class="col-sm-12">
@@ -96,12 +95,10 @@
                 <span class="glyphicon glyphicon-chevron-right"></span>
             </div>
             <!--</div>-->
-        </div>
     </div>
 
     <!-- Card 2: Edit Details -->
-    <div class="panel card off-right hidden" id="edit-details">
-        <div class="panel-body">
+    <div class="panel panel-body card off-right hidden" id="edit-details">
             <!--<div class="card off-right hidden" id="edit-details">-->
             <div class="row">
                 <div class="col-sm-12">
@@ -165,12 +162,10 @@
                 <span class="glyphicon glyphicon-chevron-right"></span>
                 <!--</div>-->
             </div>
-        </div>
     </div>
 
     <!-- Card 3: Add Attributes -->
-    <div class="panel card off-right hidden" id="add-attributes">
-        <div class="panel-body">
+    <div class="panel panel-body card off-right hidden" id="add-attributes">
             <!--<div class="card off-right hidden" id="add-attributes">-->
             <div class="row">
                 <div class="col-sm-12">
@@ -206,12 +201,10 @@
                 <span class="glyphicon glyphicon-chevron-right"></span>
             </div>
             <!--</div>-->
-        </div>
     </div>
 
     <!-- Card 4: Add Barcode and Submit -->
-    <div class="panel card off-right hidden" id="barcode">
-        <div class="panel-body">
+    <div class="panel panel-body card off-right hidden" id="barcode">
             <!--<div class="card off-right hidden" id="barcode">-->
             <div class="row">
                 <div class="col-sm-12">
@@ -246,7 +239,6 @@
                 <span class="glyphicon glyphicon-ok"></span>
             </div>
             <!--</div>-->
-        </div>
     </div>
 
 </div>

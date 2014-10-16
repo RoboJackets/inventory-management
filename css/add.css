@@ -20,6 +20,7 @@ html {
     position: absolute;
 }
 
+
 @media (max-width: 768px) {
     .card-container {
         width: 100%;
