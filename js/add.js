@@ -32,7 +32,7 @@ function slideCard($card, direction, side) {
         $card.addClass("card-unlock");
         $card.addClass(move_direction, 300, "swing", function () {
             $card.addClass("hidden");
-            $card.addClass("card-unlock");
+            $card.removeClass("card-unlock");
         });
 
     }
