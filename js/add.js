@@ -1,5 +1,6 @@
 var allowedChars = /^[\w-+=&' ]+$/;
 var currentCardID = "#add-part";
+var CURRENT_PARTNUM;
 
 function slideCard($card, direction, side) {
 
@@ -36,7 +37,7 @@ function slideCard($card, direction, side) {
         });
 
     }
-};
+}
 
 function toCard(targetCardID, currentCardID) {
     if ($(currentCardID).nextAll(targetCardID).length !== 0) {
@@ -52,7 +53,7 @@ function toCard(targetCardID, currentCardID) {
     $("ol.steps li:nth-child(" + stepIndex + ")").addClass("steps-active");
 
     return targetCardID;
-};
+}
 
 function enableCard($cards) {
     $cards.each(function (index) {
@@ -62,7 +63,7 @@ function enableCard($cards) {
 
     $cards.prev(".card").children(".next").addClass("btn-enabled");
     $cards.next(".card").children(".back").addClass("btn-enabled");
-};
+}
 
 function disableCard($cards) {
     $cards.each(function (index) {
@@ -72,13 +73,14 @@ function disableCard($cards) {
 
     $cards.prev(".card").children(".next").removeClass("btn-enabled");
     $cards.next(".card").children(".back").removeClass("btn-enabled");
-};
+}
 
 function enableFastTrack() {
     $(".card:first-child .next, .submit").addClass("fast-track");
     $("ol.steps li:last-child").addClass("fast-track");
     enableCard($(".card"));
-};
+    // $("#btn-confirm-submit").addClass("btn-enabled");
+}
 
 function disableFastTrack() {
     $(".card:first-child .next, .submit").removeClass("fast-track");
@@ -158,36 +160,82 @@ function addAttributes(fields) {
     })
 }
 
-function validateEditDetails() {
-    var partName = allowedChars.test($("#partNameInput").val())
-    var category = $("#categoryInput").val() !== null;
-    var description = /^[^'"\\]*$/.test($("#descriptionInput").val());
-    var datasheet = /^[^'"\\\s]+$/.test($("#datasheetInput").val());
-    var location = allowedChars.test($("#locationInput").val());
+/*
+ Validation Functions
+ */
+
+function validatePartName() {
+    var partName = allowedChars.test($("#partNameInput").val());
+    var ret;
 
     if (partName || !$("#partNameInput").val()) {
         $("#partNameInput").parent().removeClass("has-error");
+        ret = 1;
     } else {
         $("#partNameInput").parent().addClass("has-error");
+        ret = 0;
     }
+
+    return ret;
+}
+
+function validateDescription() {
+    var description = /^[^'"\\]*$/.test($("#descriptionInput").val());
+    var ret;
 
     if (description || !$("#descriptionInput").val()) {
         $("#descriptionInput").parent().removeClass("has-error");
+        return 1;
     } else {
         $("#descriptionInput").parent().addClass("has-error");
+        return 0;
     }
+
+    return ret;
+}
+
+function validateCategory() {
+    var category = $("#categoryInput").val() !== null;
+    return category;
+}
+
+function validateDatasheet() {
+    var datasheet = /^[^'"\\\s]+$/.test($("#datasheetInput").val());
+    var ret;
 
     if (datasheet || !$("#datasheetInput").val()) {
         $("#datasheetInput").parent().removeClass("has-error");
+        ret = 1;
     } else {
         $("#datasheetInput").parent().addClass("has-error");
+        ret = 0;
     }
+
+    return ret;
+}
+
+function validateLocation() {
+    var location = allowedChars.test($("#locationInput").val());
+    var ret;
 
     if (location || !$("#locationInput").val()) {
         $("#locationInput").parent().removeClass("has-error");
+        ret = 1;
     } else {
         $("#locationInput").parent().addClass("has-error");
+        ret = 0;
     }
+
+    return ret;
+}
+
+function validateEditDetails() {
+
+    var partName = validatePartName();
+    var category = validateCategory();
+    var description = validateDescription();
+    var datasheet = validateDatasheet();
+    var location = validateLocation();
 
     if (partName && category && description && datasheet && location) {
         enableCard($("#add-attributes"));
@@ -275,6 +323,11 @@ function showToast(alertType, title, message) {
         $toast.children(":not(button)").remove();
         $toast.hide();
     });
+
+    $toast.fadeTo(6000, 500).fadeOut(500, function () {
+        $toast.alert('close');
+    });
+
     $toast.show();
 }
 
@@ -319,14 +372,14 @@ function submitData() {
     var parts = {
         "parts": [part]
     };
-
     var data = JSON.stringify(parts);
+
     $.post("/submit/part", data, "json")
         .done(function (xhr) {
             result = $.parseJSON(xhr);
 
             if (result.validation_code) {
-                showToast("danger", result.title, result.message);
+                showToast("warning", result.title, result.message);
             } else {
                 showToast("success", result.title, result.message);
                 resetPage();
@@ -337,14 +390,17 @@ function submitData() {
         });
 }
 
-function resetPage() {
-    currentCardID = toCard("#add-part", "#barcode");
+function clearPage() {
     $("#categoryInput").val("");
     $(".card table tr:not(:last-child) td span").click();
     $("input, textarea").val("");
     disableFastTrack();
-    disableCard($(".card").slice(1));
+    //disableCard($(".card").slice(1));
+}
 
+function resetPage() {
+    currentCardID = toCard("#add-part", "#barcode");
+    clearPage();
 }
 
 $(document).ready(function () {
@@ -383,19 +439,33 @@ $(document).ready(function () {
         }
     });
 
-    $("#partNumberInput").on("change keyup paste", function () {
+    $("#partNumberInput").change(function () {
+        temp = $(this).val();
+        if (!$(".card:first-child .next, .submit").hasClass("fast-track")) {
+            //disableFastTrack();
+            if (CURRENT_PARTNUM != $(this).val()) {
+                clearPage();
+            }
+        }
+        $(this).val(temp);
+    });
+
+    $("#partNumberInput").on("keyup paste", function () {
         if (allowedChars.test($(this).val())) {
+
+            //if (!is_updated) {
             enableCard($("#edit-details"));
 
             var query = {"partNumber": $(this).val()};
+
             $.post("/validate/partNumber", query, function (result) {
 
-                is_updated = $(".card:first-child .next, .submit").hasClass("fast-track");
 
                 if (result != 0) {
                     result = $.parseJSON(result);
                     data = result.parts;
 
+                    is_updated = $(".card:first-child .next, .submit").hasClass("fast-track");
                     if (!is_updated) {
                         $("#partNumberInput").parent().addClass("has-success");
                         enableFastTrack();
@@ -413,6 +483,8 @@ $(document).ready(function () {
                         $.each(data.bags, function (index, value) {
                             addInputField("#barcode", true, value.barcode, value.quantity);
                         });
+
+                        CURRENT_PARTNUM = $(this).val();
                     }
 
                 } else if (result == 0) {
@@ -421,6 +493,7 @@ $(document).ready(function () {
                     $("#partNumberInput").tooltip('destroy');
                 }
             });
+            //}
         } else {
             disableCard($("#edit-details"));
             if (!$(this).val()) {
