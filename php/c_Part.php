@@ -379,7 +379,8 @@ class Part
             $this->checkPart();
 
             // If part is already in the database, only append the extra barcodes and quantities
-            if ($this->in_db) {
+            //if ($this->in_db) {
+              if (0) {
                 // Find all the part information current stored in the database
                 $this->findbyPartNum();
 
