@@ -32,7 +32,7 @@ $app->get('/add', function() use ($app) {
 });
 
 // Include routes that are in other files
-include 'php/r_server.php';
+// include 'php/r_server.php';
 require 'php/r_search.php';
 require 'php/r_validation.php';
 require 'php/r_add.php';
