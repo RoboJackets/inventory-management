@@ -16,5 +16,5 @@ $app->get('/info', function () use ($app) {
 
 $app->get('/view-log', function (){
    $app->view();
-    echo file_get_contents('logs/part-log.txt');
+    echo file_get_contents('/logs/part-log.txt');
 });
