@@ -42,3 +42,17 @@ $app->post('/validate/barcode', function () {
     echo $part->validateBarcode();
     $conn->closeConnection();
 });
+
+$app->post('/validate/datasheet', function () {
+
+    require 'c_Part.php';
+    require 'c_Database.php';
+
+    $conn = New Database();
+    $part = New Part($conn);
+    $link = $_POST['datasheet'];
+
+    $part->datasheet = $link;
+    echo $part->validateDatasheet();
+    $conn->closeConnection();
+});
