@@ -151,7 +151,7 @@ function addInputField(id, readOnly, key, value) {
     $(id + " table tbody tr").each(function (idx) {
         $(this).children().first().text(idx + 1);
     });
-};
+}
 
 function addAttributes(fields) {
     $("#add-attributes table tbody tr td:nth-child(2) input[readonly]").parents("tr").find("span.glyphicon-remove").click();
@@ -352,10 +352,13 @@ function submitData() {
     $bags = $("#barcode table tr:not(:last-child)");
 
     $bags.each(function (index) {
-        bags.push(new Bag(
-            $(this).find("td:nth-child(2) input").val(),
-            $(this).find("td:nth-child(3) input").val()
-        ));
+        add = $(this).find("td:nth-child(2) input").attr("readonly");
+        if (!add) {
+            bags.push(new Bag(
+                $(this).find("td:nth-child(2) input").val(),
+                $(this).find("td:nth-child(3) input").val()
+            ));
+        }
     });
 
     var part = new Part(
@@ -376,7 +379,10 @@ function submitData() {
 
     $.post("/submit/part", data, "json")
         .done(function (xhr) {
-            result = $.parseJSON(xhr);
+
+            console.log(xhr);
+
+            var result = $.parseJSON(xhr);
 
             if (result.validation_code) {
                 showToast("warning", result.title, result.message);
@@ -460,7 +466,6 @@ $(document).ready(function () {
 
             $.post("/validate/partNumber", query, function (result) {
 
-
                 if (result != 0) {
                     result = $.parseJSON(result);
                     data = result.parts;
@@ -508,7 +513,7 @@ $(document).ready(function () {
         var location = allowedChars.test($("#locationInput").val());
         if (location) {
             var query = {"location": $(this).val()};
-            $.post("validate/location", query, function (result) {
+            $.post("/validate/location", query, function (result) {
                 if (result == 1) {
                     $("#locationInput").parent().removeClass("has-error");
                     $("#locationInput").parent().addClass("has-success");
@@ -525,16 +530,18 @@ $(document).ready(function () {
         bags.each(function (index) {
             barcode = $(this).find("td:nth-child(2) input");
 
-            var query = {"barcode": barcode.val()};
-            $.post("validate/barcode", query, function (result) {
-                if (result == 1) {
-                    barcode.parent().removeClass("has-error");
-                    barcode.parent().addClass("has-success");
-                } else {
-                    barcode.parent().removeClass("has-success");
-                    barcode.parent().addClass("has-error");
-                }
-            });
+            if (!barcode.attr("readonly")) {
+                var query = {"barcode": barcode.val()};
+                $.post("/validate/barcode", query, function (result) {
+                    if (result == 1) {
+                        barcode.parent().removeClass("has-error");
+                        barcode.parent().addClass("has-success");
+                    } else {
+                        barcode.parent().removeClass("has-success");
+                        barcode.parent().addClass("has-error");
+                    }
+                });
+            }
         });
     });
 
