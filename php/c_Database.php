@@ -11,21 +11,23 @@ if (!isset($path)) {
     $path = $_SERVER['DOCUMENT_ROOT'] . '/php/';
 }
 require $path . 'config.php';
+require $path . 'c_Log.php';
 
 
 class Database
 {
-
     private $connection;
     private $dbresults;
     private $query;
+    private $log;
 
     // Constructor function to initialize the database connection
     public function __construct()
     {
+        $this->log = New LogFile();
+        $this->log->setFile('database-errors.txt');
         $this->createConnection();
     }   // end of Constructor function
-
 
     // Create a connection to the database
     private function createConnection()
@@ -34,6 +36,8 @@ class Database
             $this->connection = New mysqli(HOST, USER, PASSWORD, DATABASE);
         } catch (Exception $e) {
             echo "<b>ERROR:</b> Unable to create a connection to the database. " . USER . "@" . DATABASE . "</br>";
+            $log_error = 'Could not create connection to the database ' . DATABASE . ' from ' . USER . '@' . HOST;
+            $this->log->writeLog($log_error);
             exit();
         }
     }   // end of createConnection
@@ -85,6 +89,10 @@ class Database
         return $this->connection->thread_id;
     }   // end of threadID
 
+    public function affectedRows() {
+        return $this->connection->affected_rows;
+    }
+
     public function searchQuery($sql, $user_input)
     {
         // cast input to a string for consistency
@@ -92,12 +100,18 @@ class Database
 
         if (!$this->query = $this->connection->prepare($sql)) {
             echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+            $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+            $this->log->writeLog($log_error);
         }
         if (!$this->query->bind_param("s", $input)) {
             echo "<b>ERROR: Failed to bind parameters to statement.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+            $log_error = 'Query bind parameter failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+            $this->log->writeLog($log_error);
         }
         if (!$this->query->execute()) {
             echo "<b>ERROR: Failed to execute query.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+            $log_error = 'Query execution failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+            $this->log->writeLog($log_error);
         }
 
         $this->sortQuery();
@@ -142,54 +156,87 @@ class Database
 
     public function addPart($part_input)
     {
+        $rows = array('added' => 0, 'modified' => 0);
         if ($stmt = $this->connection->prepare("INSERT INTO parts (part_num, name, category, description, datasheet, location) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE name=VALUES(name), category=VALUES(category), description=VALUES(description), datasheet=VALUES(datasheet), location=VALUES(location);")) {
             $stmt->bind_param("ssssss", $part_input->part_num, $part_input->name, $part_input->category, $part_input->description, $part_input->datasheet, $part_input->location);
             if (!$stmt->execute()) {
                 echo "<b>ERROR: Failed to execute query in <i>addPart</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query bind parameters failure [addPart()]: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+            $temp = $stmt->affected_rows;
+            if ($temp == 2) {
+                $rows['modified'] += 1;
+            } else if ($temp == 1) {
+                $rows['added'] += 1;
             }
             $stmt->close();
         } else {
             echo "<b>ERROR: Prepare failed in <i>addPart</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "<br>";
+            $log_error = 'Query statement prepare failure [addPart()]: (' . $this->connection->errno . ') ' . $this->connection->error;
+            $this->log->writeLog($log_error);
         }
 
         // return the part's id number and any errors (no errors will return 00000)
-        return array('part_id' => $this->connection->insert_id, 'status' => (int)$this->connection->sqlstate);
+        return array('part_id' => $this->connection->insert_id, 'rows_modified' => $rows['modified'], 'rows_added' => $rows['added'], 'sqlstate' => (int)$this->connection->sqlstate);
     }   // end of addPart
 
 
     public function addBags($partID, $bag_input)
     {
+        $rows = array('added' => 0, 'modified' => 0);
         if ($stmt = $this->connection->prepare("INSERT INTO barcode_lookup (part_id, barcode, quantity) VALUES (?,?,?);")) {
             foreach ($bag_input as $index => $bag) {
                 $stmt->bind_param('sss', $partID, $bag->barcode, $bag->quantity);
                 if (!$stmt->execute()) {
                     echo "<b>ERROR: Failed to execute query in <i>addBags</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                    $log_error = 'Query bind parameters failure [addBags()]: (' . $this->connection->errno . ') ' . $this->connection->error;
+                    $this->log->writeLog($log_error);
+                }
+                $temp = $stmt->affected_rows;
+                if ($temp == 2) {
+                    $rows['modified'] += 1;
+                } else if ($temp == 1) {
+                    $rows['added'] += 1;
                 }
             }
             $stmt->close();
         } else {
             echo "<b>ERROR: Prepare failed in <i>addBags</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "<br>";
+            $log_error = 'Query statement prepare failure [addBags()]: (' . $this->connection->errno . ') ' . $this->connection->error;
+            $this->log->writeLog($log_error);
         }
 
-        return array('status' => (int)$this->connection->sqlstate);
+        return array('status' => (int)$this->connection->sqlstate, 'rows_added' => $rows['added'], 'rows_modified' => $rows['modified']);
     }   // end of addBags
 
 
     public function addAttributes($partID, $attrib_input)
     {
+        $rows = array('added' => 0, 'modified' => 0);
         if ($stmt = $this->connection->prepare("INSERT INTO attributes (part_id, attribute, value, priority) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE value=VALUES(value), priority=VALUES(priority);")) {
             foreach ($attrib_input as $index => $attribute) {
                 $stmt->bind_param('ssss', $partID, $attribute->attribute, $attribute->value, $attribute->priority);
                 if (!$stmt->execute()) {
                     echo "<b>ERROR: Failed to execute query in <i>addAttributes</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                    $log_error = 'Query bind parameters failure [addAttributes()]: (' . $this->connection->errno . ') ' . $this->connection->error;
+                    $this->log->writeLog($log_error);
+                }
+                $temp = $stmt->affected_rows;
+                if ($temp == 2) {
+                    $rows['modified'] += 1;
+                } else if ($temp == 1) {
+                    $rows['added'] += 1;
                 }
             }
             $stmt->close();
         } else {
             echo "<b>ERROR: Prepare failed in <i>addAttributes</i> method:</b> (" . $this->connection->errno . ") " . $this->connection->error . "<br>";
+            $log_error = 'Query statement prepare failure [addAttributes()]: (' . $this->connection->errno . ') ' . $this->connection->error;
+            $this->log->writeLog($log_error);
         }
 
-        return array('status' => (int)$this->connection->sqlstate);
+        return array('status' => (int)$this->connection->sqlstate, 'rows_added' => $rows['added'], 'rows_modified' => $rows['modified']);
     }   // end of addAttributes
 
 }   // end of Database Class

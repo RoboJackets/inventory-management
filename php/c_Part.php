@@ -58,6 +58,9 @@ class Part
     private $attributes_added;
     private $barcode_can_add;
     private $part_can_add;
+    private $part_needs_update;
+    private $part_log;
+    private $log_statement;
 
     /*
      *  This private object is the connection to the database (from c_Database.php)
@@ -73,6 +76,8 @@ class Part
     public function __construct(Database $db, array $input = null)
     {
         $this->connection = $db;
+        $this->part_log = new LogFile();
+        $this->part_log->setFile('part-log.txt');
         $this->commit_code = 0;
         $this->error_code = 0;  // set error code to 0 before beginning any operations
 
@@ -81,6 +86,7 @@ class Part
         $this->attributes_added = false;
         $this->barcode_can_add = false;
         $this->part_can_add = false;
+        $this->part_needs_update = false;
 
         if (isset($input)) {
             if (isset($input['part']) || isset($input['barcode']) || isset($input['part_id']) || isset($input['part_num'])) {
@@ -241,7 +247,7 @@ class Part
         if ($temp) {
             // the returned info is always a 2D array formatted as $data[index#][field_name]
             $temp2 = array_shift($temp);
-            $this->part_id  = array_shift($temp2);
+            $this->part_id = array_shift($temp2);
             $this->checkID();   // validate the in_db boolean value - invalid is set within findBarcode() method
         }
 
@@ -366,12 +372,86 @@ class Part
 
 
     /*
+     *  This method checks the client's passed data against the part's information in the database. We do not want
+     *  to change the "last updated" field from the 'parts' table in the database if all information is the same
+     */
+    private function pullPart()
+    {
+        // Set the location as upper case
+        if ($this->location != $this->input->location) {
+            $this->location = strtoupper($this->input->location);
+            $this->part_needs_update = true;
+        }
+
+        // Set the description to nothing if no description given
+        if ($this->description != $this->input->description) {
+            if ($this->input->description == "") {
+                $this->description = null;
+            } else {
+                // always store the description as lower case
+                $this->description = strtolower($this->input->description);
+            }
+            $this->part_needs_update = true;
+        }
+
+        // Set the name
+        if ($this->name != $this->input->name) {
+            $this->name = $this->input->name;
+            $this->part_needs_update = true;
+        }
+
+        // Set the category as lower case
+        if ($this->category != $this->input->category) {
+            $this->category = strtolower($this->input->category);
+            $this->part_needs_update = true;
+        }
+
+        // Set datasheet - do not modify case of letters, some server routing services are case sensitive
+        if ($this->datasheet != $this->input->datasheet) {
+            $this->datasheet = $this->input->datasheet;
+        }
+    }
+
+
+    /*
+     *
+     */
+    private function pullBags()
+    {
+        // create temporary array of new bags
+        $temp_bags = array();
+        foreach ($this->input->bags as $bag) {
+            $temp_bags[] = New Bag($bag->barcode, $bag->quantity);
+        }
+
+        return $temp_bags;
+    }   // end of pullBags
+
+
+    /*
+     *
+     */
+    private function pullAttributes()
+    {
+        // create temporary array of new attributes
+        $temp_attributes = array();
+        foreach ($this->input->attributes as $attrib) {
+            $temp_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
+        }
+
+        return $temp_attributes;
+    }   // end of pullAttributes
+
+
+    /*
      *  This function will filter the client's passed input values into the class's structure. This must be called
      *  before anything can be done with the information from the data fields.
      */
     private function filterInput()
     {
+        // This method should never be called without client-submitted data
         if (isset($this->input)) {
+
             // Set the user-submitted part number into the data structure
             $this->part_num = $this->input->part_num;
 
@@ -379,65 +459,31 @@ class Part
             $this->checkPart();
 
             // If part is already in the database, only append the extra barcodes and quantities
-            //if ($this->in_db) {
-              if (0) {
+            if ($this->in_db) {
                 // Find all the part information current stored in the database
                 $this->findbyPartNum();
-
-                // create temporary array of new bags
-                $temp_bags = array();
-                foreach ($this->input->bags as $bag) {
-                    $temp_bags[] = New Bag($bag->barcode, $bag->quantity);
-                }
-                // create temporary array of new attributes
-                $temp_attributes = array();
-                foreach ($this->input->attributes as $attrib) {
-                    $temp_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
-                }
-
+                $this->pullPart();
                 // find the values within the user-submitted input that's not already in the database.
-                $this->new_attributes = $this->compareAttributes($temp_attributes);
-                $this->new_bags = $this->compareBags($temp_bags);
-
+                $this->new_attributes = $this->compareAttributes($this->pullAttributes());
+                $this->new_bags = $this->compareBags($this->pullBags());
             } else {
-                // Set the location as upper case
-                $this->location = strtoupper($this->input->location);
-
-                // Set the description to nothing if no description given
-                if ($this->input->description == "") {
-                    $this->description = null;
-                } else {
-                    // always store the description as lower case
-                    $this->description = strtolower($this->input->description);
-                }
-
-                // Set the name
-                $this->name = $this->input->name;
-
-                // Set the category as lower case
-                $this->category = strtolower($this->input->category);
-
-                // Set datasheet - do not modify case of letters, some server routing services are case sensitive
-                $this->datasheet = $this->input->datasheet;
-
-                foreach ($this->input->bags as $bag) {
-                    $this->new_bags[] = New Bag($bag->barcode, $bag->quantity);
-                }
-
-                foreach ($this->input->attributes as $attrib) {
-                    $this->new_attributes[] = New Attribute($attrib->attribute, $attrib->value, $attrib->priority);
-                }
+                $this->pullPart();
+                $this->new_attributes = $this->pullAttributes();
+                $this->new_bags = $this->pullBags();
             }
 
-            // unset the client side input so this method will not run again if accidently called
+            // unset the client side input so this method will not execute if called again
             unset($this->input);
 
+            // Validate all the passed inputs
             $this->validate();
         }
+
     }   // end of filterInput
 
 
-    public function startInput(){
+    public function startInput()
+    {
         $this->connection->startInput();
     }
 
@@ -452,20 +498,25 @@ class Part
 
             // loop through every attribute passed into the function
             foreach ($raw_attribs as $new_index => $new_attrib) {
+
                 // temporary variable that is set if the attribute is already known
                 $found = 0;
 
-                // loop through all of the known attributes and compare each one with the new attribute in question
-                foreach ($this->attributes as $known_index => $know_attrib) {
-                    // if the attribute's name was already found to be in the database...
-                    if ($new_attrib->attribute == $know_attrib->attribute && $new_attrib->value == $know_attrib->value) {
-                        // set the temporary variable to 1 and break out of the foreach loop
-                        $found = 1;
-                        break;
+                // only compare if there are actually existing attributes to check the new attributes against
+                if ($this->attributes) {
+
+                    // loop through all of the known attributes and compare each one with the new attribute in question
+                    foreach ($this->attributes as $known_index => $know_attrib) {
+                        // if the attribute's name was already found to be in the database...
+                        if ($new_attrib->attribute == $know_attrib->attribute && $new_attrib->value == $know_attrib->value) {
+                            // set the temporary variable to 1 and break out of the foreach loop
+                            $found = 1;
+                            break;
+                        }
                     }
+                    // the loop will break and continue here if the attribute was found
+                    // however, if the attribute was not found, add it to the array that will be returned
                 }
-                // the loop will break and continue here if the attribute was found
-                // however, if the attribute was not found, add it to the array that will be returned
                 if (!$found) {
                     $returnAttribs[] = $new_attrib;
                 }
@@ -490,17 +541,21 @@ class Part
                 // temporary variable that is set if the attribute is already known
                 $found = 0;
 
-                // loop through all of the known attributes and compare each one with the new attribute in question
-                foreach ($this->bags as $known_index => $know_bag) {
-                    // if the attribute's name was already found to be in the database...
-                    if ($new_bag->barcode == $know_bag->barcode) {
-                        // set the temporary variable to 1 and break out of the foreach loop
-                        $found = 1;
-                        break;
+                // only compare if there are actually existing bags to check against
+                if ($this->bags) {
+
+                    // loop through all of the known bags and compare each one with the new bag in question
+                    foreach ($this->bags as $known_index => $know_bag) {
+                        // if the barcode was already found to be in the database...
+                        if ($new_bag->barcode == $know_bag->barcode && $new_bag->quantity == $know_bag->quantity) {
+                            // set the temporary variable to 1 and break out of the foreach loop
+                            $found = 1;
+                            break;
+                        }
                     }
+                    // the loop will break and continue here if the attribute was found
+                    // however, if the bag was not found, add it to the array that will be returned
                 }
-                // the loop will break and continue here if the attribute was found
-                // however, if the attribute was not found, add it to the array that will be returned
                 if (!$found) {
                     $returnBags[] = $new_bag;
                 }
@@ -541,16 +596,26 @@ class Part
      */
     public function addPart()
     {
-        if (!$this->in_db) {    // only run if not in the database already
+        if (!$this->in_db || $this->part_needs_update) {    // only run if not in the database already
             if (!$this->error_code) {
                 $results = $this->connection->addPart($this);
-                $error = $results['status'];
+
+                $error = $results['sqlstate'];
                 if ($error) {
                     $this->commit_code = $error;
                     $this->abort();
                 } else {
-                    $this->part_id = $results['part_id'];
-                    $this->part_added = true;
+
+                    if ($results['rows_added']) {
+                        $this->log_statement = 'PART ADDED: ' . $results['rows_added'] . ' row added to the parts table for partnumber ';
+                        $this->part_id = $results['part_id'];
+                    } else {
+                        $this->log_statement = 'PART MODIFIED: ' . $results['rows_modified'] . ' row changed from the parts table for partnumber ';
+                    }
+
+                    // write a new line in the log file
+                    $this->log_statement .= $this->part_num . '.';
+                    $this->part_log->writeLog($this->log_statement);
                 }
             }
         }
@@ -571,6 +636,22 @@ class Part
                 if ($error) {
                     $this->commit_code = $error;
                     $this->abort();
+                } else {
+                    $added = $results['rows_added'];
+                    $modified = $results['rows_modified'];
+
+                    if ($added) {
+                        $plural = ($added == 1) ? '' : 's';
+                        $this->log_statement = 'BAG ADDED: ' . $added . ' row' . $plural . ' added to the barcode_lookup table for partnumber ';
+                        $this->log_statement .= $this->part_num . '.';
+                        $this->part_log->writeLog($this->log_statement);
+                    }
+                    if ($modified) {
+                        $plural = ($modified == 1) ? '' : 's';
+                        $this->log_statement = 'BAG MODIFIED: ' . $modified . ' row' . $plural . ' changed from the barcode_lookup table for partnumber ';
+                        $this->log_statement .= $this->part_num . '.';
+                        $this->part_log->writeLog($this->log_statement);
+                    }
                 }
             }
         }
@@ -591,6 +672,21 @@ class Part
                 if ($error) {
                     $this->commit_code = $error;
                     $this->abort();
+                } else {
+                    $added = $results['rows_added'];
+                    $modified = $results['rows_modified'];
+                    if ($added) {
+                        $plural = ($added == 1) ? '' : 's';
+                        $this->log_statement = 'ATTRIBUTE ADDED: ' . $added . ' row' . $plural . ' added to the attributes table for partnumber ';
+                        $this->log_statement .= $this->part_num . '.';
+                        $this->part_log->writeLog($this->log_statement);
+                    }
+                    if ($modified) {
+                        $plural = ($modified == 1) ? '' : 's';
+                        $this->log_statement = 'ATTRIBUTE MODIFIED: ' . $modified . ' row' . $plural . ' changed from the attributes table for partnumber ';
+                        $this->log_statement .= $this->part_num . '.';
+                        $this->part_log->writeLog($this->log_statement);
+                    }
                 }
             }
         }
@@ -599,15 +695,17 @@ class Part
     /*
      *  This function will ensure that any database changes are valid before making the modifications/additions finalized
      */
-    public function storeData(){
-        if (empty($this->send_status) && empty($this->error_code) && empty($this->commit_code)){
+    public function storeData()
+    {
+        if (empty($this->error_code) && empty($this->commit_code)) {
             // commit the database changes
             $this->connection->endInput();
-            $this->send_status = "Please place <i> " . $this->part_num . "</i> in bin <i>" . $this->location . "</i>.</br>";
+            $this->send_status = "Please place part number <i> " . $this->part_num . "</i> into bin <i>" . $this->location . "</i>.</br>";
         }
     }
 
-    public function sendStatus(){
+    public function sendStatus()
+    {
 
         $temp = 'Success ';
         if ($this->error_code || $this->commit_code) {
@@ -639,12 +737,13 @@ class Part
     {
         $temp1 = $this->validateBarcode();
         if ($temp1) {
-            $this->barcode_can_add = true;
+            $this->barcodes_can_add = true;
         }
 
         $temp2 = $this->validateLocation();
         $temp3 = $this->validateCategory();
-        if ($temp2 && $temp3) {
+        $temp4 = $this->validateDatasheet();
+        if ($temp2 && $temp3 && $temp4) {
             $this->part_can_add = true;
         }
     }   // end of validate
@@ -656,7 +755,7 @@ class Part
     public function validateLocation()
     {
         // typical location names
-        preg_match('/[A-I]0[1-6]/i', $this->location, $match);
+        preg_match('/^[A-I]0[1-6]$/i', $this->location, $match);
         if (!$match) {
             $this->error_code = $this->error_code | 0x01;
             $this->send_status = "Location <i>" . $this->location . "</i> is an invalid location.</br>";
@@ -675,6 +774,8 @@ class Part
     {
         if (isset($this->new_bags)) {
             foreach ($this->new_bags as $index => $bag) {
+
+
                 // 8 digits, first is always 0, next 6 are any digit in [0-9], last is checksum digit
                 preg_match('/^\d{2,8}$/', (int)$bag->barcode, $match);
                 if (!$match) {
@@ -691,6 +792,8 @@ class Part
                     $this->send_status = "Barcode <i>" . $bag->barcode . "</i> is already in the database.</br>";
                     return 0;   // invalid
                 }
+
+
             }
             return 1;   // validation approved
         }
@@ -711,6 +814,32 @@ class Part
             return 1;   // validation approved
         }
     }   // end of validateCategory
+
+
+    /*
+     *
+     */
+    public function validateDatasheet()
+    {
+        // remove invalid characters
+        $this->datasheet = filter_var($this->datasheet, FILTER_SANITIZE_URL);
+
+        $temp = $this->datasheet;
+
+        // add http:// if missing - this also accounts for https://
+        if (preg_match("#https?://#", $this->datasheet) === 0) {
+            $temp = 'http://' . $temp;
+        }
+
+        // determine if the url is valid and return the boolean result
+        if (filter_var($temp, FILTER_VALIDATE_URL)) {
+            $this->datasheet = $temp;
+            return 1;   // valid
+
+        } else {
+            return 0;   // invalid
+        }
+    }   // end of validateDatasheet
 
 
     /*

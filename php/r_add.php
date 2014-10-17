@@ -27,6 +27,9 @@ $app->post('/submit/part', function () use ($app) {
             // Commit the changes into the database
             $entry->storeData();
 
+            // The following line can be used for debugging. Uncomment it and a warning is returned in the client browser, thus keeping all input
+            // echo json_encode(array('title' => 'DEBUGGIN MODE:', 'message' => 'you are using the debug mode for r_add.js', 'validation_code' => 0x01));
+
             // Send the status via JSON back to the client
             $entry->sendStatus();
         }
