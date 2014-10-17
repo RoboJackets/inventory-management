@@ -63,11 +63,18 @@ class LogFile
         return;
         $parts = explode('/', $this->log_file);
         $file = array_pop($parts);
-        $dir = array_shift($parts);
+
+        // For windows systems
+        //$dir = array_shift($parts);
+
+        // For unix systems
+        $dir = '';
 
         foreach ($parts as $part) {
             if (!is_dir($dir .= "/$part")) {
-                mkdir($dir);
+                if (!mkdir($dir, 0760)){
+
+                }
             }
         }
         file_put_contents("$dir/$file", $contents, FILE_APPEND | LOCK_EX);
