@@ -60,6 +60,7 @@ class LogFile
 
     private function file_force_contents($contents)
     {
+        return;
         $parts = explode('/', $this->log_file);
         $file = array_pop($parts);
         $dir = array_shift($parts);
