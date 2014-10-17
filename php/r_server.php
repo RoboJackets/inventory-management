@@ -13,3 +13,8 @@ $app->get('/info', function () use ($app) {
         'tab' => 'none'
     ));
 });
+
+$app->get('/view-log', function (){
+   $app->view();
+    echo file_get_contents('logs/part-log.txt');
+});
