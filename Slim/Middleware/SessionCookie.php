@@ -69,7 +69,7 @@ class SessionCookie extends \Slim\Middleware
     public function __construct($settings = array())
     {
         $defaults = array(
-            'expires' => '20 minutes',
+            'expires' => '60 minutes',
             'path' => '/',
             'domain' => null,
             'secure' => false,

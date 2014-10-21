@@ -4,6 +4,10 @@
  *  This file contains the post method of submitting parts for database submission
  */
 
+require 'r_basic_auth.php';
+
+$app->add(new HttpBasicAuthCustom('robojackets', 'robojackets', 'Protected Area', '/submit/part'));
+
 $app->post('/submit/part', function () use ($app) {
 
     require 'c_Part.php';
@@ -35,4 +39,4 @@ $app->post('/submit/part', function () use ($app) {
         }
     }
     $conn->closeConnection();
-});
+})->name('/submit/part');
