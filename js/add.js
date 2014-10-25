@@ -324,10 +324,6 @@ function showToast(alertType, title, message) {
         $toast.hide();
     });
 
-    /*$toast.fadeTo(6000, 500).fadeOut(500, function () {
-        $toast.alert('close');
-    });*/
-
     $toast.show();
 }
 
