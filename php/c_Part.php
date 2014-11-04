@@ -61,6 +61,7 @@ class Part
     private $part_needs_update;
     private $part_log;
     private $log_statement;
+    private $searchmode;
 
     /*
      *  This private object is the connection to the database (from c_Database.php)
@@ -91,14 +92,17 @@ class Part
         if (isset($input)) {
             if (isset($input['part']) || isset($input['barcode']) || isset($input['part_id']) || isset($input['part_num'])) {
                 if (isset($input['part'])) {
+                    $this->searchmode = 'obj';
                     $this->input = $input['part'];
                     $this->new_bags = array();
                     $this->new_attributes = array();
                     $this->filterInput();
                 } elseif (isset($input['barcode'])) {
+                    $this->searchmode = 'barcode';
                     $this->barcode = $input['barcode'];
                     $this->findbyBarcode();
                 } elseif (isset($input['part_id'])) {
+                    $this->searchmode = 'part_id';
                     $this->part_id = $input['part_id'];
                     $this->checkID();
                     if (empty($this->in_db)) {
@@ -106,6 +110,7 @@ class Part
                     }
                     $this->findbyID();
                 } elseif (isset($input['part_num'])) {
+                    $this->searchmode = 'part_num';
                     $this->part_num = $input['part_num'];
                     $this->findbyPartNum();
                 }
@@ -880,11 +885,25 @@ class Part
             echo '</div>';
             echo '<div id="part-num-data" class="part-num">';
 
-            echo 'PN: <b>' . $this->part_num . '</b>';
+            echo 'PN: <b><a href="' . $this->datasheet . '" target=' . '"_blank' . '">' . $this->part_num . '</a></b>';
 
-            //if ($this->bags) {
-            echo '  | Bags: <b>' . $this->num_bags . '</b>  | Qty: <b>' . $this->total_qty . '</b>';
-            //}
+            if ($this->searchmode == 'barcode') {
+
+                echo '  | Qty: <b>';
+
+                foreach($this->bags as $index => $bag){
+                    if($bag->barcode == $this->barcode)
+                    {
+                        echo $bag->quantity;
+                    }
+                }
+                echo '</b>';
+
+            } else {
+
+                echo '  | Bags: <b>' . $this->num_bags . '</b>  | Qty: <b>' . $this->total_qty . '</b>';
+
+            }
 
             echo '</div>';
             echo '</div>';

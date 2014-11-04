@@ -174,3 +174,20 @@ a.footer.visited {
 .twitter-typeahead {
     width: 100%;
 }
+
+a:link {
+    color: #843534
+}
+
+a:visited {
+    color: #afd9ee;
+}
+
+a:hover, a:focus {
+    color: #222222;
+}
+
+
+a:active {
+    color: #843534;
+}
