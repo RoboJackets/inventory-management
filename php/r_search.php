@@ -27,27 +27,3 @@ $app->get('/search', function () {
     }
     $conn->closeConnection();
 });
-
-$app->get('/livesearch', function () {
-
-    require 'c_Database.php';
-
-    $input = (string)$_GET['q'];
-
-    $conn = new Database();
-    $results = array();
-
-    if (strlen($input) > 0) {
-        $results = $conn->searchQuery('SELECT part_num, name FROM parts WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
-    }
-
-    $return = array();
-    foreach ($results as $index => $part_num) {
-        $return[]['part'] = $part_num['part_num'];
-        //$return[]['name'] = $part_num['name'];
-    }
-
-    $return = json_encode($return);
-    echo $return;
-    $conn->closeConnection();
-});

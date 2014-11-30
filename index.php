@@ -36,6 +36,7 @@ $app->get('/add', function() use ($app) {
 require 'php/r_search.php';
 require 'php/r_validation.php';
 require 'php/r_add.php';
+require 'php/r_livesearch.php';
 
 
 $app->run();
