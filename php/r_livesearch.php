@@ -1,7 +1,6 @@
 <?php
 
-
-}$app->get('/livesearch/:field', function() use ($app) {
+$app->get('/livesearch/:field', function() use ($app) {
 
     require 'c_Database.php';
 
