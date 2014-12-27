@@ -617,7 +617,6 @@ $(document).ready(function () {
                 "Tolerance",
                 "Series",
                 "Power",
-                "Channels",
                 "Mounting Type",
                 "Package"],
             other: [
