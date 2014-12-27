@@ -20,7 +20,7 @@
             $table = 'locations';
             break;
         default:
-            $app->response->setStatus(403);
+            $app->response->setStatus(403); //If not allowed return an http error
     }
     
     
