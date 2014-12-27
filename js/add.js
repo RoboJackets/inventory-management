@@ -582,9 +582,10 @@ $(document).ready(function () {
                 "Package"],
             discrete: [
                 "Type",
-                "Voltage (Drain-Source)",
-                "Voltage (Gate-Source)",
-                "Current (Continuous Drain)",
+                "Vds",
+                "Vgs",
+                "Id",
+                "Rds",
                 "Series",
                 "Mounting Type",
                 "Package"],
