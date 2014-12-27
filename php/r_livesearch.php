@@ -14,6 +14,10 @@
             $column = $field;
             $table = 'attributes';
             break;
+        case 'location':
+            $column = $field;
+            $table = 'locations'
+            break;
         default:
             $app->response->setStatus(403);
     }
