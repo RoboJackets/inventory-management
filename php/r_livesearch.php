@@ -16,7 +16,7 @@
             break;
         case 'location':
             $column = $field;
-            $table = 'locations'
+            $table = 'locations';
             break;
         default:
             $app->response->setStatus(403);
