@@ -5,6 +5,7 @@
 
     require 'c_Database.php';
 
+    //Limits this to only approved column in the DB
     switch($field) {
         case 'part_num':
             $column = $field;
