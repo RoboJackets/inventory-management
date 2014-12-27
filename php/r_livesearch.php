@@ -42,5 +42,5 @@
     $app->response->headers->set('Content-Type', 'application/json');
     $return = json_encode($return);
     echo $return;
-    $conn->closeConnection();
+    $conn->closeConnection(); // Close DB connection
 });
