@@ -29,7 +29,7 @@
     $conn = new Database();
     $results = array();
 
-    if (strlen($input) > 0) {
+    if (strlen($input) > 0) { //Only run query if it has length
         $results = $conn->searchQuery('SELECT (?), name FROM (?) WHERE part_num LIKE (?) LIMIT 10', $column, $table, '%' . $input . '%');
     }
 
