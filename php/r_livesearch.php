@@ -28,8 +28,8 @@ $app->get('/livesearch/:field', function($field) use ($app) {
     $conn = new Database();
     $results = array();
 
-    if (strlen($input) > 0) { //Only run query if it has length
-        $results = $conn->searchQuery('SELECT (?), name FROM ' . $table . ' WHERE part_num LIKE (?) LIMIT 10', $column, "%" . $input . "%");
+    if (strlen($input) > 0) { //Only run query if it has length | NOTE: TEMPORARY FIX IN PLACE HERE - FUTURE WORK NEEDS TO BE MADE FOR THIS
+        $results = $conn->searchQuery('SELECT part_num, name FROM ' . $table . ' WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
     }
 
     $return = array();
