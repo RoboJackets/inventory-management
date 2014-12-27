@@ -7,6 +7,11 @@ if (!isset($PATH)) {
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader(); //Req'd since not using Composer
 
+// CHANGE THE VERSION NUMBER HERE
+// ====================================
+$app_version = '1.0.3 (Beta)';
+// ====================================
+
 $app = new \Slim\Slim(array(
     // Configuration parameters
     'templates.path' => './templates',
@@ -19,7 +24,8 @@ $app->get('/', function() use ($app) {
     $app->render('html.php', array(
         'title' => 'RoboJackets Inventory',
         'mode' => 'barcode',
-        'tab' => 'default'
+        'tab' => 'default',
+        'version' => $GLOBALS['app_version']
     ));
 });
 
@@ -27,7 +33,8 @@ $app->get('/add', function() use ($app) {
     $app->view();
     $app->render('add.php', array(
         'title' => 'Add a Component',
-        'tab' => 'add'
+        'tab' => 'add',
+        'version' => $GLOBALS['app_version']
     ));
 });
 
