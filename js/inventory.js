@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     var engine = new Bloodhound({
         name: 'parts',
-        remote: '/livesearch/part_num/?q=%QUERY',
+        remote: 'http://inventory.robojackets.org/livesearch/part_num/?q=%QUERY',
         datumTokenizer: function(d) {
             return Bloodhound.tokenizers.whitespace(d.val);
         },
