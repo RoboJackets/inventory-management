@@ -29,13 +29,12 @@ $app->get('/livesearch/:field', function($field) use ($app) {
     $results = array();
 
     if (strlen($input) > 0) { //Only run query if it has length
-        $results = $conn->searchQuery('SELECT (?), name FROM (?) WHERE part_num LIKE (?) LIMIT 10', $column, $table, '%' . $input . '%');
+        $results = $conn->searchQuery('SELECT (?), name FROM (?) WHERE part_num LIKE (?) LIMIT 10', $column, $table, "'%" . $input . "%'");
     }
 
     $return = array();
     foreach ($results as $index => $part_num) {
         $return[]['part'] = $part_num['part_num'];
-        //$return[]['name'] = $part_num['name'];
     }
     
     $app->response->headers->set('Content-Type', 'application/json');
