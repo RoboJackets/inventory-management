@@ -233,7 +233,7 @@ function validateLocation() {
 
     })
         .done(function (result) {
-            if (result) {   // accept user's input if server returned the location to be a valid entry
+            if (result > 0) {   // accept user's input if server returned the location to be a valid entry
                 $("#locationInput").parent().removeClass("has-error");
                 $("#locationInput").parent().addClass("has-success");
                 ret = 1;
