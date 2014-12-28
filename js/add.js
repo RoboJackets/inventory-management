@@ -219,36 +219,37 @@ function validateLocation() {
     var ret;
 
     // if (location || !$("#locationInput").val()) {
-    if (!$("#locationInput").val()) {
+    if (!$("#locationInput").val() || $("#locationInput").val() == '') {
         $("#locationInput").parent().removeClass("has-error");
         $("#locationInput").parent().removeClass("has-success");
         ret = 1;
     } else {
 
+
+        // if regular expression check fails, check the server
+        var query = {"location": $("#locationInput").val()};
+
+        $.post("/validate/location", query, function (result) {
+
+        })
+            .done(function (result) {
+                if (result > 0) {   // accept user's input if server returned the location to be a valid entry
+                    $("#locationInput").parent().removeClass("has-error");
+                    $("#locationInput").parent().addClass("has-success");
+                    ret = 1;
+                } else {    // let the user know that the location is not valid
+                    $("#locationInput").parent().addClass("has-error");
+                    $("#locationInput").parent().removeClass("has-success");
+                    ret = 0;
+                }
+            })
+            .fail(function (result) {
+                showToast("danger", "Error", "Could not validation location. Error code: " + result.status);
+            })
+            .always(function (result) {
+                console.log(result);
+            });
     }
-    // if regular expression check fails, check the server
-    var query = {"location": $("#locationInput").val()};
-
-    $.post("/validate/location", query, function (result) {
-
-    })
-        .done(function (result) {
-            if (result > 0) {   // accept user's input if server returned the location to be a valid entry
-                $("#locationInput").parent().removeClass("has-error");
-                $("#locationInput").parent().addClass("has-success");
-                ret = 1;
-            } else {    // let the user know that the location is not valid
-                $("#locationInput").parent().addClass("has-error");
-                $("#locationInput").parent().removeClass("has-success");
-                ret = 0;
-            }
-        })
-        .fail(function (result) {
-            showToast("danger", "Error", "Could not validation location. Error code: " + result.status);
-        })
-        .always(function (result) {
-            console.log(result);
-        });
 
     return ret;
 }
