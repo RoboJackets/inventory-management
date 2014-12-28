@@ -220,11 +220,34 @@ function validateLocation() {
 
     if (location || !$("#locationInput").val()) {
         $("#locationInput").parent().removeClass("has-error");
+        $("#locationInput").parent().removeClass("has-success");
         ret = 1;
     } else {
-        $("#locationInput").parent().addClass("has-error");
-        ret = 0;
+
     }
+    // if regular expression check fails, check the server
+    var query = {"location": $("#locationInput").val()};
+
+    $.post("/validate/location", query, function (result) {
+
+    })
+        .done(function (result) {
+            if (result) {   // accept user's input if server returned the location to be a valid entry
+                $("#locationInput").parent().removeClass("has-error");
+                $("#locationInput").parent().addClass("has-success");
+                ret = 1;
+            } else {    // let the user know that the location is not valid
+                $("#locationInput").parent().addClass("has-error");
+                $("#locationInput").parent().removeClass("has-success");
+                ret = 0;
+            }
+        })
+        .fail(function (result) {
+            showToast("danger", "Error", "Could not validation location. Error code: " + result.status);
+        })
+        .always(function (result) {
+            console.log(result);
+        });
 
     return ret;
 }
@@ -455,7 +478,6 @@ $(document).ready(function () {
     $("#partNumberInput").on("keyup paste", function () {
         if (allowedChars.test($(this).val())) {
 
-            //if (!is_updated) {
             enableCard($("#edit-details"));
 
             var query = {"partNumber": $(this).val()};
@@ -494,7 +516,7 @@ $(document).ready(function () {
                     $("#partNumberInput").tooltip('destroy');
                 }
             });
-            //}
+
         } else {
             disableCard($("#edit-details"));
             if (!$(this).val()) {
@@ -514,6 +536,7 @@ $(document).ready(function () {
                     $("#locationInput").parent().removeClass("has-error");
                     $("#locationInput").parent().addClass("has-success");
                 } else {
+                    $("#locationInput").parent().removeClass("has-success");
                     $("#locationInput").parent().addClass("has-error");
                 }
             });

@@ -762,12 +762,14 @@ class Part
         // typical location names
         preg_match('/^[A-I]0[1-6]$/i', $this->location, $match);
         if (!$match) {
-            $this->error_code = $this->error_code | 0x01;
-            $this->send_status = "Location <i>" . $this->location . "</i> is an invalid location.</br>";
-            return 0;   // invalid
-        } else {
-            return 1;   // validation approved
+            // If regular expression does not match, check the database for addition valid locations
+            if (!checkLocation($this->location)) {
+                $this->error_code = $this->error_code | 0x01;
+                $this->send_status = "Location <i>" . $this->location . "</i> is an invalid location.</br>";
+                return 0;   // invalid
+            }
         }
+        return 1;   // validation approved
     }   // end of validateLocation
 
 
@@ -891,9 +893,8 @@ class Part
 
                 echo '  | Qty: <b>';
 
-                foreach($this->bags as $index => $bag){
-                    if($bag->barcode == $this->barcode)
-                    {
+                foreach ($this->bags as $index => $bag) {
+                    if ($bag->barcode == $this->barcode) {
                         echo $bag->quantity;
                     }
                 }

@@ -18,14 +18,10 @@ $app->post('/validate/partNumber', function () {
 
 $app->post('/validate/location', function () {
 
-    require 'c_Part.php';
     require 'c_Database.php';
 
-    $data = $_POST['location'];
     $conn = New Database();
-    $part = New Part($conn);
-    $part->location = $data;
-    echo $part->validateLocation();
+    echo $conn->checkLocation($_POST['location']);
     $conn->closeConnection();
 });
 

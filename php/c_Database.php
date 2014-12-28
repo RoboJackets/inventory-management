@@ -61,35 +61,43 @@ class Database
         $this->connection->commit();
     }   // end of endInput
 
-    public function rollBack() {
+    public function rollBack()
+    {
         $this->connection->rollback();
     }   // end of rollBack
 
-    public function serverInfo() {
+    public function serverInfo()
+    {
         return $this->connection->server_info;
     }   // end of serverInfo
 
-    public function hostInfo() {
+    public function hostInfo()
+    {
         return $this->connection->host_info;
     }   // end of hostInfo
 
-    public function protocolVersion() {
+    public function protocolVersion()
+    {
         return $this->connection->protocol_version;
     }   // end of protocolVersion
 
-    public function clientInfo() {
+    public function clientInfo()
+    {
         return $this->connection->client_info;
     }   // end of clientInfo
 
-    public function clientVersion() {
+    public function clientVersion()
+    {
         return $this->connection->client_version;
     }   // end of ClientVersion
 
-    public function threadID() {
+    public function threadID()
+    {
         return $this->connection->thread_id;
     }   // end of threadID
 
-    public function affectedRows() {
+    public function affectedRows()
+    {
         return $this->connection->affected_rows;
     }
 
@@ -239,4 +247,15 @@ class Database
         return array('status' => (int)$this->connection->sqlstate, 'rows_added' => $rows['added'], 'rows_modified' => $rows['modified']);
     }   // end of addAttributes
 
+
+    public function checkLocation($location)
+    {
+        $valid = $this->searchQuery("SELECT * FROM locations WHERE location=(?)", $location);
+
+        if($valid){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }   // end of Database Class
