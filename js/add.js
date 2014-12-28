@@ -216,13 +216,12 @@ function validateDatasheet() {
 
 function validateLocation() {
 //    var location = allowedChars.test($("#locationInput").val());
-    var ret;
+    var ret = 1;
 
     // if (location || !$("#locationInput").val()) {
-    if (!$("#locationInput").val() || $("#locationInput").val() == '') {
+    if (!$("#locationInput").val()) {
         $("#locationInput").parent().removeClass("has-error");
         $("#locationInput").parent().removeClass("has-success");
-        ret = 1;
     } else {
 
 
@@ -236,10 +235,10 @@ function validateLocation() {
                 if (result > 0) {   // accept user's input if server returned the location to be a valid entry
                     $("#locationInput").parent().removeClass("has-error");
                     $("#locationInput").parent().addClass("has-success");
-                    ret = 1;
                 } else {    // let the user know that the location is not valid
                     $("#locationInput").parent().addClass("has-error");
                     $("#locationInput").parent().removeClass("has-success");
+                    disableCard($("#add-attributes"));
                     ret = 0;
                 }
             })
@@ -530,19 +529,7 @@ $(document).ready(function () {
     });
 
     $('#locationInput').on("change keyup paste", function () {
-        var location = allowedChars.test($("#locationInput").val());
-        if (location) {
-            var query = {"location": $(this).val()};
-            $.post("/validate/location", query, function (result) {
-                if (result == 1) {
-                    $("#locationInput").parent().removeClass("has-error");
-                    $("#locationInput").parent().addClass("has-success");
-                } else {
-                    $("#locationInput").parent().removeClass("has-success");
-                    $("#locationInput").parent().addClass("has-error");
-                }
-            });
-        }
+        validateLocation();
     });
 
     $("#barcode table tbody").on("change keyup paste focus", function () {

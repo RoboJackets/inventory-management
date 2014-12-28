@@ -9,7 +9,7 @@ require 'Slim/Slim.php';
 
 // CHANGE THE VERSION NUMBER HERE
 // ====================================
-$app_version = '1.0.5 (Beta)';
+$app_version = '1.0.6 (Beta)';
 // ====================================
 
 $app = new \Slim\Slim(array(
