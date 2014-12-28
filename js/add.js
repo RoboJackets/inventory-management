@@ -215,10 +215,11 @@ function validateDatasheet() {
 }
 
 function validateLocation() {
-    var location = allowedChars.test($("#locationInput").val());
+//    var location = allowedChars.test($("#locationInput").val());
     var ret;
 
-    if (location || !$("#locationInput").val()) {
+    // if (location || !$("#locationInput").val()) {
+    if (!$("#locationInput").val()) {
         $("#locationInput").parent().removeClass("has-error");
         $("#locationInput").parent().removeClass("has-success");
         ret = 1;
