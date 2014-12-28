@@ -217,12 +217,25 @@ function validateDatasheet() {
 function validateLocation() {
     var location = allowedChars.test($("#locationInput").val());
     var ret;
-
+    
     if (location || !$("#locationInput").val()) {
+        
+        var query = {"location": $(this).val()};
+        $.post("/validate/location", query, function (result) {
+            if (result == 1) {
+                //$("#locationInput").parent().removeClass("has-error");
+                $("#locationInput").parent().addClass("has-success");
+            } else {
+                //$("#locationInput").parent().addClass("has-error");
+                $("#locationInput").parent().removeClass("has-success");
+            }
+        });
+        
         $("#locationInput").parent().removeClass("has-error");
         ret = 1;
     } else {
         $("#locationInput").parent().addClass("has-error");
+        $("#locationInput").parent().removeClass("has-success");
         ret = 0;
     }
 
@@ -505,20 +518,6 @@ $(document).ready(function () {
         }
     });
 
-    $('#locationInput').on("change keyup paste", function () {
-        var location = allowedChars.test($("#locationInput").val());
-        if (location) {
-            var query = {"location": $(this).val()};
-            $.post("/validate/location", query, function (result) {
-                if (result == 1) {
-                    $("#locationInput").parent().removeClass("has-error");
-                    $("#locationInput").parent().addClass("has-success");
-                } else {
-                    $("#locationInput").parent().addClass("has-error");
-                }
-            });
-        }
-    });
 
     $("#barcode table tbody").on("change keyup paste focus", function () {
         bags = $("#barcode table tr:not(:last-child)");
