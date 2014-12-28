@@ -5,7 +5,7 @@ $app->get('/livesearch/:field', function($field) use ($app) {
     require 'c_Database.php';
 
     //Limits this to only approved column in the DB
-    switch($field) {
+    switch ($field) {
         case 'part_num':
             $column = $field;
             $table = 'parts';
@@ -21,24 +21,31 @@ $app->get('/livesearch/:field', function($field) use ($app) {
         default:
             $app->response->setStatus(403); //If not allowed return an http error
     }
-    
-    
-    $input = (string)$_GET['q'];
+
+    $input = '%';
+    $input .= (string)$_GET['q'];
+    $input .= '%';
 
     $conn = new Database();
     $results = array();
 
     if (strlen($input) > 0) { //Only run query if it has length | NOTE: TEMPORARY FIX IN PLACE HERE - FUTURE WORK NEEDS TO BE MADE FOR THIS
-        $results = $conn->searchQuery('SELECT part_num, name FROM ' . $table . ' WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
+        // $results = $conn->searchQuery('SELECT part_num, name FROM ' . $table . ' WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
+        //$params = array($table, $input);
+        //$param_types = array('s', 's');
+        $params = array($input);
+        $results = $conn->searchQuery('SELECT ' . $column . ' FROM ' . $table . ' WHERE ' . $column . ' LIKE (?) LIMIT 10', $params);
     }
 
-    $return = array();
-    foreach ($results as $index => $part_num) {
-        $return[]['part'] = $part_num['part_num'];
+    $data = array();
+    foreach ($results as $index => $val) {
+        foreach ($val as $index2 => $val2) {
+            $data[][$index2] = $val2;
+        }
     }
-    
+
     $app->response->headers->set('Content-Type', 'application/json');
-    $return = json_encode($return);
-    echo $return;
+    $data = json_encode($data);
+    echo $data;
     $conn->closeConnection(); // Close DB connection
 });

@@ -61,60 +61,108 @@ class Database
         $this->connection->commit();
     }   // end of endInput
 
-    public function rollBack() {
+    public function rollBack()
+    {
         $this->connection->rollback();
     }   // end of rollBack
 
-    public function serverInfo() {
+    public function serverInfo()
+    {
         return $this->connection->server_info;
     }   // end of serverInfo
 
-    public function hostInfo() {
+    public function hostInfo()
+    {
         return $this->connection->host_info;
     }   // end of hostInfo
 
-    public function protocolVersion() {
+    public function protocolVersion()
+    {
         return $this->connection->protocol_version;
     }   // end of protocolVersion
 
-    public function clientInfo() {
+    public function clientInfo()
+    {
         return $this->connection->client_info;
     }   // end of clientInfo
 
-    public function clientVersion() {
+    public function clientVersion()
+    {
         return $this->connection->client_version;
     }   // end of ClientVersion
 
-    public function threadID() {
+    public function threadID()
+    {
         return $this->connection->thread_id;
     }   // end of threadID
 
-    public function affectedRows() {
+    public function affectedRows()
+    {
         return $this->connection->affected_rows;
     }
 
-    public function searchQuery($sql, $user_input)
+    public function searchQuery($sql, &$user_input)
     {
-        // cast input to a string for consistency
-        $input = (string)$user_input;
+        if (is_array($user_input)) {
+            $param_type = '';   // empty string
+            $n = count($user_input);
+            for ($i = 0; $i < $n; $i++) {
+                $param_type .= 's';
+            }
 
-        if (!$this->query = $this->connection->prepare($sql)) {
-            echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
-            $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
-            $this->log->writeLog($log_error);
-        }
-        if (!$this->query->bind_param("s", $input)) {
-            echo "<b>ERROR: Failed to bind parameters to statement.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
-            $log_error = 'Query bind parameter failure: (' . $this->connection->errno . ') ' . $this->connection->error;
-            $this->log->writeLog($log_error);
-        }
-        if (!$this->query->execute()) {
-            echo "<b>ERROR: Failed to execute query.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
-            $log_error = 'Query execution failure: (' . $this->connection->errno . ') ' . $this->connection->error;
-            $this->log->writeLog($log_error);
+            $params = array();
+            $params[] = & $param_type;       // bind the parameter types
+            for ($i = 0; $i < $n; $i++) {    // bind the user's parameters
+                $params[] = & $user_input[$i];
+            }
+
+            // Prepare the query
+            if (!$this->query = $this->connection->prepare($sql)) {
+                echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+
+            // invoke callback function for the array of parameters
+            $temp_array = array($this->query, 'bind_param');
+            $ttemp = $this->query;
+            call_user_func_array(array($ttemp, 'bind_param'), $params);
+
+            // Run the statement
+            $this->query->execute();
+
+            // Gather the results
+            $this->dbresults = array();
+            $temp = $this->query->get_result();
+            while ($row = $temp->fetch_array(MYSQLI_ASSOC)) {
+                array_push($this->dbresults, $row);
+            }
+            $this->query->close();
+
+        } else {
+            // cast input to a string for consistency
+            $input = (string)$user_input;
+
+            if (!$this->query = $this->connection->prepare($sql)) {
+                echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+            if (!$this->query->bind_param("s", $input)) {
+                echo "<b>ERROR: Failed to bind parameters to statement.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query bind parameter failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+            if (!$this->query->execute()) {
+                echo "<b>ERROR: Failed to execute query.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query execution failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+
+            $this->sortQuery();
         }
 
-        $this->sortQuery();
+        // return the results
         return $this->dbresults;
 
     }   // function searchQuery
@@ -239,4 +287,15 @@ class Database
         return array('status' => (int)$this->connection->sqlstate, 'rows_added' => $rows['added'], 'rows_modified' => $rows['modified']);
     }   // end of addAttributes
 
+
+    public function checkLocation($location)
+    {
+        $valid = $this->searchQuery("SELECT * FROM locations WHERE location=(?)", $location);
+
+        if ($valid) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }   // end of Database Class
