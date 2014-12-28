@@ -101,28 +101,68 @@ class Database
         return $this->connection->affected_rows;
     }
 
-    public function searchQuery($sql, $user_input)
+    public function searchQuery($sql, &$user_input)
     {
-        // cast input to a string for consistency
-        $input = (string)$user_input;
+        if (is_array($user_input)) {
+            $param_type = '';   // empty string
+            $n = count($user_input);
+            for ($i = 0; $i < $n; $i++) {
+                $param_type .= 's';
+            }
 
-        if (!$this->query = $this->connection->prepare($sql)) {
-            echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
-            $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
-            $this->log->writeLog($log_error);
-        }
-        if (!$this->query->bind_param("s", $input)) {
-            echo "<b>ERROR: Failed to bind parameters to statement.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
-            $log_error = 'Query bind parameter failure: (' . $this->connection->errno . ') ' . $this->connection->error;
-            $this->log->writeLog($log_error);
-        }
-        if (!$this->query->execute()) {
-            echo "<b>ERROR: Failed to execute query.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
-            $log_error = 'Query execution failure: (' . $this->connection->errno . ') ' . $this->connection->error;
-            $this->log->writeLog($log_error);
+            $params = array();
+            $params[] = & $param_type;       // bind the parameter types
+            for ($i = 0; $i < $n; $i++) {    // bind the user's parameters
+                $params[] = & $user_input[$i];
+            }
+
+            // Prepare the query
+            if (!$this->query = $this->connection->prepare($sql)) {
+                echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+
+            // invoke callback function for the array of parameters
+            $temp_array = array($this->query, 'bind_param');
+            $ttemp = $this->query;
+            call_user_func_array(array($ttemp, 'bind_param'), $params);
+
+            // Run the statement
+            $this->query->execute();
+
+            // Gather the results
+            $this->dbresults = array();
+            $temp = $this->query->get_result();
+            while ($row = $temp->fetch_array(MYSQLI_ASSOC)) {
+                array_push($this->dbresults, $row);
+            }
+            $this->query->close();
+
+        } else {
+            // cast input to a string for consistency
+            $input = (string)$user_input;
+
+            if (!$this->query = $this->connection->prepare($sql)) {
+                echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+            if (!$this->query->bind_param("s", $input)) {
+                echo "<b>ERROR: Failed to bind parameters to statement.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query bind parameter failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+            if (!$this->query->execute()) {
+                echo "<b>ERROR: Failed to execute query.</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
+                $log_error = 'Query execution failure: (' . $this->connection->errno . ') ' . $this->connection->error;
+                $this->log->writeLog($log_error);
+            }
+
+            $this->sortQuery();
         }
 
-        $this->sortQuery();
+        // return the results
         return $this->dbresults;
 
     }   // function searchQuery
@@ -252,7 +292,7 @@ class Database
     {
         $valid = $this->searchQuery("SELECT * FROM locations WHERE location=(?)", $location);
 
-        if($valid){
+        if ($valid) {
             return 1;
         } else {
             return 0;
