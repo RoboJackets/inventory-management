@@ -33,8 +33,8 @@ $app->get('/livesearch/:field', function($field) use ($app) {
         // $results = $conn->searchQuery('SELECT part_num, name FROM ' . $table . ' WHERE part_num LIKE (?) LIMIT 10', '%' . $input . '%');
         //$params = array($table, $input);
         //$param_types = array('s', 's');
-        $params = array($column, $table, $field, $input);
-        $results = $conn->searchQuery('SELECT (?) FROM (?) WHERE (?) LIKE (?) LIMIT 10', $params);
+        $params = array(/*$column, */$table, $field, $input);
+        $results = $conn->searchQuery('SELECT * FROM (?) WHERE (?) LIKE (?) LIMIT 10', $params);
     }
 
     $data = array();
