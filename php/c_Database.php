@@ -122,23 +122,24 @@ class Database
                 $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
                 $this->log->writeLog($log_error);
                 halt(500, "Could not prepare SQL statement");
+            } else {
+
+                // invoke callback function for the array of parameters
+                $temp_array = array($this->query, 'bind_param');
+                $ttemp = $this->query;
+                call_user_func_array(array($ttemp, 'bind_param'), $params);
+
+                // Run the statement
+                $this->query->execute();
+
+                // Gather the results
+                $this->dbresults = array();
+                $temp = $this->query->get_result();
+                while ($row = $temp->fetch_array(MYSQLI_ASSOC)) {
+                    array_push($this->dbresults, $row);
+                }
+                $this->query->close();
             }
-
-            // invoke callback function for the array of parameters
-            $temp_array = array($this->query, 'bind_param');
-            $ttemp = $this->query;
-            call_user_func_array(array($ttemp, 'bind_param'), $params);
-
-            // Run the statement
-            $this->query->execute();
-
-            // Gather the results
-            $this->dbresults = array();
-            $temp = $this->query->get_result();
-            while ($row = $temp->fetch_array(MYSQLI_ASSOC)) {
-                array_push($this->dbresults, $row);
-            }
-            $this->query->close();
 
         } else {
             // cast input to a string for consistency
