@@ -121,7 +121,7 @@ class Database
                 echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
                 $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
                 $this->log->writeLog($log_error);
-                exit(2);
+                halt(500, "Could not prepare SQL statement");
             }
 
             // invoke callback function for the array of parameters
