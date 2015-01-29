@@ -24,8 +24,7 @@ class Database
     // Constructor function to initialize the database connection
     public function __construct()
     {
-        $this->log = New LogFile();
-        $this->log->setFile('database-errors.txt');
+        $this->log = New LogFile('database_logs.txt');
         $this->createConnection();
     }   // end of Constructor function
 
@@ -103,41 +102,66 @@ class Database
 
     public function searchQuery($sql, &$user_input)
     {
+        // FIX ME: Run the query statement error checks on queries of single values also.
+
         if (is_array($user_input)) {
             $param_type = '';   // empty string
-            $n = count($user_input);
-            for ($i = 0; $i < $n; $i++) {
+            $nbrParams = count($user_input);
+            for ($i = 0; $i < $nbrParams; $i++) {
                 $param_type .= 's';
             }
 
             $params = array();
-            $params[] = & $param_type;       // bind the parameter types
-            for ($i = 0; $i < $n; $i++) {    // bind the user's parameters
-                $params[] = & $user_input[$i];
+            $params[] = &$param_type;       // bind the parameter types
+            for ($i = 0; $i < $nbrParams; $i++) {    // bind the user's parameters
+                $params[] = &$user_input[$i];
             }
 
-            // Prepare the query
+            // Check for bad field references with 'SELECT xxx[, ...] FROM' statements
+            preg_match("/^(?i)select\b\s(.*\?.*)\sfrom\b/", $sql, $fields);
+            if ($fields) {
+                echo "<b>ERROR: Invalid SQL field reference(s)</b></br>";
+                echo '<b>Fields: </b>' . $fields[1] . '</br><b>SQL: </b><i>' . $sql . '</i></br></br>';;
+                $log_error = 'Invalid SQL field reference [' . $fields . '] for' . $sql;
+                $this->log->writeLog($log_error);
+                return 0;
+            }
+
+            // Check for errors in the SQL statement being prepared
             if (!$this->query = $this->connection->prepare($sql)) {
+                // Write the error in the logs
                 echo "<b>ERROR: Could not prepare query statement:</b> (" . $this->connection->errno . ") " . $this->connection->error . "</br>";
                 $log_error = 'Query statement prepare failure: (' . $this->connection->errno . ') ' . $this->connection->error;
                 $this->log->writeLog($log_error);
-                halt(500, "Could not prepare SQL statement");
+                // halt(500, "Could not prepare SQL statement");
+                return 0;
             } else {
 
                 // invoke callback function for the array of parameters
-                $temp_array = array($this->query, 'bind_param');
-                $ttemp = $this->query;
-                call_user_func_array(array($ttemp, 'bind_param'), $params);
+                try {
+                    call_user_func_array(array($this->query, 'bind_param'), $params);
+                } catch (Exception $e) {
+                    echo '<table><tr><b>ERROR: </b>' . $e->getMessage() . '</tr>';
+                    echo '<tr><b>Parameters: </b>' . count($params) . '</tr><tr><b>SQL: </b><i>' . $sql . '</i></tr></table>';
+                    $log_error = 'Failed to bind parameters: (' . $this->connection->errno . ') ' . $this->connection->error;
+                    $this->log->writeLog($log_error);
+                    return 0;
+                }
 
                 // Run the statement
                 $this->query->execute();
 
-                // Gather the results
+                // Gather the results - get_result() may require the `mysqlnd driver`. Reference at top comment of link below.
+                // http://php.net/manual/en/mysqli-stmt.get-result.php#usernotes
                 $this->dbresults = array();
                 $temp = $this->query->get_result();
+
+                // Set the result set to an array
                 while ($row = $temp->fetch_array(MYSQLI_ASSOC)) {
                     array_push($this->dbresults, $row);
                 }
+
+                // Close the query's connection
                 $this->query->close();
             }
 
@@ -166,7 +190,6 @@ class Database
 
         // return the results
         return $this->dbresults;
-
     }   // function searchQuery
 
 

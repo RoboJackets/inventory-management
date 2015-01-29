@@ -15,10 +15,10 @@ class LogFile
     private $log_file;
     private $directory;
 
-    public function __construct()
+    public function __construct($file_name = 'default-logs.txt')
     {
         $this->setDirectory();
-        $this->setCompletePath('database-logs.txt');
+        $this->setFile($file_name);
     }
 
     public function setDirectory()

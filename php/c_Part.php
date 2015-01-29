@@ -394,7 +394,7 @@ class Part
                 $this->description = null;
             } else {
                 // always store the description as lower case
-                $this->description = strtolower($this->input->description);
+                $this->description = ucwords(strtolower($this->input->description));
             }
             $this->part_needs_update = true;
         }
@@ -407,7 +407,7 @@ class Part
 
         // Set the category as lower case
         if ($this->category != $this->input->category) {
-            $this->category = strtolower($this->input->category);
+            $this->category = ucwords(strtolower($this->input->category));
             $this->part_needs_update = true;
         }
 
