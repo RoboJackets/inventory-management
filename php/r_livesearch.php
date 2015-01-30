@@ -6,19 +6,19 @@ $app->get('/livesearch/:field', function ($field) use ($app) {
 
     //Limits this to only approved column in the DB
     switch ($field) {
-        case 'pn':
+        case 'part_num':
             $table = 'parts';
             $column = 'part_num';
             $selections = 'part_num, name';
             break;
 
-        case 'atr':
+        case 'attribute':
             $table = 'attributes';
             $column = 'attribute';
             $selections = 'attribute, value';
             break;
 
-        case 'loc':
+        case 'location':
             $table = 'locations';
             $column = 'location';
             $selections = 'location';
