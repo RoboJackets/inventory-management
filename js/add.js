@@ -220,7 +220,7 @@ function validateLocation() {
     
     if (location || !$("#locationInput").val()) {
         
-        var query = {"location": $(this).val()};
+        var query = {"location": $("#locationInput").val()};
         $.post("/validate/location", query, function (result) {
             if (result == 1) {
                 //$("#locationInput").parent().removeClass("has-error");
