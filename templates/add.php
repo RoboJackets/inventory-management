@@ -235,7 +235,7 @@
             <div id="btn-confirm-back" class="round-icon pull-left back btn-enabled">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </div>
-            <div id="btn-confirm-submit" class="round-icon pull-right submit">
+            <div id="btn-confirm-submit" class="round-icon pull-right submit btn-enabled">
                 <span class="glyphicon glyphicon-ok"></span>
             </div>
             <!--</div>-->
