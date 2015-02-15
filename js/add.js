@@ -166,17 +166,14 @@ function addAttributes(fields) {
 
 function validatePartName() {
     var partName = allowedChars.test($("#partNameInput").val());
-    var ret;
 
     if (partName || !$("#partNameInput").val()) {
         $("#partNameInput").parent().removeClass("has-error");
-        ret = 1;
     } else {
         $("#partNameInput").parent().addClass("has-error");
-        ret = 0;
     }
 
-    return ret;
+    return partName && $("#partNameInput").val().length !== 0;
 }
 
 function validateDescription() {
@@ -185,10 +182,10 @@ function validateDescription() {
 
     if (description || !$("#descriptionInput").val()) {
         $("#descriptionInput").parent().removeClass("has-error");
-        return 1;
+        return true;
     } else {
         $("#descriptionInput").parent().addClass("has-error");
-        return 0;
+        return false;
     }
 
     return ret;
@@ -201,32 +198,26 @@ function validateCategory() {
 
 function validateDatasheet() {
     var datasheet = /^[^'"\\\s]+$/.test($("#datasheetInput").val());
-    var ret;
 
     if (datasheet || !$("#datasheetInput").val()) {
         $("#datasheetInput").parent().removeClass("has-error");
-        ret = 1;
     } else {
         $("#datasheetInput").parent().addClass("has-error");
-        ret = 0;
     }
 
-    return ret;
+    return datasheet && $("#datasheetInput").val().length !== 0;
 }
 
 function validateLocation() {
     var location = allowedChars.test($("#locationInput").val());
-    var ret;
 
     if (location || !$("#locationInput").val()) {
         $("#locationInput").parent().removeClass("has-error");
-        ret = 1;
     } else {
         $("#locationInput").parent().addClass("has-error");
-        ret = 0;
     }
 
-    return ret;
+    return location && $("#locationInput").val().length !== 0;
 }
 
 function validateEditDetails() {
@@ -505,16 +496,20 @@ $(document).ready(function () {
 
     $('#locationInput').on("change keyup paste", function () {
         var location = allowedChars.test($("#locationInput").val());
-        if (location) {
+        if (location && $("#locationInput").val()) {
             var query = {"location": $(this).val()};
             $.post("/validate/location", query, function (result) {
                 if (result == 1) {
-                    $("#locationInput").parent().removeClass("has-error");
+                    $("#locationInput").parent().removeClass("has-warning");
                     $("#locationInput").parent().addClass("has-success");
                 } else {
-                    $("#locationInput").parent().addClass("has-error");
+                    $("#locationInput").parent().addClass("has-warning");
+                    $("#locationInput").parent().removeClass("has-success");
                 }
             });
+        } else {
+            $("#locationInput").parent().removeClass("has-warning");
+            $("#locationInput").parent().removeClass("has-success");
         }
     });
 
